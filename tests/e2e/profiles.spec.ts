@@ -25,6 +25,9 @@ test('cambia el idioma de toda la app y conserva la preferencia', async ({ page 
   await expect(page.getByRole('heading', { name: 'Let’s shape your next step.' })).toBeVisible();
   await page.goto('/profiles/alex/settings');
   await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
+  const modelInput = page.getByRole('textbox', { name: 'Model' });
+  await expect(modelInput).toBeVisible();
+  expect(await modelInput.evaluate((element) => element.getBoundingClientRect().height)).toBeGreaterThanOrEqual(50);
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');

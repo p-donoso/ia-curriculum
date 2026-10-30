@@ -1,5 +1,14 @@
-* {
+html {
   box-sizing: border-box;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+input.MuiInputBase-input,
+textarea.MuiInputBase-input {
+  box-sizing: content-box;
 }
 body {
   margin: 0;
