@@ -1,0 +1,262 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #eef2f8;
+  color: #172b4d;
+}
+::selection {
+  background: #cfdcff;
+}
+:focus-visible {
+  outline: 3px solid #1740c4;
+  outline-offset: 3px;
+}
+.app-shell {
+  height: 100dvh;
+  min-height: 100dvh;
+  display: flex;
+  overflow: hidden;
+  background: #eef2f8;
+}
+.sidebar {
+  width: 248px;
+  flex: 0 0 248px;
+  background: #101d36;
+  color: #dbe5f6;
+}
+.main-shell {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+.soft-grid {
+  height: calc(100dvh - 72px);
+  min-height: 0;
+  overflow-y: auto;
+  background-color: #eef2f8;
+  background-image: linear-gradient(#d9e1ee 1px, transparent 1px), linear-gradient(90deg, #d9e1ee 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.sidebar-link {
+  border-radius: 10px;
+  color: #aab9d3;
+  transition: all 0.2s ease;
+}
+.sidebar-link:hover,
+.sidebar-link.active {
+  color: #fff;
+  background: #253859;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+.cv-workspace {
+  min-height: 100vh;
+  padding: 28px 20px 60px;
+  background: #e9edf2;
+  color: #202b37;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.cv-toolbar {
+  max-width: 8.5in;
+  margin: 0 auto 16px;
+}
+.cv-document {
+  max-width: 8.5in;
+  min-height: 11in;
+  margin: 0 auto;
+  padding: 0.62in 0.72in;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(26, 39, 53, 0.14);
+  color: #202b37;
+  font-size: 10pt;
+  line-height: 1.42;
+}
+.cv-header {
+  padding-bottom: 18px;
+  border-bottom: 2px solid #31566a;
+}
+.cv-name {
+  color: #172b3a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 30pt;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  line-height: 1.05;
+}
+.cv-headline {
+  margin-top: 7px;
+  color: #31566a;
+  font-size: 11pt;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+}
+.cv-contact {
+  margin-top: 11px;
+  color: #4e5d68;
+  font-size: 8.5pt;
+}
+.cv-section {
+  margin-top: 19px;
+  break-inside: avoid;
+}
+.cv-section-title {
+  margin-bottom: 9px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #d5dde2;
+  color: #31566a;
+  font-size: 9pt;
+  font-weight: 800;
+  letter-spacing: 1.05px;
+  text-transform: uppercase;
+}
+.cv-entry {
+  margin-bottom: 13px;
+  break-inside: avoid;
+}
+.cv-entry-heading {
+  align-items: flex-start;
+}
+.cv-role,
+.cv-degree {
+  color: #202b37;
+  font-size: 10.5pt;
+  font-weight: 700;
+}
+.cv-degree {
+  white-space: pre-line;
+}
+.cv-organization {
+  margin-top: 1px;
+  color: #52616d;
+  font-size: 9pt;
+}
+.cv-dates {
+  flex: 0 0 auto;
+  color: #52616d;
+  font-size: 9pt;
+  white-space: nowrap;
+}
+.cv-bullets {
+  margin: 5px 0 0;
+  padding-left: 17px;
+}
+.cv-bullets li {
+  margin: 2px 0;
+  padding-left: 2px;
+}
+.cv-project {
+  margin: 0 0 11px;
+  break-inside: avoid;
+}
+.cv-project > p:not(.cv-role):not(.cv-organization) {
+  margin-top: 3px;
+}
+.cv-tech {
+  margin-top: 3px !important;
+  color: #52616d;
+  font-size: 8.7pt;
+}
+.cv-education {
+  margin: 0 0 9px;
+  break-inside: avoid;
+}
+.cv-continuation {
+  display: none;
+}
+@media print {
+  @page {
+    size: Letter;
+    margin: 0.55in 0.62in;
+  }
+  html,
+  body {
+    width: auto;
+    min-width: 0;
+    background: #fff !important;
+    color: #202b37;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .cv-workspace {
+    min-height: 0;
+    padding: 0;
+    background: #fff;
+  }
+  .cv-toolbar,
+  .cv-no-print {
+    display: none !important;
+  }
+  nextjs-portal {
+    display: none !important;
+  }
+  .cv-document {
+    width: auto;
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    font-size: 9.5pt;
+  }
+  .cv-section {
+    margin-top: 15px;
+  }
+  .cv-entry {
+    margin-bottom: 10px;
+  }
+  .cv-second-page {
+    break-before: page;
+  }
+  .cv-continuation {
+    display: block;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #d5dde2;
+    color: #52616d;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 12pt;
+    font-weight: 700;
+  }
+}
+@media (max-width: 700px) {
+  .sidebar {
+    display: none;
+  }
+  .app-shell,
+  .main-shell {
+    min-height: 100dvh;
+    height: auto;
+    overflow: visible;
+  }
+  .soft-grid {
+    height: auto;
+    min-height: calc(100dvh - 72px);
+  }
+  .cv-workspace {
+    padding: 12px 8px 32px;
+  }
+  .cv-document {
+    min-height: 0;
+    padding: 28px 22px;
+  }
+  .cv-entry-heading,
+  .cv-education {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .cv-dates {
+    order: -1;
+  }
+}

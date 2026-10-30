@@ -1,0 +1,61 @@
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import {
+  createProfile,
+  deleteProfile,
+  deleteProfileData,
+  exportProfile,
+  loadProfiles,
+  starterProfiles,
+} from '../lib/profiles/storage';
+describe('profile storage model', () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it('keeps starter profiles isolated', () => {
+    expect(starterProfiles).toHaveLength(2);
+    expect(starterProfiles[0].answers).not.toBe(starterProfiles[1].answers);
+  });
+  it('creates a usable profile with a stable id', () => {
+    const profile = createProfile('  Mi transición  ');
+    expect(profile.name).toBe('Mi transición');
+    expect(profile.id).toMatch(/^profile-/);
+    expect(profile.answers).toEqual([]);
+  });
+
+  it('falls back to starter profiles when stored data is malformed', () => {
+    const localStorage = { getItem: vi.fn(() => '{invalid'), setItem: vi.fn(), removeItem: vi.fn() };
+    vi.stubGlobal('window', { localStorage });
+    expect(loadProfiles()).toEqual(starterProfiles);
+  });
+
+  it('keeps an intentionally empty profile list empty after deletion', () => {
+    const localStorage = { getItem: vi.fn(() => '[]'), setItem: vi.fn(), removeItem: vi.fn() };
+    vi.stubGlobal('window', { localStorage });
+    expect(loadProfiles()).toEqual([]);
+  });
+
+  it('deletes profiles without mutating the input list', () => {
+    const result = deleteProfile(starterProfiles, 'alex');
+    expect(result.map((profile) => profile.id)).toEqual(['career-change']);
+    expect(starterProfiles).toHaveLength(2);
+  });
+
+  it('exports profile data and records as portable JSON', () => {
+    const payload = JSON.parse(
+      exportProfile(starterProfiles[0], [{ section: 'skills', values: { Skill: 'TypeScript' } }]),
+    );
+    expect(payload.schemaVersion).toBe(1);
+    expect(payload.profile.id).toBe('alex');
+    expect(payload.records).toHaveLength(1);
+    expect(payload.exportedAt).toBeTruthy();
+  });
+
+  it('removes profile data and settings from browser storage', () => {
+    const localStorage = { getItem: vi.fn(), setItem: vi.fn(), removeItem: vi.fn() };
+    const sessionStorage = { getItem: vi.fn(), setItem: vi.fn(), removeItem: vi.fn() };
+    vi.stubGlobal('window', { localStorage, sessionStorage });
+    deleteProfileData('alex');
+    expect(localStorage.removeItem).toHaveBeenCalledWith('ia-curriculum:records:alex:v1');
+    expect(localStorage.removeItem).toHaveBeenCalledWith('ia-curriculum:ai-config:v1:alex');
+    expect(sessionStorage.removeItem).toHaveBeenCalledWith('ia-curriculum:ai-token:alex:v1');
+  });
+});
