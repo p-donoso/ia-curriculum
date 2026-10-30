@@ -60,6 +60,83 @@ body {
   color: #fff;
   background: #253859;
 }
+.recovery-page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  background: #f5f7fb;
+}
+.recovery-card {
+  width: min(100%, 600px);
+  padding: clamp(24px, 6vw, 48px);
+  border: 1px solid #e1e7f0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 12px 36px rgba(34, 52, 88, 0.08);
+}
+.recovery-toolbar {
+  display: flex;
+  justify-content: flex-end;
+}
+.recovery-code {
+  margin: 20px 0 8px;
+  color: #1740c4;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+.recovery-title {
+  margin: 0;
+  color: #172b4d;
+  font-size: clamp(2.3rem, 8vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+.recovery-message,
+.recovery-reference {
+  color: #536581;
+  line-height: 1.6;
+}
+.recovery-reference {
+  font-size: 0.85rem;
+}
+.recovery-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+.recovery-button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.recovery-button-primary {
+  background: #1740c4;
+  color: #fff;
+}
+.recovery-button-primary:hover {
+  background: #1235a7;
+}
+.recovery-button-secondary {
+  border-color: #c8d3e4;
+  background: #fff;
+  color: #1740c4;
+}
+.recovery-button:focus-visible {
+  outline: 3px solid #1740c4;
+  outline-offset: 3px;
+}
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

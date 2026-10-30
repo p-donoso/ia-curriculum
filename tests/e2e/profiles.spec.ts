@@ -49,3 +49,11 @@ test('cambia el idioma de toda la app y conserva la preferencia', async ({ page 
   await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 });
+
+test('un segmento desconocido muestra la vista Next de not found en el idioma elegido', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('ia-curriculum:locale:v1', 'en'));
+  await page.goto('/profiles/alex/not-a-section');
+  await expect(page.getByRole('heading', { name: 'Page not found' })).toBeVisible();
+  await expect(page.getByText('We could not find this page. Check the link or return home.')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Go home' })).toHaveAttribute('href', '/');
+});

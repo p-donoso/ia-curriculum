@@ -69,6 +69,12 @@ const messages: Record<Locale, Messages> = {
     profile: 'PERFIL PROFESIONAL',
     backDashboard: 'Volver al panel',
     notFound: 'Página no encontrada',
+    notFoundMessage: 'No encontramos esta página. Revisa el enlace o vuelve al inicio.',
+    errorTitle: 'Algo salió mal',
+    errorMessage: 'Ocurrió un error inesperado. Puedes intentarlo de nuevo o volver al inicio.',
+    tryAgain: 'Intentar de nuevo',
+    goHome: 'Volver al inicio',
+    errorReference: 'Código de referencia',
     providerAi: 'Proveedor de IA',
     provider: 'Proveedor',
     baseUrl: 'URL base del proveedor',
@@ -206,6 +212,12 @@ const messages: Record<Locale, Messages> = {
     profile: 'PROFESSIONAL PROFILE',
     backDashboard: 'Back to dashboard',
     notFound: 'Page not found',
+    notFoundMessage: 'We could not find this page. Check the link or return home.',
+    errorTitle: 'Something went wrong',
+    errorMessage: 'An unexpected error occurred. Try again or return home.',
+    tryAgain: 'Try again',
+    goHome: 'Go home',
+    errorReference: 'Error reference',
     providerAi: 'AI provider',
     provider: 'Provider',
     baseUrl: 'Provider base URL',
@@ -284,7 +296,11 @@ const messages: Record<Locale, Messages> = {
 
 type I18n = { locale: Locale; t: (key: string) => string; toggle: () => void };
 const I18nContext = createContext<I18n>({ locale: 'es', t: (key) => messages.es[key] ?? key, toggle: () => undefined });
-const storageKey = 'ia-curriculum:locale:v1';
+export const localeStorageKey = 'ia-curriculum:locale:v1';
+
+export function translate(locale: Locale, key: string) {
+  return messages[locale][key] ?? messages.es[key] ?? key;
+}
 
 export function I18nProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>('es');
@@ -292,7 +308,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let stored: string | null = null;
     try {
-      stored = window.localStorage.getItem(storageKey);
+      stored = window.localStorage.getItem(localeStorageKey);
     } catch {
       // The app remains usable when browser storage is unavailable.
     }
@@ -303,7 +319,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     document.documentElement.lang = locale;
     if (ready) {
       try {
-        window.localStorage.setItem(storageKey, locale);
+        window.localStorage.setItem(localeStorageKey, locale);
       } catch {
         // Keep the selected locale for the current page session.
       }
@@ -312,7 +328,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   const value = useMemo<I18n>(
     () => ({
       locale,
-      t: (key) => messages[locale][key] ?? messages.es[key] ?? key,
+      t: (key) => translate(locale, key),
       toggle: () => setLocale((current) => (current === 'es' ? 'en' : 'es')),
     }),
     [locale],
