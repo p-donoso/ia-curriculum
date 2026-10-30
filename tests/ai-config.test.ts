@@ -89,4 +89,32 @@ describe('AI provider configuration', () => {
     expect(loaded.systemPrompts?.es?.guidedReflection).toBe('Custom reflection prompt');
     expect(loaded.systemPrompts?.en?.recordExtraction).toBe(systemPromptSeeds.en.recordExtraction);
   });
+
+  it('merges partial prompt overrides with seeds and keeps profiles isolated', () => {
+    const localStorage = createStorage();
+    const sessionStorage = createStorage();
+    localStorage.setItem(
+      profileAiConfigKey('alex'),
+      JSON.stringify({ systemPrompts: { en: { guidedReflection: 'Alex prompt' } } }),
+    );
+    vi.stubGlobal('window', { localStorage, sessionStorage });
+
+    const alex = loadAiConfig('alex');
+    const other = loadAiConfig('career-change');
+    expect(alex.systemPrompts?.en?.guidedReflection).toBe('Alex prompt');
+    expect(alex.systemPrompts?.en?.recordExtraction).toBe(systemPromptSeeds.en.recordExtraction);
+    expect(other.systemPrompts?.en?.guidedReflection).toBe(systemPromptSeeds.en.guidedReflection);
+  });
+
+  it('removes a previously saved token when the user clears it', () => {
+    const localStorage = createStorage();
+    const sessionStorage = createStorage();
+    vi.stubGlobal('window', { localStorage, sessionStorage });
+    saveAiConfig('alex', { ...defaultAiConfig, token: 'temporary-token' });
+
+    saveAiConfig('alex', { ...defaultAiConfig, token: '' });
+
+    expect(sessionStorage.getItem('ia-curriculum:ai-token:alex:v1')).toBeNull();
+    expect(localStorage.getItem(profileAiConfigKey('alex'))).not.toContain('temporary-token');
+  });
 });

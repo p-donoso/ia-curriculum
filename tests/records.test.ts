@@ -36,4 +36,37 @@ describe('records', () => {
     vi.stubGlobal('localStorage', storage);
     expect(loadRecords('alex', 'experience')).toEqual([]);
   });
+
+  it('replaces a record update without duplicating it or touching another profile', () => {
+    const values = new Map<string, string>();
+    const storage = {
+      getItem: (key: string) => values.get(key) ?? null,
+      setItem: (key: string, value: string) => values.set(key, value),
+      removeItem: (key: string) => values.delete(key),
+    };
+    vi.stubGlobal('window', { localStorage: storage });
+    vi.stubGlobal('localStorage', storage);
+    const original = createRecord('experience', { Role: 'Analyst' });
+    saveRecord('alex', original);
+    saveRecord('career-change', createRecord('experience', { Role: 'Designer' }));
+
+    const updated = { ...original, values: { Role: 'Lead analyst' }, updatedAt: '2026-10-30T00:00:00.000Z' };
+    saveRecord('alex', updated);
+
+    expect(loadRecords('alex', 'experience')).toEqual([updated]);
+    expect(loadRecords('career-change', 'experience')).toHaveLength(1);
+  });
+
+  it('discards malformed entries from an otherwise valid records list', () => {
+    const good = createRecord('experience', { Role: 'Engineer' });
+    const storage = {
+      getItem: () => JSON.stringify([good, { id: 'broken', section: 'experience', values: ['invalid'] }]),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+    vi.stubGlobal('window', { localStorage: storage });
+    vi.stubGlobal('localStorage', storage);
+
+    expect(loadRecords('alex', 'experience')).toEqual([good]);
+  });
 });

@@ -33,6 +33,30 @@ describe('profile storage model', () => {
     expect(loadProfiles()).toEqual([]);
   });
 
+  it('filters malformed profiles while preserving valid entries', () => {
+    const localStorage = {
+      getItem: vi.fn(() => JSON.stringify([starterProfiles[0], { id: 'broken', name: 42 }])),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+    vi.stubGlobal('window', { localStorage });
+
+    expect(loadProfiles()).toEqual([starterProfiles[0]]);
+  });
+
+  it('falls back to starter profiles when browser storage throws', () => {
+    const localStorage = {
+      getItem: () => {
+        throw new Error('storage blocked');
+      },
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    };
+    vi.stubGlobal('window', { localStorage });
+
+    expect(loadProfiles()).toEqual(starterProfiles);
+  });
+
   it('deletes profiles without mutating the input list', () => {
     const result = deleteProfile(starterProfiles, 'alex');
     expect(result.map((profile) => profile.id)).toEqual(['career-change']);

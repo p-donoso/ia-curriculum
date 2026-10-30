@@ -29,8 +29,16 @@ jobs:
         run: npm ci
       - name: Check dependency advisories
         run: npm audit --audit-level=moderate
-      - name: Run lint, unit tests, build, and type check
-        run: npm run check
+      - name: Check formatting
+        run: npm run format:check
+      - name: Run lint
+        run: npm run lint
+      - name: Run unit tests with coverage
+        run: npm run test:coverage
+      - name: Build production app
+        run: npm run build
+      - name: Check TypeScript types
+        run: npm run typecheck
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
       - name: Run end-to-end tests
