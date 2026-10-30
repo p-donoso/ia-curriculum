@@ -23,6 +23,23 @@ test('cambia el idioma de toda la app y conserva la preferencia', async ({ page 
 
   await page.getByRole('link', { name: /Alex Morgan/ }).click();
   await expect(page.getByRole('heading', { name: 'Let’s shape your next step.' })).toBeVisible();
+  const createdAt = new Date().toISOString();
+  await page.evaluate((createdAt) => {
+    localStorage.setItem(
+      'ia-curriculum:records:alex:v1',
+      JSON.stringify([
+        {
+          id: 'basic-record',
+          section: 'basic',
+          values: { 'Sitio web': 'jordan.example.com' },
+          createdAt,
+          updatedAt: createdAt,
+        },
+      ]),
+    );
+  }, createdAt);
+  await page.goto('/profiles/alex/basic');
+  await expect(page.getByLabel('Website')).toBeVisible();
   await page.goto('/profiles/alex/settings');
   await expect(page.getByRole('heading', { name: 'Settings' })).toBeVisible();
   const modelInput = page.getByRole('textbox', { name: 'Model' });

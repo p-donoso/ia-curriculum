@@ -17,7 +17,7 @@ A local-first workspace for turning career reflections into organized profession
 
 ## Screenshots
 
-Explore the [full screenshot gallery](docs/screenshots.md). Images use synthetic profile data and contain no real user information.
+Explore the [full screenshot gallery](docs/screenshots.md). Screens use the English interface and fictional profile data; they contain no real user information.
 
 **Guided reflection**
 

@@ -2,6 +2,8 @@
 
 These screens use fictional sample data generated in a temporary browser session. They do not contain real profile information or provider credentials.
 
+All screenshots show the English interface for a consistent walkthrough.
+
 ## Choose a profile
 
 ![Profile selection](screenshots/profiles.png)

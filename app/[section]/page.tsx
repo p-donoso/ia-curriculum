@@ -457,7 +457,7 @@ function getFieldLabel(field: string, locale: 'es' | 'en') {
     Teléfono: ['Teléfono', 'Phone'],
     'Ciudad y país': ['Ciudad y país', 'City and country'],
     'Estado civil': ['Estado civil', 'Marital status'],
-    Sitio: ['Sitio web', 'Website'],
+    'Sitio web': ['Sitio web', 'Website'],
     Institución: ['Institución', 'Institution'],
     'Título o programa': ['Título o programa', 'Degree or program'],
     'Fecha de inicio': ['Fecha de inicio', 'Start date'],

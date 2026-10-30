@@ -9,7 +9,8 @@ IA Curriculum is an actively developed personal project, not a production servic
 - AI requests go directly from the browser to the configured OpenAI-compatible provider.
 - Browser storage and client-side token storage are not a security boundary against same-origin script execution.
 - AI proposals remain temporary until reviewed and saved by the user.
-- The print CV is English-only; server-side PDF export and design templates are future work.
+- CV labels follow the selected interface language; user-provided profile text is not translated automatically.
+- Server-side PDF export and design templates are future work.
 
 ## Release checks
 
