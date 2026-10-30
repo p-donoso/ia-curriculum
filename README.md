@@ -14,6 +14,20 @@ A local-first workspace for turning career reflections into an organized profess
 - Export a profile and its records as JSON, or delete its local data.
 - Use the app without an AI provider; AI credentials are optional.
 
+## Screenshots
+
+These screenshots use a synthetic sample profile and contain no real user data.
+
+**Workspace**
+
+![IA Curriculum workspace](docs/screenshots/workspace.png)
+
+**English CV preview**
+
+![Printable CV preview with sample content](docs/screenshots/cv-preview.png)
+
+To browse the app without installing it, open the screenshots above or the [screenshots folder](docs/screenshots/).
+
 ## Quick start
 
 Requirements: Node.js 22 (Node.js 20.9 or newer is supported) and npm.
