@@ -6,6 +6,7 @@ export type RecordItem = {
   updatedAt: string;
 };
 export const recordsKey = (profileId: string) => `ia-curriculum:records:${profileId}:v1`;
+/** Load valid records for one profile and section; malformed storage entries are ignored. */
 export function loadRecords(profileId: string, section: string): RecordItem[] {
   if (typeof window === 'undefined') return [];
   try {
@@ -15,10 +16,12 @@ export function loadRecords(profileId: string, section: string): RecordItem[] {
     return [];
   }
 }
+/** Insert or replace one record without affecting other profiles or records. */
 export function saveRecord(profileId: string, record: RecordItem): void {
   const all = loadAllRecords(profileId).filter((item) => item.id !== record.id);
   localStorage.setItem(recordsKey(profileId), JSON.stringify([...all, record]));
 }
+/** Delete a record by id from the selected profile. */
 export function deleteRecord(profileId: string, recordId: string): void {
   localStorage.setItem(
     recordsKey(profileId),
@@ -49,6 +52,7 @@ function isRecordItem(value: unknown): value is RecordItem {
   }
   return Object.values(record.values).every((item) => typeof item === 'string');
 }
+/** Create a timestamped record for a profile section. */
 export function createRecord(section: string, values: Record<string, string>): RecordItem {
   const now = new Date().toISOString();
   return {

@@ -26,6 +26,7 @@ The application controls the main questions. You may offer one optional question
   },
 };
 
+/** Merge optional profile edits into the complete Spanish and English seed catalog. */
 export function resolveSystemPrompts(overrides?: PromptOverrides): LocalizedSystemPrompts {
   return {
     es: { ...systemPromptSeeds.es, ...overrides?.es },
@@ -33,6 +34,7 @@ export function resolveSystemPrompts(overrides?: PromptOverrides): LocalizedSyst
   };
 }
 
+/** Return a non-empty profile override, falling back to the selected locale's seed. */
 export function getSystemPrompt(
   overrides: PromptOverrides | undefined,
   locale: PromptLocale,

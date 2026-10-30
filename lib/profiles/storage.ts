@@ -28,6 +28,7 @@ export const starterProfiles: Profile[] = [
     updatedAt: '2026-01-01T00:00:00.000Z',
   },
 ];
+/** Load valid profiles from browser storage, falling back to examples on first use or storage errors. */
 export function loadProfiles(): Profile[] {
   if (typeof window === 'undefined') return starterProfiles;
   try {
@@ -54,9 +55,11 @@ function isProfile(value: unknown): value is Profile {
     typeof profile.updatedAt === 'string'
   );
 }
+/** Persist profile metadata and reflection answers in browser local storage. */
 export function saveProfiles(profiles: Profile[]): void {
   window.localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(profiles));
 }
+/** Create a profile with a trimmed name and empty reflection answers. */
 export function createProfile(name: string): Profile {
   const now = new Date().toISOString();
   return {
@@ -69,9 +72,11 @@ export function createProfile(name: string): Profile {
     updatedAt: now,
   };
 }
+/** Return a new profile list without the selected profile. */
 export function deleteProfile(profiles: Profile[], id: string): Profile[] {
   return profiles.filter((profile) => profile.id !== id);
 }
+/** Remove local records, AI preferences, and the current-session token for one profile. */
 export function deleteProfileData(profileId: string): void {
   if (typeof window === 'undefined') return;
   window.localStorage.removeItem(`ia-curriculum:records:${profileId}:v1`);
@@ -82,6 +87,7 @@ export function deleteProfileData(profileId: string): void {
     // Session storage can be unavailable even when local storage is enabled.
   }
 }
+/** Serialize profile data in the versioned JSON export format. */
 export function exportProfile(profile: Profile, records: unknown[] = []): string {
   return JSON.stringify({ schemaVersion: 1, exportedAt: new Date().toISOString(), profile, records }, null, 2);
 }

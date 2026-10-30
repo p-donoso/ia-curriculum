@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { LocaleToggle, useI18n } from './i18n';
+import { RecoveryScreen } from './components/recovery-screen';
 
 type RouteError = Error & { digest?: string };
 
@@ -14,30 +15,23 @@ export default function ErrorPage({ error, retry }: { error: RouteError; retry: 
   }, [error]);
 
   return (
-    <main className="recovery-page">
-      <section className="recovery-card" aria-labelledby="error-title" role="alert">
-        <div className="recovery-toolbar">
-          <LocaleToggle />
-        </div>
-        <p className="recovery-code">500</p>
-        <h1 className="recovery-title" id="error-title">
-          {t('errorTitle')}
-        </h1>
-        <p className="recovery-message">{t('errorMessage')}</p>
-        {error.digest && (
-          <p className="recovery-reference">
-            {t('errorReference')}: {error.digest}
-          </p>
-        )}
-        <div className="recovery-actions">
+    <RecoveryScreen
+      code="500"
+      title={t('errorTitle')}
+      message={t('errorMessage')}
+      labelledBy="error-title"
+      toolbar={<LocaleToggle />}
+      reference={error.digest ? `${t('errorReference')}: ${error.digest}` : undefined}
+      actions={
+        <>
           <button className="recovery-button recovery-button-primary" onClick={retry}>
             {t('tryAgain')}
           </button>
           <Link className="recovery-button recovery-button-secondary" href="/">
             {t('goHome')}
           </Link>
-        </div>
-      </section>
-    </main>
+        </>
+      }
+    />
   );
 }

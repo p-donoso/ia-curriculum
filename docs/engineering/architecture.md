@@ -14,13 +14,16 @@ flowchart TD
 ## Application layers
 
 - `app/` contains the profile selector, profile workspace, editable sections, settings, and output views.
+- `app/components/` holds reusable screens and focused UI panels; `section-page.tsx` coordinates section data and delegates settings controls.
 - `app/i18n.tsx` provides the Spanish and English interface strings and stores the selected locale in browser storage.
 - `lib/workflow.ts` owns the small deterministic reflection flow and response limit.
 - `lib/profiles/storage.ts` stores profile metadata and exports/deletes profile data.
 - `lib/profiles/records.ts` provides per-profile CRUD for career records.
+- `lib/profiles/field-labels.ts` translates stored field keys at the UI boundary while keeping unknown keys intact.
 - `lib/ai/config.ts` separates persistent non-secret settings from tab-scoped tokens.
 - `lib/ai/client.ts` makes bounded, cancellable chat-completions requests and parses streaming events.
 - `lib/ai/extraction.ts` restricts model proposals to requested fields and requires user review before saving.
+- Exported storage, workflow, and AI helpers document their side effects and fallback behavior with TSDoc comments.
 
 ## Data flow
 

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import './globals.css';
 import { localeStorageKey, translate, type Locale } from './i18n';
+import { RecoveryScreen } from './components/recovery-screen';
 
 type GlobalErrorState = Error & { digest?: string };
 
@@ -30,28 +31,23 @@ export default function GlobalError({ error, retry }: { error: GlobalErrorState;
         <title>{t('errorTitle')} · IA Curriculum</title>
       </head>
       <body>
-        <main className="recovery-page">
-          <section className="recovery-card" aria-labelledby="global-error-title" role="alert">
-            <p className="recovery-code">500</p>
-            <h1 className="recovery-title" id="global-error-title">
-              {t('errorTitle')}
-            </h1>
-            <p className="recovery-message">{t('errorMessage')}</p>
-            {error.digest && (
-              <p className="recovery-reference">
-                {t('errorReference')}: {error.digest}
-              </p>
-            )}
-            <div className="recovery-actions">
+        <RecoveryScreen
+          code="500"
+          title={t('errorTitle')}
+          message={t('errorMessage')}
+          labelledBy="global-error-title"
+          reference={error.digest ? `${t('errorReference')}: ${error.digest}` : undefined}
+          actions={
+            <>
               <button className="recovery-button recovery-button-primary" onClick={retry}>
                 {t('tryAgain')}
               </button>
               <a className="recovery-button recovery-button-secondary" href="/">
                 {t('goHome')}
               </a>
-            </div>
-          </section>
-        </main>
+            </>
+          }
+        />
       </body>
     </html>
   );

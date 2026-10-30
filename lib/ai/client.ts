@@ -42,6 +42,7 @@ function createRequestSignal(signal?: AbortSignal) {
   };
 }
 
+/** Send a non-streaming chat request directly to the configured provider. */
 export async function chat(config: AiConfig, messages: ChatMessage[], signal?: AbortSignal): Promise<ChatResult> {
   if (!config.token) throw new Error('Falta el token del proveedor.');
   const endpoint = completionUrl(config.endpoint ?? '');
@@ -66,6 +67,7 @@ export async function chat(config: AiConfig, messages: ChatMessage[], signal?: A
   }
 }
 
+/** Stream provider response tokens to the callback; supports cancellation and a request timeout. */
 export async function streamChat(
   config: AiConfig,
   messages: ChatMessage[],

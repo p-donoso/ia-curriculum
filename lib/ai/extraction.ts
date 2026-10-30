@@ -6,6 +6,7 @@ export type StructuredProposal = {
   missing: string[];
   confidence: 'low' | 'medium' | 'high';
 };
+/** Validate model output and constrain proposed values to the requested field schema. */
 export function parseProposal(text: string, fields: string[]): StructuredProposal {
   const cleaned = text
     .trim()
@@ -35,6 +36,7 @@ export function parseProposal(text: string, fields: string[]): StructuredProposa
     return { values: Object.fromEntries(fields.map((field) => [field, ''])), missing: fields, confidence: 'low' };
   }
 }
+/** Ask the configured provider to extract a reviewable profile draft from user-supplied text. */
 export async function extractRecord(
   config: ProviderConfig,
   section: string,

@@ -16,6 +16,7 @@ export const AI_CONFIG_STORAGE_KEY = 'ia-curriculum:ai-config:v1';
 export const profileAiConfigKey = (profileId: string) => `${AI_CONFIG_STORAGE_KEY}:${profileId}`;
 const profileAiTokenKey = (profileId: string) => `ia-curriculum:ai-token:${profileId}:v1`;
 
+/** Load a profile's provider settings and seeded prompt overrides from local storage. */
 export function loadAiConfig(profileId?: string): ProviderConfig {
   if (typeof window === 'undefined') return { ...defaultAiConfig, systemPrompts: resolveSystemPrompts() };
   try {
@@ -50,6 +51,7 @@ export function loadAiConfig(profileId?: string): ProviderConfig {
   }
 }
 
+/** Save non-secret settings persistently and keep the provider token in session storage. */
 export function saveAiConfig(profileId: string, config: ProviderConfig): void {
   const { token, ...safeConfig } = config;
   window.localStorage.setItem(profileAiConfigKey(profileId), JSON.stringify(safeConfig));

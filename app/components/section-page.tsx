@@ -12,8 +12,6 @@ import {
   Box,
   Button,
   Chip,
-  Divider,
-  MenuItem,
   Paper,
   Stack,
   TextField,
@@ -22,9 +20,8 @@ import {
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { defaultAiConfig, loadAiConfig, saveAiConfig, type ProviderConfig } from '../../lib/ai/config';
-import { resolveSystemPrompts, systemPromptSeeds, type SystemPromptId } from '../../lib/ai/prompts';
+import { SettingsPanel } from './settings-panel';
 import { createRecord, deleteRecord, loadRecords, type RecordItem, saveRecord } from '../../lib/profiles/records';
 import {
   deleteProfile,
@@ -34,6 +31,7 @@ import {
   saveProfiles,
 } from '../../lib/profiles/storage';
 import { sections } from '../../lib/profiles/sections';
+import { getFieldLabel } from '../../lib/profiles/field-labels';
 import { LocaleToggle, useI18n } from '../i18n';
 
 export default function SectionPage({ section, profileId }: { section: string; profileId?: string }) {
@@ -91,29 +89,17 @@ export default function SectionPage({ section, profileId }: { section: string; p
     if (proposal && profileId) persist(createRecord(section, proposal.values));
     setProposal(null);
   };
+  const updateRecordField = (recordId: string, field: string, value: string) => {
+    setRecords((current) =>
+      current.map((record) =>
+        record.id === recordId ? { ...record, values: { ...record.values, [field]: value } } : record,
+      ),
+    );
+  };
   const saveConfig = () => {
     if (!settingsReady) return;
     if (profileId) saveAiConfig(profileId, config);
     setSaved(true);
-  };
-  const updateSystemPrompt = (id: SystemPromptId, value: string) => {
-    setConfig((current) => ({
-      ...current,
-      systemPrompts: {
-        ...resolveSystemPrompts(current.systemPrompts),
-        [locale]: { ...resolveSystemPrompts(current.systemPrompts)[locale], [id]: value },
-      },
-    }));
-  };
-  const resetSystemPrompts = () => {
-    if (!settingsReady) return;
-    setConfig((current) => ({
-      ...current,
-      systemPrompts: {
-        ...resolveSystemPrompts(current.systemPrompts),
-        [locale]: { ...systemPromptSeeds[locale] },
-      },
-    }));
   };
   const downloadProfile = () => {
     if (!profileId) return;
@@ -172,112 +158,16 @@ export default function SectionPage({ section, profileId }: { section: string; p
           </>
         )}
         {section === 'settings' ? (
-          <Paper sx={{ p: 3 }}>
-            <Typography fontWeight={800} sx={{ mb: 2 }}>
-              {t('providerAi')}
-            </Typography>
-            <TextField
-              select
-              fullWidth
-              label={t('provider')}
-              value={config.provider}
-              onChange={(event) => setConfig({ ...config, provider: event.target.value })}
-            >
-              <MenuItem value="openai-compatible">OpenAI-compatible API</MenuItem>
-              <MenuItem value="local">Local OpenAI-compatible server</MenuItem>
-              <MenuItem value="custom">Custom OpenAI-compatible API</MenuItem>
-            </TextField>
-            <TextField
-              fullWidth
-              label={t('baseUrl')}
-              value={config.endpoint}
-              onChange={(event) => setConfig({ ...config, endpoint: event.target.value })}
-              placeholder="https://provider.example/v1"
-              helperText={t('providerHelp')}
-              sx={{ mt: 2 }}
-            />
-            <TextField
-              fullWidth
-              label={t('model')}
-              value={config.model}
-              onChange={(event) => setConfig({ ...config, model: event.target.value })}
-              sx={{ mt: 2 }}
-            />
-            <TextField
-              fullWidth
-              type="password"
-              label={t('token')}
-              value={config.token}
-              onChange={(event) => setConfig({ ...config, token: event.target.value })}
-              sx={{ mt: 2 }}
-              autoComplete="new-password"
-              helperText={t('tokenHelp')}
-            />
-            <Button variant="outlined" sx={{ mt: 2 }} onClick={saveConfig}>
-              {t('saveConfig')}
-            </Button>
-            {saved && <Chip label={t('configSaved')} color="success" sx={{ ml: 2 }} />}
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" fontWeight={800}>
-              {t('systemPrompts')}
-            </Typography>
-            <Typography color="text.secondary" sx={{ mt: 0.5, mb: 2 }}>
-              {t('systemPromptsHelp')}
-            </Typography>
-            <TextField
-              fullWidth
-              multiline
-              minRows={6}
-              label={t('guidedReflectionPrompt')}
-              value={config.systemPrompts?.[locale]?.guidedReflection ?? systemPromptSeeds[locale].guidedReflection}
-              onChange={(event) => updateSystemPrompt('guidedReflection', event.target.value)}
-              slotProps={{ htmlInput: { readOnly: !settingsReady } }}
-              sx={{ mb: 2 }}
-            />
-            <TextField
-              fullWidth
-              multiline
-              minRows={5}
-              label={t('recordExtractionPrompt')}
-              value={config.systemPrompts?.[locale]?.recordExtraction ?? systemPromptSeeds[locale].recordExtraction}
-              onChange={(event) => updateSystemPrompt('recordExtraction', event.target.value)}
-              slotProps={{ htmlInput: { readOnly: !settingsReady } }}
-            />
-            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
-              <Button variant="outlined" onClick={resetSystemPrompts}>
-                {t('resetPromptSeeds')}
-              </Button>
-              <Button variant="outlined" onClick={saveConfig}>
-                {t('saveConfig')}
-              </Button>
-              {saved && <Chip label={t('configSaved')} color="success" />}
-            </Stack>
-            <Divider sx={{ my: 3 }} />
-            <Typography variant="h6" fontWeight={800}>
-              {t('yourData')}
-            </Typography>
-            <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-              {t('dataHelp')}
-            </Typography>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ mt: 2 }}>
-              <Button
-                variant="outlined"
-                startIcon={<DownloadRoundedIcon />}
-                onClick={downloadProfile}
-                disabled={!profileId}
-              >
-                {t('exportProfile')}
-              </Button>
-              <Button
-                color="error"
-                startIcon={<DeleteOutlineRoundedIcon />}
-                onClick={removeCurrentProfile}
-                disabled={!profileId}
-              >
-                {t('deleteProfile')}
-              </Button>
-            </Stack>
-          </Paper>
+          <SettingsPanel
+            config={config}
+            profileId={profileId}
+            saved={saved}
+            ready={settingsReady}
+            onConfigChange={setConfig}
+            onSave={saveConfig}
+            onDownload={downloadProfile}
+            onDelete={removeCurrentProfile}
+          />
         ) : section === 'curriculum' ? (
           <CvPreview profileId={profileId} records={portfolioRecords} />
         ) : isOutput ? (
@@ -430,7 +320,7 @@ export default function SectionPage({ section, profileId }: { section: string; p
                         <TextField
                           key={field}
                           label={getFieldLabel(field, locale)}
-                          defaultValue={record.values[field] || ''}
+                          value={record.values[field] || ''}
                           fullWidth
                           size="small"
                           helperText={
@@ -448,9 +338,7 @@ export default function SectionPage({ section, profileId }: { section: string; p
                               ? 3
                               : undefined
                           }
-                          onBlur={(event) => {
-                            record.values[field] = event.target.value;
-                          }}
+                          onChange={(event) => updateRecordField(record.id, field, event.target.value)}
                         />
                       ))}
                       <Stack direction="row" spacing={1}>
@@ -486,33 +374,4 @@ export default function SectionPage({ section, profileId }: { section: string; p
       </Box>
     </Box>
   );
-}
-
-function getFieldLabel(field: string, locale: 'es' | 'en') {
-  const translated: Record<string, [string, string]> = {
-    'Nombre completo': ['Nombre completo', 'Full name'],
-    'Professional Headline': ['Titular profesional', 'Professional headline'],
-    'Professional Summary': ['Resumen profesional', 'Professional summary'],
-    Email: ['Correo electrónico', 'Email'],
-    Teléfono: ['Teléfono', 'Phone'],
-    'Ciudad y país': ['Ciudad y país', 'City and country'],
-    'Estado civil': ['Estado civil', 'Marital status'],
-    'Sitio web': ['Sitio web', 'Website'],
-    Institución: ['Institución', 'Institution'],
-    'Título o programa': ['Título o programa', 'Degree or program'],
-    'Fecha de inicio': ['Fecha de inicio', 'Start date'],
-    'Fecha de término': ['Fecha de término', 'End date'],
-    Descripción: ['Descripción', 'Description'],
-    Organización: ['Organización', 'Organization'],
-    Cargo: ['Cargo', 'Role'],
-    'Logros y responsabilidades': ['Logros y responsabilidades', 'Achievements and responsibilities'],
-    'Nombre del proyecto': ['Nombre del proyecto', 'Project name'],
-    Rol: ['Rol', 'Role'],
-    Fecha: ['Fecha', 'Date'],
-    'Resultado o enlace': ['Resultado o enlace', 'Outcome or link'],
-    Skill: ['Habilidad', 'Skill'],
-    Category: ['Categoría', 'Category'],
-    Evidence: ['Evidencia', 'Evidence'],
-  };
-  return translated[field]?.[locale === 'es' ? 0 : 1] ?? field;
 }
