@@ -14,6 +14,7 @@ flowchart TD
 ## Application layers
 
 - `app/` contains the profile selector, profile workspace, editable sections, settings, and output views.
+- `app/i18n.tsx` provides the Spanish and English interface strings and stores the selected locale in browser storage.
 - `lib/workflow.ts` owns the small deterministic reflection flow and response limit.
 - `lib/profiles/storage.ts` stores profile metadata and exports/deletes profile data.
 - `lib/profiles/records.ts` provides per-profile CRUD for career records.
@@ -31,4 +32,4 @@ Profile metadata, answers, and career records remain in browser `localStorage`. 
 - Browser storage is device- and browser-specific; it does not sync or back up data.
 - Provider privacy, availability, compatibility, and CORS behavior are outside this repository's control.
 - AI output is an untrusted proposal, not a verified career fact.
-- The CV currently uses browser print/save-to-PDF and has one English print layout.
+- The CV uses browser print/save-to-PDF with Spanish and English labels.

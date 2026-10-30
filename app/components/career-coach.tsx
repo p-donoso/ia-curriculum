@@ -6,20 +6,24 @@ import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
 import { loadAiConfig } from '../../lib/ai/config';
 import { extractRecord, type StructuredProposal } from '../../lib/ai/extraction';
 import { sections } from '../../lib/profiles/sections';
+import { useI18n } from '../i18n';
 
 export type Proposal = StructuredProposal & { source: string };
 
 export function CareerCoach({
   section,
+  title,
   fields,
   profileId,
   onProposal,
 }: {
   section: string;
+  title: string;
   fields: string[];
   profileId?: string;
   onProposal: (proposal: Proposal) => void;
 }) {
+  const { t } = useI18n();
   const [text, setText] = useState('');
   const [questions, setQuestions] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -42,7 +46,7 @@ export function CareerCoach({
       onProposal({ ...proposal, source });
       setText('');
     } catch {
-      setError('El proveedor no respondió. Puedes completar los campos manualmente con tu texto como referencia.');
+      setError(t('providerError'));
       onProposal({
         values: Object.fromEntries(fields.map((field) => [field, ''])),
         missing: fields,
@@ -58,9 +62,9 @@ export function CareerCoach({
       <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
         <AutoAwesomeRoundedIcon color="secondary" />
         <Box>
-          <Typography fontWeight={800}>Asistente contextual</Typography>
+          <Typography fontWeight={800}>{t('assistant')}</Typography>
           <Typography variant="caption" color="text.secondary">
-            Cuéntame libremente sobre {sections[section].title.toLowerCase()}.
+            {t('tellAbout')} {title.toLowerCase()}.
           </Typography>
         </Box>
       </Stack>
@@ -70,14 +74,14 @@ export function CareerCoach({
         minRows={3}
         value={text}
         onChange={(event) => setText(event.target.value)}
-        placeholder="Escribe aquí..."
+        placeholder={t('writeHere')}
       />
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ mt: 1.5 }}>
         <Button variant="contained" disabled={!text.trim() || loading} onClick={propose}>
-          {loading ? 'Analizando…' : 'Preparar propuesta'}
+          {loading ? t('analyzing') : t('prepareProposal')}
         </Button>
         <Button variant="outlined" onClick={() => setQuestions(!questions)} startIcon={<AutoAwesomeRoundedIcon />}>
-          {questions ? 'Ocultar preguntas' : 'Ver preguntas para profundizar'}
+          {questions ? t('hideQuestions') : t('deeperQuestions')}
         </Button>
       </Stack>
       {error && (
@@ -88,16 +92,16 @@ export function CareerCoach({
       {questions && (
         <Box sx={{ mt: 2, p: 2, bgcolor: '#fff', borderRadius: 2 }}>
           <Typography variant="body2" fontWeight={700}>
-            Para complementar:
+            {t('toComplement')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            • ¿Qué resultado concreto obtuviste?
+            • {t('resultQuestion')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            • ¿Qué hiciste tú personalmente?
+            • {t('personalQuestion')}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            • ¿Qué aprendiste?
+            • {t('learnedQuestion')}
           </Typography>
         </Box>
       )}

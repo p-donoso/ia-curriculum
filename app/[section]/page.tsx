@@ -33,6 +33,7 @@ import {
   saveProfiles,
 } from '../../lib/profiles/storage';
 import { sections } from '../../lib/profiles/sections';
+import { LocaleToggle, useI18n } from '../i18n';
 
 export default function SectionPage({
   params,
@@ -42,7 +43,30 @@ export default function SectionPage({
   profileId?: string;
 }) {
   const { section } = use(params);
-  const info = sections[section];
+  const { locale, t } = useI18n();
+  const sectionTitle: Record<string, string> = {
+    basic: t('basic'),
+    education: t('education'),
+    experience: t('experience'),
+    projects: t('projects'),
+    skills: t('skills'),
+    linkedin: t('linkedin'),
+    curriculum: t('curriculum'),
+    settings: t('settings'),
+  };
+  const sectionDesc: Record<string, string> = {
+    basic: t('sectionBasicDesc'),
+    education: t('sectionEducationDesc'),
+    experience: t('sectionExperienceDesc'),
+    projects: t('sectionProjectsDesc'),
+    skills: t('sectionSkillsDesc'),
+    linkedin: t('sectionLinkedinDesc'),
+    curriculum: t('sectionCurriculumDesc'),
+    settings: t('sectionSettingsDesc'),
+  };
+  const info = sections[section]
+    ? { ...sections[section], title: sectionTitle[section], description: sectionDesc[section] }
+    : undefined;
   const router = useRouter();
   const [records, setRecords] = useState<RecordItem[]>([]);
   const [portfolioRecords, setPortfolioRecords] = useState<RecordItem[]>([]);
@@ -92,11 +116,7 @@ export default function SectionPage({
     window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
   };
   const removeCurrentProfile = () => {
-    if (
-      !profileId ||
-      !window.confirm('¿Eliminar este perfil y todos sus datos locales? Esta acción no se puede deshacer.')
-    )
-      return;
+    if (!profileId || !window.confirm(t('deleteConfirm'))) return;
     saveProfiles(deleteProfile(loadProfiles(), profileId));
     deleteProfileData(profileId);
     router.push('/');
@@ -105,9 +125,9 @@ export default function SectionPage({
     return (
       <Box sx={{ minHeight: '100vh', bgcolor: '#f5f7fb', p: { xs: 2, md: 6 } }}>
         <Paper role="alert" sx={{ maxWidth: 900, mx: 'auto', p: 3 }}>
-          <Typography variant="h2">Página no encontrada</Typography>
+          <Typography variant="h2">{t('notFound')}</Typography>
           <Button component={Link} href={profileId ? `/profiles/${profileId}` : '/'} sx={{ mt: 2 }}>
-            Volver al espacio de trabajo
+            {t('backDashboard')}
           </Button>
         </Paper>
       </Box>
@@ -130,30 +150,31 @@ export default function SectionPage({
               startIcon={<ArrowBackRoundedIcon />}
               sx={{ mb: 3 }}
             >
-              Volver al dashboard
+              {t('backDashboard')}
             </Button>
             <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 3 }}>
               <Box>
                 <Typography variant="overline" color="primary.main" fontWeight={800}>
-                  PERFIL PROFESIONAL
+                  {t('profile')}
                 </Typography>
                 <Typography variant="h2">{info.title}</Typography>
                 <Typography color="text.secondary" sx={{ mt: 1 }}>
                   {info.description}
                 </Typography>
               </Box>
+              <LocaleToggle />
             </Stack>
           </>
         )}
         {section === 'settings' ? (
           <Paper sx={{ p: 3 }}>
             <Typography fontWeight={800} sx={{ mb: 2 }}>
-              Proveedor de IA
+              {t('providerAi')}
             </Typography>
             <TextField
               select
               fullWidth
-              label="Proveedor"
+              label={t('provider')}
               value={config.provider}
               onChange={(event) => setConfig({ ...config, provider: event.target.value })}
             >
@@ -163,16 +184,16 @@ export default function SectionPage({
             </TextField>
             <TextField
               fullWidth
-              label="URL base del proveedor"
+              label={t('baseUrl')}
               value={config.endpoint}
               onChange={(event) => setConfig({ ...config, endpoint: event.target.value })}
               placeholder="https://provider.example/v1"
-              helperText="Usa la URL base de una API compatible con OpenAI. También se admiten servicios locales por HTTP."
+              helperText={t('providerHelp')}
               sx={{ mt: 2 }}
             />
             <TextField
               fullWidth
-              label="Modelo"
+              label={t('model')}
               value={config.model}
               onChange={(event) => setConfig({ ...config, model: event.target.value })}
               sx={{ mt: 2 }}
@@ -180,23 +201,23 @@ export default function SectionPage({
             <TextField
               fullWidth
               type="password"
-              label="Token"
+              label={t('token')}
               value={config.token}
               onChange={(event) => setConfig({ ...config, token: event.target.value })}
               sx={{ mt: 2 }}
               autoComplete="new-password"
-              helperText="Se mantiene en la sesión actual del navegador y se elimina al cerrarla. Evita dispositivos compartidos."
+              helperText={t('tokenHelp')}
             />
             <Button variant="contained" sx={{ mt: 2 }} onClick={saveConfig}>
-              Guardar configuración
+              {t('saveConfig')}
             </Button>
-            {saved && <Chip label="Configuración guardada" color="success" sx={{ ml: 2 }} />}
+            {saved && <Chip label={t('configSaved')} color="success" sx={{ ml: 2 }} />}
             <Divider sx={{ my: 3 }} />
             <Typography variant="h6" fontWeight={800}>
-              Tus datos
+              {t('yourData')}
             </Typography>
             <Typography color="text.secondary" sx={{ mt: 0.5 }}>
-              Exporta este perfil o elimina sus datos locales, registros, ajustes y token de sesión.
+              {t('dataHelp')}
             </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ mt: 2 }}>
               <Button
@@ -205,7 +226,7 @@ export default function SectionPage({
                 onClick={downloadProfile}
                 disabled={!profileId}
               >
-                Exportar datos del perfil
+                {t('exportProfile')}
               </Button>
               <Button
                 color="error"
@@ -213,7 +234,7 @@ export default function SectionPage({
                 onClick={removeCurrentProfile}
                 disabled={!profileId}
               >
-                Eliminar perfil y datos
+                {t('deleteProfile')}
               </Button>
             </Stack>
           </Paper>
@@ -224,32 +245,30 @@ export default function SectionPage({
             {section === 'linkedin' && (
               <Paper sx={{ p: 3 }}>
                 <Typography variant="overline" color="text.secondary">
-                  VISTA PREVIA DE LINKEDIN
+                  {t('linkedinPreview')}
                 </Typography>
                 <Typography variant="h4" sx={{ mt: 1 }}>
                   {portfolioRecords.find((item) => item.section === 'basic')?.values['Professional Headline'] ||
-                    'Titular profesional'}
+                    t('professionalHeadline')}
                 </Typography>
                 <Typography color="text.secondary" sx={{ mt: 1 }}>
                   {portfolioRecords.find((item) => item.section === 'basic')?.values['Professional Summary'] ||
-                    'Agrega tu resumen profesional en Información básica para ver aquí la sección «Acerca de». '}
+                    t('addSummary')}
                 </Typography>
                 <Button component={Link} href={`/profiles/${profileId}/basic`} sx={{ mt: 1 }}>
-                  Editar perfil profesional
+                  {t('editProfile')}
                 </Button>
               </Paper>
             )}
             <Paper sx={{ p: 3 }}>
               <Typography variant="overline" color="text.secondary">
-                BORRADOR PARA REVISAR
+                {t('draftReview')}
               </Typography>
               <Typography variant="h4" sx={{ mt: 1 }}>
-                {section === 'linkedin' ? 'Proyectos destacados' : 'Selected Projects'}
+                {section === 'linkedin' ? t('featuredProjects') : t('selectedProjects')}
               </Typography>
               <Typography color="text.secondary" sx={{ mt: 1 }}>
-                {section === 'linkedin'
-                  ? 'Revisa estos proyectos antes de publicarlos en tu perfil.'
-                  : 'Review the descriptions and ownership details before sharing this profile.'}
+                {section === 'linkedin' ? t('reviewProjects') : t('reviewOwnership')}
               </Typography>
               <Stack spacing={1.5} sx={{ mt: 2 }}>
                 {portfolioRecords
@@ -269,17 +288,15 @@ export default function SectionPage({
                     </Paper>
                   ))}
                 {!portfolioRecords.some((item) => item.section === 'projects') && (
-                  <Typography color="text.secondary">
-                    Aún no hay proyectos. Agrega uno para completar esta sección de tu perfil.
-                  </Typography>
+                  <Typography color="text.secondary">{t('noProjects')}</Typography>
                 )}
               </Stack>
               <Button component={Link} href={`/profiles/${profileId}/projects`} sx={{ mt: 1 }}>
-                Agregar o editar proyectos
+                {t('editProjects')}
               </Button>
             </Paper>
             <Paper sx={{ p: 3 }}>
-              <Typography variant="h4">Habilidades</Typography>
+              <Typography variant="h4">{t('skills')}</Typography>
               <Stack direction="row" useFlexGap flexWrap="wrap" gap={1} sx={{ mt: 2 }}>
                 {portfolioRecords
                   .filter((item) => item.section === 'skills')
@@ -296,28 +313,34 @@ export default function SectionPage({
               </Stack>
               {!portfolioRecords.some((item) => item.section === 'skills') && (
                 <Typography color="text.secondary" sx={{ mt: 1 }}>
-                  Aún no hay habilidades. Agrega las que puedas respaldar con ejemplos.
+                  {t('noSkills')}
                 </Typography>
               )}
               <Button component={Link} href={`/profiles/${profileId}/skills`} sx={{ mt: 1 }}>
-                Agregar o editar habilidades
+                {t('editSkills')}
               </Button>
             </Paper>
-            {saved && <Chip label="Draft updated" color="success" />}
+            {saved && <Chip label={t('draftUpdated')} color="success" />}
           </Stack>
         ) : (
           <>
-            <CareerCoach section={section} fields={info.fields} profileId={profileId} onProposal={setProposal} />
+            <CareerCoach
+              section={section}
+              title={info.title}
+              fields={info.fields}
+              profileId={profileId}
+              onProposal={setProposal}
+            />
             {proposal && (
               <Paper sx={{ p: 2, mb: 2, border: '1px solid #b7c8ff' }}>
                 <Typography variant="body2" fontWeight={700}>
-                  Propuesta pendiente de confirmación ({proposal.confidence})
+                  {t('pendingProposal')} ({proposal.confidence})
                 </Typography>
                 <Stack spacing={1.5} sx={{ mt: 1.5 }}>
                   {Object.entries(proposal.values).map(([field, value]) => (
                     <TextField
                       key={field}
-                      label={field}
+                      label={getFieldLabel(field, locale)}
                       value={value}
                       onChange={(event) =>
                         setProposal({ ...proposal, values: { ...proposal.values, [field]: event.target.value } })
@@ -328,7 +351,7 @@ export default function SectionPage({
                   ))}
                 </Stack>
                 <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
-                  Fuente: {proposal.source}
+                  {t('source')}: {proposal.source}
                 </Typography>
                 <Stack direction="row" spacing={1} sx={{ mt: 1.5 }}>
                   <Button
@@ -336,9 +359,9 @@ export default function SectionPage({
                     onClick={confirmProposal}
                     disabled={!Object.values(proposal.values).some((value) => value.trim())}
                   >
-                    Confirmar y guardar
+                    {t('confirmSave')}
                   </Button>
-                  <Button onClick={() => setProposal(null)}>Descartar</Button>
+                  <Button onClick={() => setProposal(null)}>{t('discard')}</Button>
                 </Stack>
               </Paper>
             )}
@@ -358,7 +381,7 @@ export default function SectionPage({
                         record.values.Skill ||
                         record.values['Cargo'] ||
                         record.values['Institución'] ||
-                        `Registro ${index + 1}`}
+                        `${t('record')} ${index + 1}`}
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
@@ -366,15 +389,15 @@ export default function SectionPage({
                       {info.fields.map((field) => (
                         <TextField
                           key={field}
-                          label={getFieldLabel(field)}
+                          label={getFieldLabel(field, locale)}
                           defaultValue={record.values[field] || ''}
                           fullWidth
                           size="small"
                           helperText={
                             field === 'Professional Headline'
-                              ? 'En inglés: el titular que aparecerá en tu CV.'
+                              ? t('englishHeadlineHelp')
                               : field === 'Professional Summary'
-                                ? 'En inglés: tu resumen para el CV y LinkedIn.'
+                                ? t('englishSummaryHelp')
                                 : undefined
                           }
                           multiline={['Professional Summary', 'Descripción', 'Logros y responsabilidades'].includes(
@@ -395,7 +418,7 @@ export default function SectionPage({
                           variant="outlined"
                           onClick={() => persist({ ...record, updatedAt: new Date().toISOString() })}
                         >
-                          Guardar cambios
+                          {t('saveChanges')}
                         </Button>
                         <Button
                           color="error"
@@ -407,7 +430,7 @@ export default function SectionPage({
                             }
                           }}
                         >
-                          Eliminar
+                          {t('delete')}
                         </Button>
                       </Stack>
                     </Stack>
@@ -416,7 +439,7 @@ export default function SectionPage({
               ))}
             </Stack>
             <Button variant="outlined" sx={{ mt: 2 }} onClick={() => profileId && persist(createRecord(section, {}))}>
-              Agregar registro
+              {t('addRecord')}
             </Button>
           </>
         )}
@@ -425,8 +448,31 @@ export default function SectionPage({
   );
 }
 
-function getFieldLabel(field: string) {
-  if (field === 'Professional Headline') return 'Titular profesional';
-  if (field === 'Professional Summary') return 'Resumen profesional';
-  return field;
+function getFieldLabel(field: string, locale: 'es' | 'en') {
+  const translated: Record<string, [string, string]> = {
+    'Nombre completo': ['Nombre completo', 'Full name'],
+    'Professional Headline': ['Titular profesional', 'Professional headline'],
+    'Professional Summary': ['Resumen profesional', 'Professional summary'],
+    Email: ['Correo electrónico', 'Email'],
+    Teléfono: ['Teléfono', 'Phone'],
+    'Ciudad y país': ['Ciudad y país', 'City and country'],
+    'Estado civil': ['Estado civil', 'Marital status'],
+    Sitio: ['Sitio web', 'Website'],
+    Institución: ['Institución', 'Institution'],
+    'Título o programa': ['Título o programa', 'Degree or program'],
+    'Fecha de inicio': ['Fecha de inicio', 'Start date'],
+    'Fecha de término': ['Fecha de término', 'End date'],
+    Descripción: ['Descripción', 'Description'],
+    Organización: ['Organización', 'Organization'],
+    Cargo: ['Cargo', 'Role'],
+    'Logros y responsabilidades': ['Logros y responsabilidades', 'Achievements and responsibilities'],
+    'Nombre del proyecto': ['Nombre del proyecto', 'Project name'],
+    Rol: ['Rol', 'Role'],
+    Fecha: ['Fecha', 'Date'],
+    'Resultado o enlace': ['Resultado o enlace', 'Outcome or link'],
+    Skill: ['Habilidad', 'Skill'],
+    Category: ['Categoría', 'Category'],
+    Evidence: ['Evidencia', 'Evidence'],
+  };
+  return translated[field]?.[locale === 'es' ? 0 : 1] ?? field;
 }

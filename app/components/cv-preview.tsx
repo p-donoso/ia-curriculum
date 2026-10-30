@@ -5,8 +5,10 @@ import Link from 'next/link';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import type { RecordItem } from '../../lib/profiles/records';
+import { LocaleToggle, useI18n } from '../i18n';
 
 export function CvPreview({ profileId, records }: { profileId?: string; records: RecordItem[] }) {
+  const { t } = useI18n();
   const one = (section: string) => records.find((record) => record.section === section);
   const basic = one('basic')?.values ?? {};
   const experiences = records.filter((record) => record.section === 'experience');
@@ -22,21 +24,24 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
             href={profileId ? `/profiles/${profileId}` : '/'}
             startIcon={<ArrowBackRoundedIcon />}
           >
-            Dashboard
+            {t('cvBack')}
           </Button>
           <Typography variant="caption" color="text.secondary">
-            ENGLISH CV · REVIEW DRAFT
+            {t('cvDraft')}
           </Typography>
         </Stack>
-        <Button variant="contained" onClick={() => window.print()}>
-          Print / Save PDF
-        </Button>
+        <Stack direction="row" spacing={1}>
+          <LocaleToggle />
+          <Button variant="contained" onClick={() => window.print()}>
+            {t('printPdf')}
+          </Button>
+        </Stack>
       </Stack>
 
       <Box component="article" className="cv-document">
         <Box component="header" className="cv-header">
           <Typography component="h1" className="cv-name">
-            {basic['Nombre completo'] || 'Your Name'}
+            {basic['Nombre completo'] || t('yourName')}
           </Typography>
           {basic['Professional Headline'] && (
             <Typography className="cv-headline">{basic['Professional Headline']}</Typography>
@@ -47,12 +52,12 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
         </Box>
 
         {basic['Professional Summary'] && (
-          <CvSection title="Profile">
+          <CvSection title={t('profileHeading')}>
             <Typography>{basic['Professional Summary']}</Typography>
           </CvSection>
         )}
 
-        <CvSection title="Experience">
+        <CvSection title={t('experience')}>
           {experiences.map((record) => (
             <Box className="cv-entry" key={record.id}>
               <Stack className="cv-entry-heading" direction="row" justifyContent="space-between" gap={2}>
@@ -78,9 +83,9 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
 
         <Box className="cv-second-page">
           <Typography className="cv-continuation">
-            {basic['Nombre completo'] || 'Your Name'} · Resume continued
+            {basic['Nombre completo'] || t('yourName')} · {t('continued')}
           </Typography>
-          <CvSection title="Selected Projects">
+          <CvSection title={t('selectedWork')}>
             {projects.map((project) => (
               <Box className="cv-project" key={project.id}>
                 <Typography className="cv-role">{project.values['Nombre del proyecto']}</Typography>
@@ -93,11 +98,11 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
             ))}
           </CvSection>
 
-          <CvSection title="Skills">
+          <CvSection title={t('skills')}>
             <Typography>{skills.map((record) => record.values.Skill).join(' · ')}</Typography>
           </CvSection>
 
-          <CvSection title="Education">
+          <CvSection title={t('cvEducation')}>
             {education.map((record) => (
               <Stack className="cv-education" direction="row" justifyContent="space-between" gap={2} key={record.id}>
                 <Box>
@@ -111,8 +116,8 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
             ))}
           </CvSection>
 
-          <CvSection title="Languages">
-            <Typography>Spanish — Native · English — C1 (Advanced)</Typography>
+          <CvSection title={t('languages')}>
+            <Typography>{t('nativeSpanish')}</Typography>
           </CvSection>
         </Box>
       </Box>

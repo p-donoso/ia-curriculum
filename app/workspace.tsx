@@ -27,26 +27,47 @@ import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import SpaceDashboardRoundedIcon from '@mui/icons-material/SpaceDashboardRounded';
 import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
-import { appendAnswer, maxAnswerLength, nextPrompt, prompts } from '../lib/workflow';
+import { appendAnswer, maxAnswerLength } from '../lib/workflow';
 import { loadProfiles, saveProfiles } from '../lib/profiles/storage';
 import { loadAiConfig } from '../lib/ai/config';
 import { streamChat } from '../lib/ai/client';
-const steps = [
-  { title: 'Tu dirección', note: 'El trabajo que buscas' },
-  { title: 'Tu aporte', note: 'El problema que resuelves' },
-  { title: 'Tu evidencia', note: 'Un logro concreto' },
-];
+import { LocaleToggle, useI18n } from './i18n';
 const sectionLinks = [
-  [SpaceDashboardRoundedIcon, 'Dashboard', '/'],
-  [DescriptionOutlinedIcon, 'Información básica', '/basic'],
-  [InsightsRoundedIcon, 'Educación', '/education'],
-  [DescriptionOutlinedIcon, 'Experiencia laboral', '/experience'],
-  [DescriptionOutlinedIcon, 'Proyectos', '/projects'],
-  [StarOutlineRoundedIcon, 'Habilidades', '/skills'],
-  [DescriptionOutlinedIcon, 'LinkedIn', '/linkedin'],
-  [DescriptionOutlinedIcon, 'Curriculum', '/curriculum'],
+  [SpaceDashboardRoundedIcon, 'dashboard', '/'],
+  [DescriptionOutlinedIcon, 'basic', '/basic'],
+  [InsightsRoundedIcon, 'education', '/education'],
+  [DescriptionOutlinedIcon, 'experience', '/experience'],
+  [DescriptionOutlinedIcon, 'projects', '/projects'],
+  [StarOutlineRoundedIcon, 'skills', '/skills'],
+  [DescriptionOutlinedIcon, 'linkedin', '/linkedin'],
+  [DescriptionOutlinedIcon, 'curriculum', '/curriculum'],
 ] as const;
 export default function Workspace({ profileId = 'alex' }: { profileId?: string }) {
+  const { locale, t } = useI18n();
+  const steps =
+    locale === 'es'
+      ? [
+          { title: 'Tu dirección', note: 'El trabajo que buscas' },
+          { title: 'Tu aporte', note: 'El problema que resuelves' },
+          { title: 'Tu evidencia', note: 'Un logro concreto' },
+        ]
+      : [
+          { title: 'Your direction', note: 'The work you want' },
+          { title: 'Your contribution', note: 'The problem you solve' },
+          { title: 'Your evidence', note: 'A concrete achievement' },
+        ];
+  const prompts =
+    locale === 'es'
+      ? [
+          '¿Qué tipo de trabajo te gustaría conseguir en los próximos meses?',
+          '¿Qué problema te gusta resolver y qué personas se benefician de tu trabajo?',
+          'Cuéntame un momento en que lograste algo de lo que te sientes orgulloso.',
+        ]
+      : [
+          'What kind of work would you like to find in the coming months?',
+          'What problems do you enjoy solving, and who benefits from your work?',
+          'Tell me about a time you achieved something you are proud of.',
+        ];
   const pathname = usePathname();
   const [answer, setAnswer] = useState('');
   const [messages, setMessages] = useState<string[]>([]);
@@ -75,9 +96,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
     );
     const config = loadAiConfig(profileId);
     if (!config.token || !config.endpoint) {
-      setAssistant(
-        'Respuesta guardada en este dispositivo. Configura un proveedor de IA si quieres recibir sugerencias.',
-      );
+      setAssistant(t('savedOnContinue') + ' ' + t('configureAi'));
       return;
     }
     setLoading(true);
@@ -90,11 +109,18 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
           {
             role: 'system',
             content:
-              'Eres un asesor de carrera breve y respetuoso. Refleja lo que la persona dijo, separa hechos de inferencias y no inventes logros, habilidades ni resultados. Ofrece una pregunta opcional para concretar su evidencia. La aplicación controla las preguntas principales.',
+              locale === 'es'
+                ? 'Eres un asesor de carrera breve y respetuoso. Refleja lo que la persona dijo, separa hechos de inferencias y no inventes logros, habilidades ni resultados. Ofrece una pregunta opcional para concretar su evidencia. La aplicación controla las preguntas principales.'
+                : 'You are a concise and respectful career coach. Reflect what the person said, distinguish facts from inferences, and never invent achievements, skills, or outcomes. Offer an optional question to clarify their evidence. The application controls the main prompts.',
           },
           {
             role: 'user',
-            content: next.map((item, index) => `Pregunta: ${prompts[index]}\nRespuesta: ${item}`).join('\n\n'),
+            content: next
+              .map(
+                (item, index) =>
+                  `${locale === 'es' ? 'Pregunta' : 'Question'}: ${prompts[index]}\n${locale === 'es' ? 'Respuesta' : 'Answer'}: ${item}`,
+              )
+              .join('\n\n'),
           },
         ],
         (token) => setAssistant((value) => value + token),
@@ -102,7 +128,11 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
       );
     } catch (error) {
       if ((error as Error).name !== 'AbortError')
-        setAssistant('No pude conectar con el proveedor. Puedes continuar en modo local o revisar Configuración.');
+        setAssistant(
+          locale === 'es'
+            ? `No pude conectar con el proveedor. Puedes continuar en modo local o revisar ${t('settings').toLowerCase()}.`
+            : 'Could not connect to the provider. You can continue locally or review Settings.',
+        );
     } finally {
       setLoading(false);
       abortRef.current = undefined;
@@ -122,9 +152,9 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
           </Typography>
         </Stack>
         <Typography variant="caption" sx={{ px: 1, color: '#9ba9c2', fontWeight: 800, letterSpacing: '.1em' }}>
-          WORKSPACE
+          {t('workspace').toUpperCase()}
         </Typography>
-        {renderSectionLinks(profileId, pathname)}
+        {renderSectionLinks(profileId, pathname, t)}
         <Box sx={{ mt: 'auto' }}>
           <Divider sx={{ borderColor: '#293b5e', mb: 2 }} />
           <Stack
@@ -137,7 +167,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
             sx={{ p: 1.2 }}
           >
             <SettingsOutlinedIcon fontSize="small" />
-            <Typography variant="body2">Configuración</Typography>
+            <Typography variant="body2">{t('settings')}</Typography>
           </Stack>
           <Stack
             component={Link}
@@ -147,13 +177,15 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
             alignItems="center"
             sx={{ mt: 2, px: 1, textDecoration: 'none', color: 'inherit' }}
           >
-            <Avatar sx={{ width: 30, height: 30, bgcolor: '#dbe4ff', color: '#1740c4', fontSize: 11 }}>TÚ</Avatar>
+            <Avatar sx={{ width: 30, height: 30, bgcolor: '#dbe4ff', color: '#1740c4', fontSize: 11 }}>
+              {locale === 'es' ? 'TÚ' : 'YOU'}
+            </Avatar>
             <Box>
               <Typography variant="body2" color="white" fontWeight={700}>
-                Cambiar de perfil
+                {t('changeProfile')}
               </Typography>
               <Typography variant="caption" sx={{ color: '#9ba9c2' }}>
-                Plan gratuito
+                {t('localProfile')}
               </Typography>
             </Box>
           </Stack>
@@ -167,7 +199,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
           sx={{ height: 72, px: { xs: 2, md: 5 }, borderBottom: '1px solid #e5eaf2', bgcolor: '#fff' }}
         >
           <IconButton
-            aria-label="Abrir menú de navegación"
+            aria-label={t('openNav')}
             aria-expanded={mobileNavOpen}
             onClick={() => setMobileNavOpen(true)}
             sx={{ display: { xs: 'inline-flex', md: 'none' } }}
@@ -175,23 +207,24 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
             <MenuRoundedIcon />
           </IconButton>
           <Typography variant="body2" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>
-            Mi recorrido{' '}
+            {t('route')}{' '}
             <Box component="span" sx={{ mx: 1, color: '#c6cfdf' }}>
               /
             </Box>{' '}
-            Dirección profesional
+            {t('careerDirection')}
           </Typography>
           <Stack direction="row" spacing={1} alignItems="center">
+            <LocaleToggle />
             <Button
               component={Link}
               size="small"
               href={`/profiles/${profileId}/settings`}
               startIcon={<SettingsOutlinedIcon />}
             >
-              Configurar IA
+              {t('settingsAi')}
             </Button>
             <Avatar sx={{ width: 32, height: 32, bgcolor: '#dbe4ff', color: '#1740c4', fontSize: 11, fontWeight: 800 }}>
-              TÚ
+              {locale === 'es' ? 'TÚ' : 'YOU'}
             </Avatar>
           </Stack>
         </Stack>
@@ -202,25 +235,21 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
         >
           <Box
             component="nav"
-            aria-label="Navegación principal"
+            aria-label={t('navLabel')}
             sx={{ width: 290, minHeight: '100%', p: 2.5, bgcolor: '#101b32' }}
           >
             <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
               <Typography id="mobile-navigation-title" component="span" fontWeight={800} fontSize={20} color="white">
                 IA Curriculum
               </Typography>
-              <IconButton
-                aria-label="Cerrar menú de navegación"
-                onClick={() => setMobileNavOpen(false)}
-                sx={{ color: 'white' }}
-              >
+              <IconButton aria-label={t('closeNav')} onClick={() => setMobileNavOpen(false)} sx={{ color: 'white' }}>
                 <CloseRoundedIcon />
               </IconButton>
             </Stack>
             <Typography variant="caption" sx={{ px: 1, color: '#aab7d0', fontWeight: 800, letterSpacing: '.1em' }}>
-              WORKSPACE
+              {t('workspace').toUpperCase()}
             </Typography>
-            {renderSectionLinks(profileId, pathname, () => setMobileNavOpen(false))}
+            {renderSectionLinks(profileId, pathname, t, () => setMobileNavOpen(false))}
             <Divider sx={{ borderColor: '#293b5e', my: 2 }} />
             <Stack
               component={Link}
@@ -233,7 +262,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
               sx={{ p: 1.2, textDecoration: 'none' }}
             >
               <SettingsOutlinedIcon fontSize="small" />
-              <Typography variant="body2">Configuración</Typography>
+              <Typography variant="body2">{t('settings')}</Typography>
             </Stack>
             <Stack
               component={Link}
@@ -244,10 +273,17 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
               alignItems="center"
               sx={{ mt: 2, px: 1, textDecoration: 'none', color: 'inherit' }}
             >
-              <Avatar sx={{ width: 30, height: 30, bgcolor: '#dbe4ff', color: '#1740c4', fontSize: 11 }}>TÚ</Avatar>
-              <Typography variant="body2" color="white" fontWeight={700}>
-                Cambiar de perfil
-              </Typography>
+              <Avatar sx={{ width: 30, height: 30, bgcolor: '#dbe4ff', color: '#1740c4', fontSize: 11 }}>
+                {locale === 'es' ? 'TÚ' : 'YOU'}
+              </Avatar>
+              <Box>
+                <Typography variant="body2" color="white" fontWeight={700}>
+                  {t('changeProfile')}
+                </Typography>
+                <Typography variant="caption" sx={{ color: '#9ba9c2' }}>
+                  {t('localProfile')}
+                </Typography>
+              </Box>
             </Stack>
           </Box>
         </Drawer>
@@ -261,21 +297,17 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
             >
               <Box>
                 <Typography variant="overline" color="primary.main" fontWeight={800} letterSpacing=".12em">
-                  ESPACIO DE TRABAJO PROFESIONAL
+                  {t('workspaceKicker')}
                 </Typography>
                 <Typography variant="h1" sx={{ fontSize: { xs: 34, md: 44 }, mt: 0.5 }}>
-                  Construyamos tu próximo paso.
+                  {t('workspaceTitle')}
                 </Typography>
               </Box>
               <Button
                 variant="outlined"
                 startIcon={<AddRoundedIcon />}
                 onClick={() => {
-                  if (
-                    messages.length &&
-                    !window.confirm('¿Borrar las respuestas guardadas y empezar una nueva sesión?')
-                  )
-                    return;
+                  if (messages.length && !window.confirm(t('clearSessionConfirm'))) return;
                   abortRef.current?.abort();
                   setMessages([]);
                   setAnswer('');
@@ -292,25 +324,23 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
                 }}
                 sx={{ mt: { xs: 2, sm: 0 }, bgcolor: '#fff' }}
               >
-                Nueva sesión
+                {t('newSession')}
               </Button>
             </Stack>
             <Stack direction={{ xs: 'column', md: 'row' }} spacing={2} sx={{ mb: 3 }}>
               {[
-                ['REFLEXIONES', `${messages.length} de ${prompts.length}`, 'Guardadas solo en este dispositivo'],
+                [t('reflections'), `${messages.length} / ${prompts.length}`, t('savedHere')],
                 [
-                  'ETAPA ACTUAL',
-                  messages.length >= steps.length
-                    ? 'Reflexión completa'
-                    : steps[Math.max(messages.length - 1, 0)].title,
-                  `${Math.round((Math.min(messages.length, prompts.length) / prompts.length) * 100)}% completado`,
+                  t('currentStage'),
+                  messages.length >= steps.length ? t('complete') : steps[Math.max(messages.length - 1, 0)].title,
+                  `${Math.round((Math.min(messages.length, prompts.length) / prompts.length) * 100)}% ${t('completePct')}`,
                 ],
                 [
-                  'SIGUIENTE PASO',
+                  t('nextStep'),
                   messages.length >= prompts.length
-                    ? 'Completa tu perfil'
+                    ? t('completeProfile')
                     : steps[Math.min(messages.length, steps.length - 1)].note,
-                  'Tú decides qué guardar y compartir',
+                  t('saveShare'),
                 ],
               ].map((x, i) => (
                 <Paper key={x[0]} sx={{ p: 2.5, flex: 1, border: '1px solid #e5eaf2' }}>
@@ -325,7 +355,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
                   </Typography>
                   {i === 0 && (
                     <LinearProgress
-                      aria-label="Avance de reflexiones"
+                      aria-label={locale === 'es' ? 'Avance de reflexiones' : 'Reflection progress'}
                       variant="determinate"
                       value={(Math.min(messages.length, prompts.length) / prompts.length) * 100}
                       sx={{ mt: 1, height: 7, borderRadius: 5 }}
@@ -337,7 +367,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '250px 1fr' }, gap: 3 }}>
               <Paper sx={{ p: 2.5, border: '1px solid #e5eaf2', height: 'fit-content' }}>
                 <Typography variant="caption" color="text.secondary" fontWeight={800}>
-                  TU RECORRIDO
+                  {t('journey')}
                 </Typography>
                 <Stack spacing={1.5} sx={{ mt: 2 }}>
                   {steps.map((s, i) => (
@@ -371,43 +401,39 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
                     <AutoAwesomeRoundedIcon fontSize="small" />
                   </Avatar>
                   <Box>
-                    <Typography fontWeight={800}>Sesión de descubrimiento</Typography>
+                    <Typography fontWeight={800}>{t('discovery')}</Typography>
                     <Typography variant="caption" color="text.secondary">
-                      Tu asistente está listo para escucharte
+                      {t('assistantReady')}
                     </Typography>
                   </Box>
                   <Chip
                     label={
-                      messages.length >= prompts.length
-                        ? 'LISTO PARA REVISAR'
-                        : loading
-                          ? 'PENSANDO'
-                          : 'GUARDADO EN ESTE DISPOSITIVO'
+                      messages.length >= prompts.length ? t('readyReview') : loading ? t('thinking') : t('savedDevice')
                     }
                     size="small"
                     color="primary"
                     sx={{ ml: 'auto', fontSize: 10, fontWeight: 800 }}
                   />
                 </Stack>
-                {nextPrompt(messages.length) ? (
+                {(prompts[messages.length] ?? null) ? (
                   <>
                     <Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>
-                      {nextPrompt(messages.length)}
+                      {prompts[messages.length] ?? null}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                      No buscamos una respuesta perfecta. Buscamos algo verdadero para empezar.
+                      {t('promptLead')}
                     </Typography>
                   </>
                 ) : (
                   <Box sx={{ mb: 2 }}>
                     <Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>
-                      Ya tienes una base para tu perfil.
+                      {t('baseProfile')}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      Revisa tus respuestas y añade los detalles que quieras conservar.
+                      {t('reviewAnswers')}
                     </Typography>
                     <Button component={Link} href={`/profiles/${profileId}/basic`} sx={{ mt: 1 }}>
-                      Revisar información básica
+                      {t('reviewBasic')}
                     </Button>
                   </Box>
                 )}
@@ -421,26 +447,24 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
                     <Typography variant="body2">{m}</Typography>
                   </Box>
                 ))}
-                {nextPrompt(messages.length) && (
+                {(prompts[messages.length] ?? null) && (
                   <TextField
                     fullWidth
-                    label="Tu respuesta"
+                    label={t('answer')}
                     multiline
                     minRows={4}
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
-                    placeholder="Escribe aquí tu respuesta..."
+                    placeholder={t('placeholder')}
                     inputProps={{ maxLength: maxAnswerLength }}
                     sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fbfcfe' } }}
                   />
                 )}
-                {nextPrompt(messages.length) && (
+                {(prompts[messages.length] ?? null) && (
                   <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
                     <Typography variant="caption" color="text.secondary">
-                      {answer.length}/{maxAnswerLength} caracteres · Guardado en este dispositivo al continuar.{' '}
-                      {aiConfigured
-                        ? 'Al continuar, enviarás tus respuestas al proveedor de IA configurado.'
-                        : 'Configura una IA para recibir comentarios; las respuestas se quedan en este dispositivo.'}
+                      {answer.length}/{maxAnswerLength} {t('chars')} · {t('savedOnContinue')}{' '}
+                      {aiConfigured ? t('sendToProvider') : t('configureAi')}
                     </Typography>
                     <Button
                       variant="contained"
@@ -448,7 +472,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
                       onClick={send}
                       disabled={loading || !answer.trim()}
                     >
-                      {loading ? 'Generando…' : 'Continuar'}
+                      {loading ? t('generating') : t('continue')}
                     </Button>
                   </Stack>
                 )}
@@ -461,10 +485,10 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
   );
 }
 
-function renderSectionLinks(profileId: string, pathname: string, onNavigate?: () => void) {
+function renderSectionLinks(profileId: string, pathname: string, t: (key: string) => string, onNavigate?: () => void) {
   return (
-    <Stack component="nav" aria-label="Navegación principal" spacing={0.6} sx={{ mt: 1.5 }}>
-      {sectionLinks.map(([Icon, title, path]) => {
+    <Stack component="nav" aria-label={t('navLabel')} spacing={0.6} sx={{ mt: 1.5 }}>
+      {sectionLinks.map(([Icon, key, path]) => {
         const href = `/profiles/${profileId}${path === '/' ? '' : path}`;
         const active = pathname === href;
         return (
@@ -482,7 +506,7 @@ function renderSectionLinks(profileId: string, pathname: string, onNavigate?: ()
           >
             <Icon fontSize="small" />
             <Typography variant="body2" fontWeight={active ? 700 : 400}>
-              {title}
+              {t(key)}
             </Typography>
           </Stack>
         );

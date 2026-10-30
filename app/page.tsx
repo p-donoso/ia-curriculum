@@ -15,7 +15,9 @@ import {
   Typography,
 } from '@mui/material';
 import { createProfile, loadProfiles, Profile, saveProfiles } from '../lib/profiles/storage';
+import { LocaleToggle, useI18n } from './i18n';
 export default function Home() {
+  const { t } = useI18n();
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
@@ -35,15 +37,18 @@ export default function Home() {
           <Typography fontSize={22} fontWeight={800} color="primary.main">
             IA Curriculum
           </Typography>
+          <Box sx={{ ml: 'auto' }}>
+            <LocaleToggle />
+          </Box>
         </Stack>
         <Typography variant="overline" color="primary.main" fontWeight={800} letterSpacing=".14em">
-          ESPACIO DE TRABAJO PROFESIONAL
+          {t('workspaceKicker')}
         </Typography>
         <Typography variant="h1" sx={{ fontSize: { xs: 40, md: 58 }, maxWidth: 680, mt: 1 }}>
-          ¿En qué perfil quieres trabajar hoy?
+          {t('profilesTitle')}
         </Typography>
         <Typography color="text.secondary" fontSize={18} sx={{ mt: 2, mb: 5 }}>
-          Cada perfil tiene su propio recorrido, respuestas y documentos.
+          {t('profilesDescription')}
         </Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} flexWrap="wrap">
           {profiles.map((p) => (
@@ -63,13 +68,19 @@ export default function Home() {
             >
               <Avatar sx={{ bgcolor: p.color, mb: 3 }}>{p.name[0]}</Avatar>
               <Typography variant="h6" fontWeight={800}>
-                {p.name}
+                {p.name === 'Cambio de carrera' ? t('careerChangeProfile') : p.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {p.role}
+                {p.role === 'Perfil de ejemplo'
+                  ? t('exampleProfile')
+                  : p.role === 'Borrador'
+                    ? t('draftProfile')
+                    : p.role === 'Nuevo recorrido'
+                      ? t('newJourney')
+                      : p.role}
               </Typography>
               <Typography variant="body2" color="primary.main" fontWeight={700} sx={{ mt: 3 }}>
-                Abrir perfil →
+                {t('openProfile')}
               </Typography>
             </Paper>
           ))}
@@ -89,30 +100,30 @@ export default function Home() {
               +
             </Typography>
             <Typography variant="h6" fontWeight={800}>
-              Nuevo perfil
+              {t('newProfile')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Comienza un recorrido desde cero
+              {t('startFresh')}
             </Typography>
           </Paper>
         </Stack>
       </Box>
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Crear perfil</DialogTitle>
+        <DialogTitle>{t('createProfile')}</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             fullWidth
-            label="Nombre del perfil"
+            label={t('profileName')}
             value={name}
             onChange={(e) => setName(e.target.value)}
             sx={{ mt: 1 }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)}>Cancelar</Button>
+          <Button onClick={() => setOpen(false)}>{t('cancel')}</Button>
           <Button onClick={add} variant="contained" disabled={!name.trim()}>
-            Crear perfil
+            {t('createProfile')}
           </Button>
         </DialogActions>
       </Dialog>

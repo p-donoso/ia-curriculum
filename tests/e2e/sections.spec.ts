@@ -17,7 +17,7 @@ test.describe('secciones profesionales', () => {
     await page.goto('/profiles/alex/experience');
     await page.getByRole('button', { name: 'Ver preguntas para profundizar' }).click();
     await expect(page.getByText('¿Qué resultado concreto obtuviste?')).toBeVisible();
-    await page.getByPlaceholder('Escribe aquí...').fill('Coordiné un equipo y mejoré el proceso.');
+    await page.getByPlaceholder('Escribe aquí…').fill('Coordiné un equipo y mejoré el proceso.');
     await page.getByRole('button', { name: 'Preparar propuesta' }).click();
     await expect(page.getByText('Propuesta pendiente de confirmación')).toBeVisible();
     const confirm = page.getByRole('button', { name: 'Confirmar y guardar' });
@@ -41,8 +41,12 @@ test.describe('secciones profesionales', () => {
     await expect(page.getByText('Aún no hay habilidades. Agrega las que puedas respaldar con ejemplos.')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Enhance' })).toHaveCount(0);
     await page.goto('/profiles/alex/curriculum');
+    await expect(page.getByRole('button', { name: 'Imprimir / Guardar PDF' })).toBeVisible();
+    await expect(page.getByText('BORRADOR DE CV')).toBeVisible();
+    await page.getByRole('button', { name: 'Switch language to English' }).click();
+    await page.goto('/profiles/alex/curriculum');
     await expect(page.getByRole('button', { name: 'Print / Save PDF' })).toBeVisible();
-    await expect(page.getByText('ENGLISH CV · REVIEW DRAFT')).toBeVisible();
+    await expect(page.getByText('ENGLISH RESUME · REVIEW DRAFT')).toBeVisible();
     await expect(page.getByText('Technology Leader · Platform Engineering · Cloud Architecture')).toHaveCount(0);
   });
 

@@ -1,12 +1,13 @@
 # IA Curriculum
 
-A local-first workspace for turning career reflections into an organized professional profile. The interface is currently in Spanish. AI support is optional and connects directly from the browser to an OpenAI-compatible provider that you configure.
+A local-first workspace for turning career reflections into organized professional profiles. The interface and printable CV are available in Spanish and English. AI support is optional and connects directly from the browser to an OpenAI-compatible provider that you configure.
 
 > **Project status:** personal project in active development. There is no hosted service, account system, or production support commitment.
 
 ## What it does
 
 - Keep multiple career profiles separate in the current browser.
+- Switch between Spanish and English; the preference is saved in the browser.
 - Guide a short reflection flow and save answers on this device.
 - Organize education, experience, projects, and skills as editable records.
 - Review AI-assisted proposals before saving them as profile facts.
@@ -92,7 +93,7 @@ More detail: [architecture](docs/architecture.md) · [documentation index](docs/
 - The AI integration supports OpenAI-compatible chat-completions APIs. Native provider-specific APIs are not adapted.
 - AI responses are temporary suggestions; the app does not persist them as confirmed profile facts.
 - The reflection flow is a small starter workflow, not a complete career-coaching program.
-- LinkedIn and CV views are working drafts. The CV print layout is currently English-only; locale-specific templates and server-side PDF generation are not implemented.
+- LinkedIn and CV views are working drafts. PDF export uses the browser's print dialog; server-side PDF generation is not implemented.
 
 ## Contributing
 
