@@ -26,5 +26,5 @@ test('primary routes have no serious or critical accessibility violations', asyn
       (violation) => ['critical', 'serious'].includes(violation.impact ?? '') && violation.id !== 'aria-dialog-name',
     ),
   ).toEqual([]);
-  await expect(page.getByRole('dialog').getByRole('navigation', { name: 'Navegación principal' })).toBeVisible();
+  await expect(page.getByRole('dialog').getByRole('navigation', { name: 'Navegación principal' }).last()).toBeVisible();
 });

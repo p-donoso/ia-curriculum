@@ -24,12 +24,17 @@ test.describe('navegación principal', () => {
 
   test('avanza la pregunta después de cada respuesta', async ({ page }) => {
     await page.goto('/profiles/alex');
+    await expect(page.getByText('El trabajo que buscas', { exact: true }).first()).toBeVisible();
+    await expect(page.getByText('0% completado')).toBeVisible();
     const question = page.getByRole('heading', {
       name: /¿Qué tipo de trabajo|¿Qué problema te gusta resolver|Cuéntame un momento/,
     });
     await expect(question).toContainText('¿Qué tipo de trabajo');
     await page.getByPlaceholder('Escribe aquí tu respuesta...').fill('Quiero un trabajo donde pueda crecer.');
     await page.getByRole('button', { name: 'Continuar' }).click();
+    await expect(page.getByRole('heading', { name: 'Tu dirección' })).toBeVisible();
+    await expect(page.getByText('Tu aporte', { exact: true }).last()).toBeVisible();
+    await expect(page.getByText('33% completado')).toBeVisible();
     await expect(question).toContainText('¿Qué problema te gusta resolver');
     await page.getByPlaceholder('Escribe aquí tu respuesta...').fill('Me gusta ordenar problemas.');
     await page.getByRole('button', { name: 'Continuar' }).click();
@@ -57,6 +62,9 @@ test.describe('navegación principal', () => {
     }
 
     await expect(page.getByRole('heading', { name: 'Ya tienes una base para tu perfil.' })).toBeVisible();
+    await expect(page.getByText('Reflexión completa')).toBeVisible();
+    await expect(page.getByText('Completa tu perfil')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Continuar' })).toHaveCount(0);
     await page.reload();
     await expect(page.getByRole('heading', { name: 'Ya tienes una base para tu perfil.' })).toBeVisible();
     await page.getByRole('button', { name: 'Nueva sesión' }).click();

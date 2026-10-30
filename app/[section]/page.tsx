@@ -221,6 +221,24 @@ export default function SectionPage({
           <CvPreview profileId={profileId} records={portfolioRecords} />
         ) : isOutput ? (
           <Stack spacing={2}>
+            {section === 'linkedin' && (
+              <Paper sx={{ p: 3 }}>
+                <Typography variant="overline" color="text.secondary">
+                  VISTA PREVIA DE LINKEDIN
+                </Typography>
+                <Typography variant="h4" sx={{ mt: 1 }}>
+                  {portfolioRecords.find((item) => item.section === 'basic')?.values['Professional Headline'] ||
+                    'Titular profesional'}
+                </Typography>
+                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                  {portfolioRecords.find((item) => item.section === 'basic')?.values['Professional Summary'] ||
+                    'Agrega tu resumen profesional en Información básica para ver aquí la sección «Acerca de». '}
+                </Typography>
+                <Button component={Link} href={`/profiles/${profileId}/basic`} sx={{ mt: 1 }}>
+                  Editar perfil profesional
+                </Button>
+              </Paper>
+            )}
             <Paper sx={{ p: 3 }}>
               <Typography variant="overline" color="text.secondary">
                 BORRADOR PARA REVISAR
@@ -250,13 +268,18 @@ export default function SectionPage({
                       )}
                     </Paper>
                   ))}
+                {!portfolioRecords.some((item) => item.section === 'projects') && (
+                  <Typography color="text.secondary">
+                    Aún no hay proyectos. Agrega uno para completar esta sección de tu perfil.
+                  </Typography>
+                )}
               </Stack>
               <Button component={Link} href={`/profiles/${profileId}/projects`} sx={{ mt: 1 }}>
-                Edit projects
+                Agregar o editar proyectos
               </Button>
             </Paper>
             <Paper sx={{ p: 3 }}>
-              <Typography variant="h4">Skills</Typography>
+              <Typography variant="h4">Habilidades</Typography>
               <Stack direction="row" useFlexGap flexWrap="wrap" gap={1} sx={{ mt: 2 }}>
                 {portfolioRecords
                   .filter((item) => item.section === 'skills')
@@ -271,8 +294,13 @@ export default function SectionPage({
                     </Box>
                   ))}
               </Stack>
+              {!portfolioRecords.some((item) => item.section === 'skills') && (
+                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                  Aún no hay habilidades. Agrega las que puedas respaldar con ejemplos.
+                </Typography>
+              )}
               <Button component={Link} href={`/profiles/${profileId}/skills`} sx={{ mt: 1 }}>
-                Edit skills
+                Agregar o editar habilidades
               </Button>
             </Paper>
             {saved && <Chip label="Draft updated" color="success" />}
@@ -325,9 +353,11 @@ export default function SectionPage({
                   <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
                     <Typography fontWeight={800}>
                       {record.values['Nombre completo'] ||
+                        record.values['Nombre del proyecto'] ||
+                        record.values['Título o programa'] ||
                         record.values.Skill ||
                         record.values['Cargo'] ||
-                        record.values['Descripción'] ||
+                        record.values['Institución'] ||
                         `Registro ${index + 1}`}
                     </Typography>
                   </AccordionSummary>
@@ -336,10 +366,25 @@ export default function SectionPage({
                       {info.fields.map((field) => (
                         <TextField
                           key={field}
-                          label={field}
+                          label={getFieldLabel(field)}
                           defaultValue={record.values[field] || ''}
                           fullWidth
                           size="small"
+                          helperText={
+                            field === 'Professional Headline'
+                              ? 'En inglés: el titular que aparecerá en tu CV.'
+                              : field === 'Professional Summary'
+                                ? 'En inglés: tu resumen para el CV y LinkedIn.'
+                                : undefined
+                          }
+                          multiline={['Professional Summary', 'Descripción', 'Logros y responsabilidades'].includes(
+                            field,
+                          )}
+                          minRows={
+                            ['Professional Summary', 'Descripción', 'Logros y responsabilidades'].includes(field)
+                              ? 3
+                              : undefined
+                          }
                           onBlur={(event) => {
                             record.values[field] = event.target.value;
                           }}
@@ -378,4 +423,10 @@ export default function SectionPage({
       </Box>
     </Box>
   );
+}
+
+function getFieldLabel(field: string) {
+  if (field === 'Professional Headline') return 'Titular profesional';
+  if (field === 'Professional Summary') return 'Resumen profesional';
+  return field;
 }

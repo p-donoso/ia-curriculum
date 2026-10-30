@@ -16,17 +16,17 @@ A local-first workspace for turning career reflections into an organized profess
 
 ## Screenshots
 
-These screenshots use a synthetic sample profile and contain no real user data.
+Explore the [full screenshot gallery](docs/screenshots.md). Images use synthetic profile data and contain no real user information.
 
-**Workspace**
+**Guided reflection**
 
-![IA Curriculum workspace](docs/screenshots/workspace.png)
+![IA Curriculum guided reflection](docs/screenshots/reflection-start.png)
 
 **English CV preview**
 
 ![Printable CV preview with sample content](docs/screenshots/cv-preview.png)
 
-To browse the app without installing it, open the screenshots above or the [screenshots folder](docs/screenshots/).
+No installation is needed to [browse the screenshot gallery](docs/screenshots.md).
 
 ## Quick start
 

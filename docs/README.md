@@ -1,5 +1,6 @@
 # Documentation
 
+- [Screenshot gallery](./screenshots.md)
 - [Workspace and navigation](./workspace.md)
 - [Guided reflection](./guided-session.md)
 - [AI integration](./ai-integration.md)

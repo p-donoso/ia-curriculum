@@ -4,7 +4,16 @@ export const sections: Record<string, SectionInfo> = {
   basic: {
     title: 'Información básica',
     description: 'Los datos esenciales que identifican tu perfil profesional.',
-    fields: ['Nombre completo', 'Email', 'Teléfono', 'Ciudad y país', 'Estado civil', 'Sitio web'],
+    fields: [
+      'Nombre completo',
+      'Professional Headline',
+      'Professional Summary',
+      'Email',
+      'Teléfono',
+      'Ciudad y país',
+      'Estado civil',
+      'Sitio web',
+    ],
   },
   education: {
     title: 'Educación',

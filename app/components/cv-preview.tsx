@@ -38,7 +38,9 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
           <Typography component="h1" className="cv-name">
             {basic['Nombre completo'] || 'Your Name'}
           </Typography>
-          <Typography className="cv-headline">Technology Leader · Platform Engineering · Cloud Architecture</Typography>
+          {basic['Professional Headline'] && (
+            <Typography className="cv-headline">{basic['Professional Headline']}</Typography>
+          )}
           <Typography className="cv-contact">
             {[basic.Email, basic.Teléfono, basic['Ciudad y país'], basic.LinkedIn].filter(Boolean).join(' · ')}
           </Typography>

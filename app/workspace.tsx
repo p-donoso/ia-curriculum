@@ -300,12 +300,16 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
                 ['REFLEXIONES', `${messages.length} de ${prompts.length}`, 'Guardadas solo en este dispositivo'],
                 [
                   'ETAPA ACTUAL',
-                  messages.length >= steps.length ? 'Revisa tu perfil' : steps[messages.length].title,
+                  messages.length >= steps.length
+                    ? 'Reflexión completa'
+                    : steps[Math.max(messages.length - 1, 0)].title,
                   `${Math.round((Math.min(messages.length, prompts.length) / prompts.length) * 100)}% completado`,
                 ],
                 [
                   'SIGUIENTE PASO',
-                  messages.length >= prompts.length ? 'Revisar el perfil' : steps[messages.length].note,
+                  messages.length >= prompts.length
+                    ? 'Completa tu perfil'
+                    : steps[Math.min(messages.length, steps.length - 1)].note,
                   'Tú decides qué guardar y compartir',
                 ],
               ].map((x, i) => (
@@ -430,22 +434,24 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
                     sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fbfcfe' } }}
                   />
                 )}
-                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
-                  <Typography variant="caption" color="text.secondary">
-                    {answer.length}/{maxAnswerLength} caracteres · Guardado en este dispositivo al continuar.{' '}
-                    {aiConfigured
-                      ? 'Al continuar, enviarás tus respuestas al proveedor de IA configurado.'
-                      : 'Configura una IA para recibir comentarios; las respuestas se quedan en este dispositivo.'}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    endIcon={<ArrowForwardRoundedIcon />}
-                    onClick={send}
-                    disabled={loading || !answer.trim() || !nextPrompt(messages.length)}
-                  >
-                    {loading ? 'Generando…' : 'Continuar'}
-                  </Button>
-                </Stack>
+                {nextPrompt(messages.length) && (
+                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
+                    <Typography variant="caption" color="text.secondary">
+                      {answer.length}/{maxAnswerLength} caracteres · Guardado en este dispositivo al continuar.{' '}
+                      {aiConfigured
+                        ? 'Al continuar, enviarás tus respuestas al proveedor de IA configurado.'
+                        : 'Configura una IA para recibir comentarios; las respuestas se quedan en este dispositivo.'}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      endIcon={<ArrowForwardRoundedIcon />}
+                      onClick={send}
+                      disabled={loading || !answer.trim()}
+                    >
+                      {loading ? 'Generando…' : 'Continuar'}
+                    </Button>
+                  </Stack>
+                )}
               </Paper>
             </Box>
           </Box>
