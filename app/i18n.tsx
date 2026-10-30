@@ -84,6 +84,12 @@ const messages: Record<Locale, Messages> = {
     tokenHelp:
       'Se mantiene en la sesión actual del navegador y se elimina al cerrarla. Evita dispositivos compartidos.',
     saveConfig: 'Guardar configuración',
+    systemPrompts: 'Prompts del sistema',
+    systemPromptsHelp:
+      'Edita las instrucciones que guían cada flujo de IA. Se guardan en este perfil y para el idioma actual. Puedes restaurar las semillas predeterminadas.',
+    guidedReflectionPrompt: 'Reflexión guiada',
+    recordExtractionPrompt: 'Extracción al perfil',
+    resetPromptSeeds: 'Restaurar valores predeterminados',
     configSaved: 'Configuración guardada',
     yourData: 'Tus datos',
     dataHelp: 'Exporta este perfil o elimina sus datos locales, registros, ajustes y token de sesión.',
@@ -226,6 +232,12 @@ const messages: Record<Locale, Messages> = {
     providerHelp: 'Enter the base URL of an OpenAI-compatible API. Local HTTP services are also supported.',
     tokenHelp: 'Stored for the current browser session and removed when it closes. Avoid shared devices.',
     saveConfig: 'Save settings',
+    systemPrompts: 'System prompts',
+    systemPromptsHelp:
+      'Edit the instructions for each AI flow. They are saved to this profile and current language. Restore the seeded defaults at any time.',
+    guidedReflectionPrompt: 'Guided reflection',
+    recordExtractionPrompt: 'Profile extraction',
+    resetPromptSeeds: 'Restore default prompts',
     configSaved: 'Settings saved',
     yourData: 'Your data',
     dataHelp: 'Export this profile or delete its local data, records, settings, and session token.',

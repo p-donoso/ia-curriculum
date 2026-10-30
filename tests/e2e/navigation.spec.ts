@@ -22,6 +22,22 @@ test.describe('navegación principal', () => {
     await expect(page.getByRole('heading', { name: 'Configuración' })).toBeVisible();
   });
 
+  test('edita, persiste y restaura las semillas de prompts por perfil', async ({ page }) => {
+    await page.goto('/profiles/alex/settings');
+    const reflection = page.getByLabel('Reflexión guiada');
+    await expect(reflection).toHaveValue(/Eres IA Curriculum/);
+    await expect(reflection).not.toHaveAttribute('readonly');
+    await reflection.fill('Prompt personalizado de reflexión');
+    await page.getByRole('button', { name: 'Guardar configuración' }).first().click();
+    await page.reload();
+    await expect(page.getByLabel('Reflexión guiada')).toHaveValue('Prompt personalizado de reflexión');
+    await page.getByRole('button', { name: 'Restaurar valores predeterminados' }).click();
+    await expect(page.getByLabel('Reflexión guiada')).toHaveValue(/Eres IA Curriculum/);
+    await page.getByRole('button', { name: 'Guardar configuración' }).last().click();
+    await page.reload();
+    await expect(page.getByLabel('Reflexión guiada')).toHaveValue(/Eres IA Curriculum/);
+  });
+
   test('avanza la pregunta después de cada respuesta', async ({ page }) => {
     await page.goto('/profiles/alex');
     await expect(page.getByText('El trabajo que buscas', { exact: true }).first()).toBeVisible();

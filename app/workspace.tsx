@@ -30,6 +30,7 @@ import StarOutlineRoundedIcon from '@mui/icons-material/StarOutlineRounded';
 import { appendAnswer, maxAnswerLength } from '../lib/workflow';
 import { loadProfiles, saveProfiles } from '../lib/profiles/storage';
 import { loadAiConfig } from '../lib/ai/config';
+import { getSystemPrompt } from '../lib/ai/prompts';
 import { streamChat } from '../lib/ai/client';
 import { LocaleToggle, useI18n } from './i18n';
 const sectionLinks = [
@@ -108,10 +109,7 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
         [
           {
             role: 'system',
-            content:
-              locale === 'es'
-                ? 'Eres un asesor de carrera breve y respetuoso. Refleja lo que la persona dijo, separa hechos de inferencias y no inventes logros, habilidades ni resultados. Ofrece una pregunta opcional para concretar su evidencia. La aplicación controla las preguntas principales.'
-                : 'You are a concise and respectful career coach. Reflect what the person said, distinguish facts from inferences, and never invent achievements, skills, or outcomes. Offer an optional question to clarify their evidence. The application controls the main prompts.',
+            content: getSystemPrompt(config.systemPrompts, locale, 'guidedReflection'),
           },
           {
             role: 'user',

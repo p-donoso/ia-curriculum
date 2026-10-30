@@ -24,6 +24,7 @@ import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { defaultAiConfig, loadAiConfig, saveAiConfig, type ProviderConfig } from '../../lib/ai/config';
+import { resolveSystemPrompts, systemPromptSeeds, type SystemPromptId } from '../../lib/ai/prompts';
 import { createRecord, deleteRecord, loadRecords, type RecordItem, saveRecord } from '../../lib/profiles/records';
 import {
   deleteProfile,
@@ -66,9 +67,11 @@ export default function SectionPage({ section, profileId }: { section: string; p
   const [proposal, setProposal] = useState<Proposal | null>(null);
   const [saved, setSaved] = useState(false);
   const [config, setConfig] = useState<ProviderConfig>(defaultAiConfig);
+  const [settingsReady, setSettingsReady] = useState(false);
   const isOutput = ['linkedin', 'curriculum'].includes(section);
   useEffect(() => {
     setConfig(loadAiConfig(profileId));
+    setSettingsReady(true);
     if (profileId) {
       setRecords(loadRecords(profileId, section));
       if (['linkedin', 'curriculum'].includes(section)) {
@@ -89,8 +92,28 @@ export default function SectionPage({ section, profileId }: { section: string; p
     setProposal(null);
   };
   const saveConfig = () => {
+    if (!settingsReady) return;
     if (profileId) saveAiConfig(profileId, config);
     setSaved(true);
+  };
+  const updateSystemPrompt = (id: SystemPromptId, value: string) => {
+    setConfig((current) => ({
+      ...current,
+      systemPrompts: {
+        ...resolveSystemPrompts(current.systemPrompts),
+        [locale]: { ...resolveSystemPrompts(current.systemPrompts)[locale], [id]: value },
+      },
+    }));
+  };
+  const resetSystemPrompts = () => {
+    if (!settingsReady) return;
+    setConfig((current) => ({
+      ...current,
+      systemPrompts: {
+        ...resolveSystemPrompts(current.systemPrompts),
+        [locale]: { ...systemPromptSeeds[locale] },
+      },
+    }));
   };
   const downloadProfile = () => {
     if (!profileId) return;
@@ -190,10 +213,45 @@ export default function SectionPage({ section, profileId }: { section: string; p
               autoComplete="new-password"
               helperText={t('tokenHelp')}
             />
-            <Button variant="contained" sx={{ mt: 2 }} onClick={saveConfig}>
+            <Button variant="outlined" sx={{ mt: 2 }} onClick={saveConfig}>
               {t('saveConfig')}
             </Button>
             {saved && <Chip label={t('configSaved')} color="success" sx={{ ml: 2 }} />}
+            <Divider sx={{ my: 3 }} />
+            <Typography variant="h6" fontWeight={800}>
+              {t('systemPrompts')}
+            </Typography>
+            <Typography color="text.secondary" sx={{ mt: 0.5, mb: 2 }}>
+              {t('systemPromptsHelp')}
+            </Typography>
+            <TextField
+              fullWidth
+              multiline
+              minRows={6}
+              label={t('guidedReflectionPrompt')}
+              value={config.systemPrompts?.[locale]?.guidedReflection ?? systemPromptSeeds[locale].guidedReflection}
+              onChange={(event) => updateSystemPrompt('guidedReflection', event.target.value)}
+              slotProps={{ htmlInput: { readOnly: !settingsReady } }}
+              sx={{ mb: 2 }}
+            />
+            <TextField
+              fullWidth
+              multiline
+              minRows={5}
+              label={t('recordExtractionPrompt')}
+              value={config.systemPrompts?.[locale]?.recordExtraction ?? systemPromptSeeds[locale].recordExtraction}
+              onChange={(event) => updateSystemPrompt('recordExtraction', event.target.value)}
+              slotProps={{ htmlInput: { readOnly: !settingsReady } }}
+            />
+            <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+              <Button variant="outlined" onClick={resetSystemPrompts}>
+                {t('resetPromptSeeds')}
+              </Button>
+              <Button variant="outlined" onClick={saveConfig}>
+                {t('saveConfig')}
+              </Button>
+              {saved && <Chip label={t('configSaved')} color="success" />}
+            </Stack>
             <Divider sx={{ my: 3 }} />
             <Typography variant="h6" fontWeight={800}>
               {t('yourData')}

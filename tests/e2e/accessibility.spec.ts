@@ -10,6 +10,9 @@ test('primary routes have no serious or critical accessibility violations', asyn
     '/profiles/alex/curriculum',
   ]) {
     await page.goto(route);
+    if (route.endsWith('/settings')) {
+      await expect(page.getByLabel('Reflexión guiada')).not.toHaveAttribute('readonly');
+    }
     const results = await new AxeBuilder({ page }).analyze();
     expect(
       results.violations.filter((violation) => ['critical', 'serious'].includes(violation.impact ?? '')),

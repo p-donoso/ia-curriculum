@@ -14,7 +14,7 @@ Open a profile's Settings and provide:
 
 Remote endpoints must use HTTPS. HTTP is accepted only for local services such as `http://localhost:port/v1`. Do not embed credentials in endpoint URLs. Native provider APIs that do not implement OpenAI-compatible chat completions are not supported.
 
-The token is kept in tab-scoped `sessionStorage`; provider and model settings are stored in `localStorage`. Existing tokens found in the legacy profile configuration are moved to session storage and removed from persistent settings when possible. If browser storage is restricted, the app does not fall back to persistent token storage.
+The token is kept in tab-scoped `sessionStorage`; provider, model, and per-profile system prompt settings are stored in `localStorage`. Default system prompts are seeded in `lib/ai/prompts.ts`; Settings can override them independently for Spanish and English or restore the defaults. The active prompts are sent to the configured provider with each request. Existing tokens found in the legacy profile configuration are moved to session storage and removed from persistent settings when possible. If browser storage is restricted, the app does not fall back to persistent token storage.
 
 `NEXT_PUBLIC_AI_PROVIDER`, `NEXT_PUBLIC_AI_ENDPOINT`, and `NEXT_PUBLIC_AI_MODEL` are optional public defaults. Never use them for secrets.
 

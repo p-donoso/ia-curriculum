@@ -1,4 +1,12 @@
-export type ProviderConfig = { provider: string; endpoint: string; model: string; token?: string };
+import { resolveSystemPrompts, type PromptOverrides } from './prompts';
+
+export type ProviderConfig = {
+  provider: string;
+  endpoint: string;
+  model: string;
+  token?: string;
+  systemPrompts?: PromptOverrides;
+};
 export const defaultAiConfig: ProviderConfig = {
   provider: process.env.NEXT_PUBLIC_AI_PROVIDER ?? 'openai-compatible',
   endpoint: process.env.NEXT_PUBLIC_AI_ENDPOINT ?? '',
@@ -9,7 +17,7 @@ export const profileAiConfigKey = (profileId: string) => `${AI_CONFIG_STORAGE_KE
 const profileAiTokenKey = (profileId: string) => `ia-curriculum:ai-token:${profileId}:v1`;
 
 export function loadAiConfig(profileId?: string): ProviderConfig {
-  if (typeof window === 'undefined') return defaultAiConfig;
+  if (typeof window === 'undefined') return { ...defaultAiConfig, systemPrompts: resolveSystemPrompts() };
   try {
     const key = profileId ? profileAiConfigKey(profileId) : AI_CONFIG_STORAGE_KEY;
     const saved = JSON.parse(window.localStorage.getItem(key) ?? '{}') as Partial<ProviderConfig>;
@@ -31,9 +39,14 @@ export function loadAiConfig(profileId?: string): ProviderConfig {
         window.localStorage.setItem(key, JSON.stringify(safeConfig));
       }
     }
-    return { ...defaultAiConfig, ...safeConfig, token };
+    return {
+      ...defaultAiConfig,
+      ...safeConfig,
+      systemPrompts: resolveSystemPrompts(safeConfig.systemPrompts),
+      token,
+    };
   } catch {
-    return defaultAiConfig;
+    return { ...defaultAiConfig, systemPrompts: resolveSystemPrompts() };
   }
 }
 

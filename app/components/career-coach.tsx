@@ -23,7 +23,7 @@ export function CareerCoach({
   profileId?: string;
   onProposal: (proposal: Proposal) => void;
 }) {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [text, setText] = useState('');
   const [questions, setQuestions] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,7 +37,7 @@ export function CareerCoach({
       const config = loadAiConfig(profileId);
       const proposal =
         config.token && config.endpoint
-          ? await extractRecord(config, sections[section].title, fields, source)
+          ? await extractRecord(config, sections[section].title, fields, source, locale)
           : {
               values: Object.fromEntries(fields.map((field) => [field, ''])),
               missing: fields,

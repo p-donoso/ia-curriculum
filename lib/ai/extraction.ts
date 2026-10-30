@@ -1,5 +1,6 @@
 import { chat, ChatMessage } from './client';
 import type { ProviderConfig } from './config';
+import { getSystemPrompt, type PromptLocale } from './prompts';
 export type StructuredProposal = {
   values: Record<string, string>;
   missing: string[];
@@ -39,13 +40,17 @@ export async function extractRecord(
   section: string,
   fields: string[],
   text: string,
+  locale: PromptLocale = 'es',
 ): Promise<StructuredProposal> {
   const messages: ChatMessage[] = [
     {
       role: 'system',
-      content: `Extrae información para la sección ${section}. Devuelve únicamente JSON válido con {"values": {campo: "valor"}, "missing": [], "confidence": "low|medium|high"}. No inventes datos.`,
+      content: getSystemPrompt(config.systemPrompts, locale, 'recordExtraction'),
     },
-    { role: 'user', content: `Campos: ${fields.join(', ')}\nTexto: ${text}` },
+    {
+      role: 'user',
+      content: `${locale === 'es' ? 'Sección' : 'Section'}: ${section}\n${locale === 'es' ? 'Campos' : 'Fields'}: ${fields.join(', ')}\n${locale === 'es' ? 'Texto' : 'Text'}: ${text}`,
+    },
   ];
   const result = await chat(config, messages);
   return parseProposal(result.content, fields);

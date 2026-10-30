@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { defaultAiConfig, loadAiConfig, profileAiConfigKey, saveAiConfig } from '../lib/ai/config';
+import { resolveSystemPrompts, systemPromptSeeds } from '../lib/ai/prompts';
 
 function createStorage() {
   const values = new Map<string, string>();
@@ -34,7 +35,7 @@ describe('AI provider configuration', () => {
       model: 'model',
     });
     expect(sessionStorage.getItem('ia-curriculum:ai-token:alex:v1')).toBe('secret-token');
-    expect(loadAiConfig('alex')).toEqual(config);
+    expect(loadAiConfig('alex')).toEqual({ ...config, systemPrompts: resolveSystemPrompts() });
   });
 
   it('moves legacy local-storage tokens into the current browser session', () => {
@@ -68,5 +69,24 @@ describe('AI provider configuration', () => {
 
     expect(loadAiConfig('alex').token).toBe('');
     expect(localStorage.getItem(profileAiConfigKey('alex'))).not.toContain('legacy');
+  });
+
+  it('loads seeded prompts and persists profile-specific prompt edits', () => {
+    const localStorage = createStorage();
+    const sessionStorage = createStorage();
+    vi.stubGlobal('window', { localStorage, sessionStorage });
+    const config = {
+      ...defaultAiConfig,
+      systemPrompts: {
+        ...resolveSystemPrompts(),
+        es: { ...systemPromptSeeds.es, guidedReflection: 'Custom reflection prompt' },
+      },
+    };
+
+    saveAiConfig('alex', config);
+
+    const loaded = loadAiConfig('alex');
+    expect(loaded.systemPrompts?.es?.guidedReflection).toBe('Custom reflection prompt');
+    expect(loaded.systemPrompts?.en?.recordExtraction).toBe(systemPromptSeeds.en.recordExtraction);
   });
 });
