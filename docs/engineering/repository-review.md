@@ -19,7 +19,7 @@
 ## Findings
 
 - **[medium]** Browser storage is not encrypted or synchronized — evidence: `lib/profiles/storage.ts`; users need to manage device access and backups.
-- **[low]** AI requests go directly from the browser to a user-selected provider — evidence: `lib/ai/client.ts`, `docs/privacy-byot.md`.
+- **[low]** AI requests go directly from the browser to a user-selected provider — evidence: `lib/ai/client.ts`, `docs/guides/privacy-byot.md`.
 - **[low]** CV is an English print view and PDF save uses browser print — evidence: `app/components/cv-preview.tsx`, `README.md`.
 
 ## Recommendations (ordered)

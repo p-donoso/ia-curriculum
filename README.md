@@ -17,17 +17,17 @@ A local-first workspace for turning career reflections into organized profession
 
 ## Screenshots
 
-Explore the [full screenshot gallery](docs/screenshots.md). Screens use the English interface and fictional profile data; they contain no real user information.
+Explore the [full screenshot gallery](docs/showcase/README.md). Screens use the English interface and fictional profile data; they contain no real user information.
 
 **Guided reflection**
 
-![IA Curriculum guided reflection](docs/screenshots/reflection-start.png)
+![IA Curriculum guided reflection](docs/showcase/screenshots/reflection-start.png)
 
 **English CV preview**
 
-![Printable CV preview with sample content](docs/screenshots/cv-preview.png)
+![Printable CV preview with sample content](docs/showcase/screenshots/cv-preview.png)
 
-No installation is needed to [browse the screenshot gallery](docs/screenshots.md).
+No installation is needed to [browse the screenshot gallery](docs/showcase/README.md).
 
 ## Quick start
 
@@ -48,7 +48,7 @@ The browser sends the conversation and text you submit directly to the provider 
 
 `NEXT_PUBLIC_AI_PROVIDER`, `NEXT_PUBLIC_AI_ENDPOINT`, and `NEXT_PUBLIC_AI_MODEL` may supply non-secret defaults at build time. These values are visible to browser users. **Never put an API key or other secret in a `NEXT_PUBLIC_*` variable.**
 
-See [AI integration](docs/ai-integration.md) and [privacy and security](docs/privacy-byot.md).
+See [AI integration](docs/guides/ai-integration.md) and [privacy and security](docs/guides/privacy-byot.md).
 
 ## Development checks
 
@@ -83,9 +83,9 @@ flowchart LR
 - `lib/profiles/` manages browser-local profile and record data.
 - `lib/ai/` handles provider configuration, streaming, and proposal parsing.
 - `tests/` contains unit and browser end-to-end tests.
-- `docs/` describes architecture, data handling, roadmap, and release checks.
+- `docs/` groups product guides, engineering references, project guides, and screenshots by topic.
 
-More detail: [architecture](docs/architecture.md) · [documentation index](docs/README.md).
+More detail: [architecture](docs/engineering/architecture.md) · [documentation index](docs/README.md).
 
 ## Known limitations
 

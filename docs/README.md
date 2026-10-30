@@ -1,12 +1,26 @@
 # Documentation
 
-- [Screenshot gallery](./screenshots.md)
-- [Workspace and navigation](./workspace.md)
-- [Guided reflection](./guided-session.md)
-- [AI integration](./ai-integration.md)
-- [Privacy and BYOT](./privacy-byot.md)
-- [LinkedIn-oriented view](./linkedin-profile.md)
-- [Roadmap](./roadmap.md)
-- [Architecture and boundaries](./architecture.md)
-- [Release checklist](./release.md)
-- [Open-source readiness](./open-source-readiness.md)
+Guides are grouped by purpose. Start with the [visual walkthrough](showcase/README.md) or browse a topic below.
+
+## Product
+
+- [Workspace and navigation](product/workspace.md)
+- [Guided reflection](product/guided-session.md)
+- [LinkedIn-oriented view](product/linkedin-profile.md)
+- [Roadmap](product/roadmap.md)
+
+## Engineering
+
+- [Architecture and boundaries](engineering/architecture.md)
+- [Repository review](engineering/repository-review.md)
+- [Test coverage](engineering/test-coverage.md)
+
+## AI and privacy
+
+- [AI integration](guides/ai-integration.md)
+- [Privacy and bring-your-own-provider](guides/privacy-byot.md)
+
+## Project maintenance
+
+- [Release checklist](guides/release.md)
+- [Open-source readiness](guides/open-source-readiness.md)
