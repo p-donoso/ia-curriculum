@@ -14,40 +14,17 @@ export type Profile = {
   updatedAt: string;
 };
 export const PROFILES_STORAGE_KEY = 'ia-curriculum:profiles:v1';
-export const starterProfiles: Profile[] = [
-  {
-    id: 'cto',
-    name: 'CTO',
-    role: 'Dirección tecnológica',
-    color: '#315efb',
-    answers: [],
-    createdAt: '2026-01-01T00:00:00.000Z',
-    updatedAt: '2026-01-01T00:00:00.000Z',
-  },
-  {
-    id: 'consultor',
-    name: 'Consultor',
-    role: 'Una Salud · interoperabilidad de datos',
-    color: '#7c5cff',
-    answers: [],
-    createdAt: '2026-01-01T00:00:00.000Z',
-    updatedAt: '2026-01-01T00:00:00.000Z',
-  },
-];
-/** Load valid profiles from browser storage, falling back to examples on first use or storage errors. */
+/** Load saved profiles from browser storage; a new or unavailable store starts empty. */
 export function loadProfiles(): Profile[] {
-  if (typeof window === 'undefined') return starterProfiles;
+  if (typeof window === 'undefined') return [];
   try {
     const raw = window.localStorage.getItem(PROFILES_STORAGE_KEY);
-    if (raw === null) return starterProfiles;
+    if (raw === null) return [];
     const value: unknown = JSON.parse(raw);
-    if (!Array.isArray(value)) return starterProfiles;
-    const profiles = value.filter(isProfile);
-    const migrated = migrateStarterProfiles(profiles);
-    if (migrated !== profiles) window.localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(migrated));
-    return migrated;
+    if (!Array.isArray(value)) return [];
+    return value.filter(isProfile);
   } catch {
-    return starterProfiles;
+    return [];
   }
 }
 function isProfile(value: unknown): value is Profile {
@@ -93,23 +70,11 @@ export function createProfile(
     role: options.role?.trim() || 'Nuevo recorrido',
     color: '#315efb',
     answers: [],
-    sourceProfileId: options.sourceProfileId,
+    sourceProfileId: options.sourceProfileId || undefined,
     targetDescription: options.targetDescription?.trim() || undefined,
     createdAt: now,
     updatedAt: now,
   };
-}
-/** Upgrade only untouched starter data; preserve profiles that already contain user work. */
-export function migrateStarterProfiles(profiles: Profile[]): Profile[] {
-  const isUntouchedStarter =
-    profiles.length === 2 &&
-    profiles.some((profile) => profile.id === 'alex') &&
-    profiles.some((profile) => profile.id === 'career-change');
-  if (!isUntouchedStarter) return profiles;
-  return profiles.map((profile) => {
-    const seed = starterProfiles.find((item) => item.id === (profile.id === 'alex' ? 'cto' : 'consultor'))!;
-    return { ...seed, createdAt: profile.createdAt, updatedAt: profile.updatedAt };
-  });
 }
 /** Return a new profile list without the selected profile. */
 export function deleteProfile(profiles: Profile[], id: string): Profile[] {

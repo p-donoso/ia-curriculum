@@ -50,14 +50,14 @@ describe('records', () => {
     saveRecord('alex', original);
     const sharedRecord = createRecord('experience', { Role: 'Designer' });
     const separateConfig = createRecord('basic', { Name: 'Consultant-specific' });
-    saveRecord('career-change', separateConfig);
+    saveRecord('profile-b', separateConfig);
 
     const updated = { ...original, values: { Role: 'Lead analyst' }, updatedAt: '2026-10-30T00:00:00.000Z' };
     saveRecord('alex', updated);
 
     expect(loadRecords('alex', 'experience')).toEqual([updated]);
-    expect(loadRecords('career-change', 'experience')).toEqual([updated]);
-    expect(loadRecords('career-change', 'basic')).toEqual([separateConfig]);
+    expect(loadRecords('profile-b', 'experience')).toEqual([updated]);
+    expect(loadRecords('profile-b', 'basic')).toEqual([separateConfig]);
   });
 
   it('migrates existing profile records into one shared source without loss', () => {
@@ -69,14 +69,14 @@ describe('records', () => {
     };
     vi.stubGlobal('window', { localStorage: storage });
     vi.stubGlobal('localStorage', storage);
-    const first = createRecord('experience', { Cargo: 'CTO' });
-    const second = createRecord('experience', { Cargo: 'Consultor' });
-    values.set('ia-curriculum:profiles:v1', JSON.stringify([{ id: 'cto' }, { id: 'consultor' }]));
-    values.set('ia-curriculum:records:cto:v1', JSON.stringify([first]));
-    values.set('ia-curriculum:records:consultor:v1', JSON.stringify([second]));
+    const first = createRecord('experience', { Cargo: 'Engineer' });
+    const second = createRecord('experience', { Cargo: 'Designer' });
+    values.set('ia-curriculum:profiles:v1', JSON.stringify([{ id: 'profile-a' }, { id: 'profile-b' }]));
+    values.set('ia-curriculum:records:profile-a:v1', JSON.stringify([first]));
+    values.set('ia-curriculum:records:profile-b:v1', JSON.stringify([second]));
 
-    expect(loadRecords('cto', 'experience')).toEqual([first, second]);
-    expect(loadRecords('consultor', 'experience')).toEqual([first, second]);
+    expect(loadRecords('profile-a', 'experience')).toEqual([first, second]);
+    expect(loadRecords('profile-b', 'experience')).toEqual([first, second]);
   });
 
   it('discards malformed entries from an otherwise valid records list', () => {

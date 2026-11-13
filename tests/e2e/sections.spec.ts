@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('secciones profesionales', () => {
   for (const section of ['basic', 'education', 'projects']) {
     test(`muestra la sección ${section}`, async ({ page }) => {
-      await page.goto(`/profiles/alex/${section}`);
+      await page.goto(`/profiles/test-profile/${section}`);
       await expect(
         page.getByRole('heading', {
           name: section === 'basic' ? 'Información básica' : section === 'education' ? 'Educación' : 'Proyectos',
@@ -14,7 +14,7 @@ test.describe('secciones profesionales', () => {
   }
 
   test('genera preguntas y confirma una propuesta del asistente', async ({ page }) => {
-    await page.goto('/profiles/alex/experience');
+    await page.goto('/profiles/test-profile/experience');
     await page.getByRole('button', { name: 'Ver preguntas para profundizar' }).click();
     await expect(page.getByText('¿Qué resultado concreto obtuviste?')).toBeVisible();
     await page.getByPlaceholder('Escribe aquí…').fill('Coordiné un equipo y mejoré el proceso.');
@@ -30,7 +30,7 @@ test.describe('secciones profesionales', () => {
   });
 
   test('shows the project summary and printable CV without fake enhancement controls', async ({ page }) => {
-    await page.goto('/profiles/alex/linkedin');
+    await page.goto('/profiles/test-profile/linkedin');
     await expect(
       page.getByText('Agrega tu resumen profesional en Información básica para ver aquí la sección «Acerca de». '),
     ).toBeVisible();
@@ -40,21 +40,21 @@ test.describe('secciones profesionales', () => {
     ).toBeVisible();
     await expect(page.getByText('Aún no hay habilidades. Agrega las que puedas respaldar con ejemplos.')).toBeVisible();
     await expect(page.getByRole('button', { name: 'Enhance' })).toHaveCount(0);
-    await page.goto('/profiles/alex/curriculum');
+    await page.goto('/profiles/test-profile/curriculum');
     await expect(page.getByRole('button', { name: 'Imprimir / Guardar PDF' })).toBeVisible();
     await expect(page.getByText('BORRADOR DE CV')).toBeVisible();
     await page.getByRole('button', { name: 'Switch language to English' }).click();
-    await page.goto('/profiles/alex/curriculum');
+    await page.goto('/profiles/test-profile/curriculum');
     await expect(page.getByRole('button', { name: 'Print / Save PDF' })).toBeVisible();
     await expect(page.getByText('ENGLISH RESUME · REVIEW DRAFT')).toBeVisible();
     await expect(page.getByText('Technology Leader · Platform Engineering · Cloud Architecture')).toHaveCount(0);
   });
 
   test('uses the saved professional headline and a clear record title', async ({ page }) => {
-    await page.goto('/profiles/alex/basic');
+    await page.goto('/profiles/test-profile/basic');
     const now = new Date().toISOString();
     await page.evaluate((createdAt) => {
-      const key = 'ia-curriculum:records:alex:v1';
+      const key = 'ia-curriculum:records:test-profile:v1';
       const records = [
         {
           id: 'sample-basic',
@@ -76,9 +76,9 @@ test.describe('secciones profesionales', () => {
     await page.reload();
     await expect(page.getByText('Jordan Taylor', { exact: true })).toBeVisible();
     await expect(page.getByLabel('Titular profesional')).toBeVisible();
-    await page.goto('/profiles/alex/projects');
+    await page.goto('/profiles/test-profile/projects');
     await expect(page.getByRole('button', { name: 'Service Analytics Hub', exact: true })).toBeVisible();
-    await page.goto('/profiles/alex/curriculum');
+    await page.goto('/profiles/test-profile/curriculum');
     await expect(page.getByText('Operations Leader')).toBeVisible();
   });
 });

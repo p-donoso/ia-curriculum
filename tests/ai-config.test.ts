@@ -27,34 +27,34 @@ describe('AI provider configuration', () => {
     vi.stubGlobal('window', { localStorage, sessionStorage });
     const config = { provider: 'custom', endpoint: 'https://api.example/v1', model: 'model', token: 'secret-token' };
 
-    saveAiConfig('alex', config);
+    saveAiConfig('profile-a', config);
 
-    expect(JSON.parse(localStorage.getItem(profileAiConfigKey('alex'))!)).toEqual({
+    expect(JSON.parse(localStorage.getItem(profileAiConfigKey('profile-a'))!)).toEqual({
       provider: 'custom',
       endpoint: 'https://api.example/v1',
       model: 'model',
     });
-    expect(sessionStorage.getItem('ia-curriculum:ai-token:alex:v1')).toBe('secret-token');
-    expect(loadAiConfig('alex')).toEqual({ ...config, systemPrompts: resolveSystemPrompts() });
+    expect(sessionStorage.getItem('ia-curriculum:ai-token:profile-a:v1')).toBe('secret-token');
+    expect(loadAiConfig('profile-a')).toEqual({ ...config, systemPrompts: resolveSystemPrompts() });
   });
 
   it('moves legacy local-storage tokens into the current browser session', () => {
     const localStorage = createStorage();
     const sessionStorage = createStorage();
     localStorage.setItem(
-      profileAiConfigKey('alex'),
+      profileAiConfigKey('profile-a'),
       JSON.stringify({ endpoint: 'https://api.example/v1', token: 'legacy' }),
     );
     vi.stubGlobal('window', { localStorage, sessionStorage });
 
-    expect(loadAiConfig('alex').token).toBe('legacy');
-    expect(sessionStorage.getItem('ia-curriculum:ai-token:alex:v1')).toBe('legacy');
-    expect(localStorage.getItem(profileAiConfigKey('alex'))).not.toContain('legacy');
+    expect(loadAiConfig('profile-a').token).toBe('legacy');
+    expect(sessionStorage.getItem('ia-curriculum:ai-token:profile-a:v1')).toBe('legacy');
+    expect(localStorage.getItem(profileAiConfigKey('profile-a'))).not.toContain('legacy');
   });
 
   it('does not keep a legacy token when session storage is unavailable', () => {
     const localStorage = createStorage();
-    localStorage.setItem(profileAiConfigKey('alex'), JSON.stringify({ token: 'legacy' }));
+    localStorage.setItem(profileAiConfigKey('profile-a'), JSON.stringify({ token: 'legacy' }));
     vi.stubGlobal('window', {
       localStorage,
       sessionStorage: {
@@ -67,8 +67,8 @@ describe('AI provider configuration', () => {
       },
     });
 
-    expect(loadAiConfig('alex').token).toBe('');
-    expect(localStorage.getItem(profileAiConfigKey('alex'))).not.toContain('legacy');
+    expect(loadAiConfig('profile-a').token).toBe('');
+    expect(localStorage.getItem(profileAiConfigKey('profile-a'))).not.toContain('legacy');
   });
 
   it('loads seeded prompts and persists profile-specific prompt edits', () => {
@@ -83,9 +83,9 @@ describe('AI provider configuration', () => {
       },
     };
 
-    saveAiConfig('alex', config);
+    saveAiConfig('profile-a', config);
 
-    const loaded = loadAiConfig('alex');
+    const loaded = loadAiConfig('profile-a');
     expect(loaded.systemPrompts?.es?.guidedReflection).toBe('Custom reflection prompt');
     expect(loaded.systemPrompts?.en?.recordExtraction).toBe(systemPromptSeeds.en.recordExtraction);
   });
@@ -94,15 +94,15 @@ describe('AI provider configuration', () => {
     const localStorage = createStorage();
     const sessionStorage = createStorage();
     localStorage.setItem(
-      profileAiConfigKey('alex'),
-      JSON.stringify({ systemPrompts: { en: { guidedReflection: 'Alex prompt' } } }),
+      profileAiConfigKey('profile-a'),
+      JSON.stringify({ systemPrompts: { en: { guidedReflection: 'Profile A prompt' } } }),
     );
     vi.stubGlobal('window', { localStorage, sessionStorage });
 
-    const alex = loadAiConfig('alex');
-    const other = loadAiConfig('career-change');
-    expect(alex.systemPrompts?.en?.guidedReflection).toBe('Alex prompt');
-    expect(alex.systemPrompts?.en?.recordExtraction).toBe(systemPromptSeeds.en.recordExtraction);
+    const profileA = loadAiConfig('profile-a');
+    const other = loadAiConfig('profile-b');
+    expect(profileA.systemPrompts?.en?.guidedReflection).toBe('Profile A prompt');
+    expect(profileA.systemPrompts?.en?.recordExtraction).toBe(systemPromptSeeds.en.recordExtraction);
     expect(other.systemPrompts?.en?.guidedReflection).toBe(systemPromptSeeds.en.guidedReflection);
   });
 
@@ -110,11 +110,11 @@ describe('AI provider configuration', () => {
     const localStorage = createStorage();
     const sessionStorage = createStorage();
     vi.stubGlobal('window', { localStorage, sessionStorage });
-    saveAiConfig('alex', { ...defaultAiConfig, token: 'temporary-token' });
+    saveAiConfig('profile-a', { ...defaultAiConfig, token: 'temporary-token' });
 
-    saveAiConfig('alex', { ...defaultAiConfig, token: '' });
+    saveAiConfig('profile-a', { ...defaultAiConfig, token: '' });
 
-    expect(sessionStorage.getItem('ia-curriculum:ai-token:alex:v1')).toBeNull();
-    expect(localStorage.getItem(profileAiConfigKey('alex'))).not.toContain('temporary-token');
+    expect(sessionStorage.getItem('ia-curriculum:ai-token:profile-a:v1')).toBeNull();
+    expect(localStorage.getItem(profileAiConfigKey('profile-a'))).not.toContain('temporary-token');
   });
 });
