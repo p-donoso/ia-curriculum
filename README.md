@@ -1,12 +1,13 @@
 # IA Curriculum
 
-A local-first workspace for turning career reflections into organized professional profiles. The interface and printable CV are available in Spanish and English. AI support is optional and connects directly from the browser to an OpenAI-compatible provider that you configure.
+A local-first workspace for maintaining one shared career history and creating focused CVs for different goals. Education, experience, projects, and skills are shared across CVs; each CV keeps its own headline and professional summary. The interface and printable CV are available in Spanish and English. AI support is optional and connects directly from the browser to an OpenAI-compatible provider that you configure.
 
 > **Project status:** personal project in active development. There is no hosted service, account system, or production support commitment.
 
 ## What it does
 
-- Keep multiple career profiles separate in the current browser.
+- Create multiple CVs with separate goals, headlines, and summaries.
+- Maintain education, experience, projects, and skills once as a shared source.
 - Switch between Spanish and English; the preference is saved in the browser.
 - Guide a short reflection flow and save answers on this device.
 - Organize education, experience, projects, and skills as editable records.
@@ -38,7 +39,7 @@ npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000>. The app creates example profiles in browser storage. No backend or database is required.
+Open <http://localhost:3000>. The app creates CTO and Consultant CVs in browser storage. Existing example data is migrated into a shared source on first use. No backend or database is required.
 
 ### Optional AI provider
 
@@ -72,8 +73,10 @@ Run all local checks with `npm run check`. See [contributing](CONTRIBUTING.md) f
 
 ```mermaid
 flowchart LR
-  Browser[Next.js app in browser] --> Profile[Profile and record storage]
-  Profile --> LocalStorage[Browser localStorage]
+  Browser[Next.js app in browser] --> CV[CV goals and tailored text]
+  Browser --> Source[Shared career source]
+  CV --> LocalStorage[Browser localStorage]
+  Source --> LocalStorage
   Browser --> SessionStorage[Browser sessionStorage for provider token]
   Browser -->|Optional user-approved request| Provider[User-configured OpenAI-compatible API]
 ```

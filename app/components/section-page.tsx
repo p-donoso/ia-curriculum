@@ -67,6 +67,7 @@ export default function SectionPage({ section, profileId }: { section: string; p
   const [config, setConfig] = useState<ProviderConfig>(defaultAiConfig);
   const [settingsReady, setSettingsReady] = useState(false);
   const isOutput = ['linkedin', 'curriculum'].includes(section);
+  const usesSharedSource = ['education', 'experience', 'projects', 'skills'].includes(section);
   useEffect(() => {
     setConfig(loadAiConfig(profileId));
     setSettingsReady(true);
@@ -152,6 +153,11 @@ export default function SectionPage({ section, profileId }: { section: string; p
                 <Typography color="text.secondary" sx={{ mt: 1 }}>
                   {info.description}
                 </Typography>
+                {usesSharedSource && (
+                  <Typography color="primary.main" variant="body2" sx={{ mt: 1 }}>
+                    {t('sharedSourceNotice')}
+                  </Typography>
+                )}
               </Box>
               <LocaleToggle />
             </Stack>

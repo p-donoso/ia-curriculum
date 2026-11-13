@@ -10,18 +10,18 @@ export type Profile = {
 export const PROFILES_STORAGE_KEY = 'ia-curriculum:profiles:v1';
 export const starterProfiles: Profile[] = [
   {
-    id: 'alex',
-    name: 'Alex Morgan',
-    role: 'Perfil de ejemplo',
+    id: 'cto',
+    name: 'CTO',
+    role: 'Dirección tecnológica',
     color: '#315efb',
     answers: [],
     createdAt: '2026-01-01T00:00:00.000Z',
     updatedAt: '2026-01-01T00:00:00.000Z',
   },
   {
-    id: 'career-change',
-    name: 'Cambio de carrera',
-    role: 'Borrador',
+    id: 'consultor',
+    name: 'Consultor',
+    role: 'Una Salud · interoperabilidad de datos',
     color: '#7c5cff',
     answers: [],
     createdAt: '2026-01-01T00:00:00.000Z',
@@ -36,7 +36,10 @@ export function loadProfiles(): Profile[] {
     if (raw === null) return starterProfiles;
     const value: unknown = JSON.parse(raw);
     if (!Array.isArray(value)) return starterProfiles;
-    return value.filter(isProfile);
+    const profiles = value.filter(isProfile);
+    const migrated = migrateStarterProfiles(profiles);
+    if (migrated !== profiles) window.localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(migrated));
+    return migrated;
   } catch {
     return starterProfiles;
   }
@@ -72,6 +75,18 @@ export function createProfile(name: string): Profile {
     updatedAt: now,
   };
 }
+/** Upgrade only untouched starter data; preserve profiles that already contain user work. */
+export function migrateStarterProfiles(profiles: Profile[]): Profile[] {
+  const isUntouchedStarter =
+    profiles.length === 2 &&
+    profiles.some((profile) => profile.id === 'alex') &&
+    profiles.some((profile) => profile.id === 'career-change');
+  if (!isUntouchedStarter) return profiles;
+  return profiles.map((profile) => {
+    const seed = starterProfiles.find((item) => item.id === (profile.id === 'alex' ? 'cto' : 'consultor'))!;
+    return { ...seed, createdAt: profile.createdAt, updatedAt: profile.updatedAt };
+  });
+}
 /** Return a new profile list without the selected profile. */
 export function deleteProfile(profiles: Profile[], id: string): Profile[] {
   return profiles.filter((profile) => profile.id !== id);
@@ -79,6 +94,7 @@ export function deleteProfile(profiles: Profile[], id: string): Profile[] {
 /** Remove local records, AI preferences, and the current-session token for one profile. */
 export function deleteProfileData(profileId: string): void {
   if (typeof window === 'undefined') return;
+  // Shared source records are intentionally retained when one resume profile is deleted.
   window.localStorage.removeItem(`ia-curriculum:records:${profileId}:v1`);
   window.localStorage.removeItem(`ia-curriculum:ai-config:v1:${profileId}`);
   try {

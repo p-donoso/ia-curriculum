@@ -4,7 +4,7 @@ Guides are grouped by purpose. Start with the [visual walkthrough](showcase/READ
 
 ## Product
 
-- [Workspace and navigation](product/workspace.md)
+- [Workspace, multiple CVs, and shared career source](product/workspace.md)
 - [Guided reflection](product/guided-session.md)
 - [LinkedIn-oriented view](product/linkedin-profile.md)
 - [Roadmap](product/roadmap.md)

@@ -1,12 +1,14 @@
 # Screenshot gallery
 
-These screens use fictional sample data generated in a temporary browser session. They do not contain real profile information or provider credentials.
+These screens use fictional sample data generated in a temporary browser session. They do not contain real profile information or provider credentials. The profile-selector and CV screenshots are legacy captures from before the shared-source workflow; follow the text below for the current behavior.
 
 All screenshots show the English interface for a consistent walkthrough.
 
 ## Choose a profile
 
 ![Profile selection](screenshots/profiles.png)
+
+Each CV can target a different opportunity. The career source (education, experience, projects, and skills) is shared, while each CV keeps its own headline and summary.
 
 ## Guided reflection
 

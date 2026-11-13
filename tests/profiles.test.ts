@@ -13,6 +13,8 @@ describe('profile storage model', () => {
   it('keeps starter profiles isolated', () => {
     expect(starterProfiles).toHaveLength(2);
     expect(starterProfiles[0].answers).not.toBe(starterProfiles[1].answers);
+    expect(starterProfiles.map((profile) => profile.name)).toEqual(['CTO', 'Consultor']);
+    expect(starterProfiles[1].role).toContain('Una Salud');
   });
   it('creates a usable profile with a stable id', () => {
     const profile = createProfile('  Mi transición  ');
@@ -58,8 +60,8 @@ describe('profile storage model', () => {
   });
 
   it('deletes profiles without mutating the input list', () => {
-    const result = deleteProfile(starterProfiles, 'alex');
-    expect(result.map((profile) => profile.id)).toEqual(['career-change']);
+    const result = deleteProfile(starterProfiles, 'cto');
+    expect(result.map((profile) => profile.id)).toEqual(['consultor']);
     expect(starterProfiles).toHaveLength(2);
   });
 
@@ -68,9 +70,21 @@ describe('profile storage model', () => {
       exportProfile(starterProfiles[0], [{ section: 'skills', values: { Skill: 'TypeScript' } }]),
     );
     expect(payload.schemaVersion).toBe(1);
-    expect(payload.profile.id).toBe('alex');
+    expect(payload.profile.id).toBe('cto');
     expect(payload.records).toHaveLength(1);
     expect(payload.exportedAt).toBeTruthy();
+  });
+
+  it('migrates only the untouched example profiles to CTO and Consultor', async () => {
+    const { migrateStarterProfiles } = await import('../lib/profiles/storage');
+    expect(
+      migrateStarterProfiles([
+        { ...starterProfiles[0], id: 'alex', name: 'Alex Morgan', role: 'Perfil de ejemplo' },
+        { ...starterProfiles[1], id: 'career-change', name: 'Cambio de carrera', role: 'Borrador' },
+      ]).map((profile) => profile.name),
+    ).toEqual(['CTO', 'Consultor']);
+    const customized = [{ ...starterProfiles[0], id: 'alex', name: 'Mi perfil' }];
+    expect(migrateStarterProfiles(customized)).toBe(customized);
   });
 
   it('removes profile data and settings from browser storage', () => {

@@ -22,11 +22,13 @@ export default function Home() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   useEffect(() => setProfiles(loadProfiles()), []);
+  const [role, setRole] = useState('');
   const add = () => {
-    const next = [...profiles, createProfile(name)];
+    const next = [...profiles, { ...createProfile(name), role: role.trim() || 'Nuevo CV' }];
     saveProfiles(next);
     setProfiles(next);
     setName('');
+    setRole('');
     setOpen(false);
   };
   return (
@@ -42,13 +44,13 @@ export default function Home() {
           </Box>
         </Stack>
         <Typography variant="overline" color="primary.main" fontWeight={800} letterSpacing=".14em">
-          {t('workspaceKicker')}
+          {t('cvProfilesKicker')}
         </Typography>
         <Typography variant="h1" sx={{ fontSize: { xs: 40, md: 58 }, maxWidth: 680, mt: 1 }}>
-          {t('profilesTitle')}
+          {t('cvProfilesTitle')}
         </Typography>
         <Typography color="text.secondary" fontSize={18} sx={{ mt: 2, mb: 5 }}>
-          {t('profilesDescription')}
+          {t('cvProfilesDescription')}
         </Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} flexWrap="wrap">
           {profiles.map((p) => (
@@ -68,16 +70,10 @@ export default function Home() {
             >
               <Avatar sx={{ bgcolor: p.color, mb: 3 }}>{p.name[0]}</Avatar>
               <Typography variant="h6" fontWeight={800}>
-                {p.name === 'Cambio de carrera' ? t('careerChangeProfile') : p.name}
+                {p.name}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {p.role === 'Perfil de ejemplo'
-                  ? t('exampleProfile')
-                  : p.role === 'Borrador'
-                    ? t('draftProfile')
-                    : p.role === 'Nuevo recorrido'
-                      ? t('newJourney')
-                      : p.role}
+                {p.role}
               </Typography>
               <Typography variant="body2" color="primary.main" fontWeight={700} sx={{ mt: 3 }}>
                 {t('openProfile')}
@@ -100,10 +96,10 @@ export default function Home() {
               +
             </Typography>
             <Typography variant="h6" fontWeight={800}>
-              {t('newProfile')}
+              {t('newCv')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t('startFresh')}
+              {t('separateCv')}
             </Typography>
           </Paper>
         </Stack>
@@ -118,6 +114,14 @@ export default function Home() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             sx={{ mt: 1 }}
+          />
+          <TextField
+            fullWidth
+            label={t('cvFocus')}
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            placeholder={t('cvFocusExample')}
+            sx={{ mt: 2 }}
           />
         </DialogContent>
         <DialogActions>

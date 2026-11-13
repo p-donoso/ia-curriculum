@@ -2,7 +2,8 @@
 
 ## Current scope
 
-- [x] Multiple browser-local profiles with isolated answers and records.
+- [x] Multiple browser-local CVs with separate goals and tailored headlines/summaries.
+- [x] One shared career source for education, experience, projects, and skills.
 - [x] Guided reflection with bounded answers and a completion state.
 - [x] Editable education, experience, project, and skill records.
 - [x] Optional BYOT streaming for OpenAI-compatible chat-completions APIs.
