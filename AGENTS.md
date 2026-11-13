@@ -1,13 +1,5 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# IA Curriculum — agent instructions
 
-## This is NOT the Next.js you know
+IA Curriculum is a local-first app for creating multiple CVs from one shared career source. New installations start without profiles or career data. Preserve saved user data and keep shared career records separate from CV-specific content.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
-
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
-
-<!-- END:nextjs-agent-rules -->
-
-## Repository guidance
-
-Read and follow the applicable rules in [`.agents/rules/`](.agents/rules/README.md). Keep this file as an index; maintain detailed guidance in the rule files.
+Before making changes, read [`.agents/rules/README.md`](.agents/rules/README.md) and follow the applicable rules. Keep detailed, durable guidance in `.agents/rules/`; use this file as the project entry point.
