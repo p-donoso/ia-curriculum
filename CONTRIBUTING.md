@@ -5,10 +5,11 @@ Thanks for helping improve IA Curriculum.
 ## Before opening a pull request
 
 1. Open an issue for a substantial change so the intended behavior is clear.
-2. Create a focused branch and keep the patch scoped to one concern.
+2. Create a short-lived `feat/`, `fix/`, or `docs/` branch and keep the patch scoped to one concern. Do not push directly to `main`.
 3. Install the locked dependencies with `npm ci`.
 4. Run `npm run check` and `npm run test:e2e` for UI or navigation changes.
 5. Update documentation when behavior, setup, privacy, or limitations change.
+6. Open a pull request to `main`; check `gh pr checks` and merge only after the applicable checks pass.
 
 ## Pull request description
 
