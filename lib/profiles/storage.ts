@@ -4,6 +4,12 @@ export type Profile = {
   role: string;
   color: string;
   answers: string[];
+  sourceProfileId?: string;
+  targetDescription?: string;
+  cvTemplateId?: string;
+  cvPaletteId?: string;
+  cvCustomPalette?: { primary: string; secondary: string; text: string; muted: string; paper: string };
+  cvShowSectionIcons?: boolean;
   createdAt: string;
   updatedAt: string;
 };
@@ -54,8 +60,21 @@ function isProfile(value: unknown): value is Profile {
     typeof profile.color === 'string' &&
     Array.isArray(profile.answers) &&
     profile.answers.every((answer) => typeof answer === 'string') &&
+    (profile.sourceProfileId === undefined || typeof profile.sourceProfileId === 'string') &&
+    (profile.targetDescription === undefined || typeof profile.targetDescription === 'string') &&
+    (profile.cvTemplateId === undefined || typeof profile.cvTemplateId === 'string') &&
+    (profile.cvPaletteId === undefined || typeof profile.cvPaletteId === 'string') &&
+    (profile.cvCustomPalette === undefined || isPalette(profile.cvCustomPalette)) &&
+    (profile.cvShowSectionIcons === undefined || typeof profile.cvShowSectionIcons === 'boolean') &&
     typeof profile.createdAt === 'string' &&
     typeof profile.updatedAt === 'string'
+  );
+}
+function isPalette(value: unknown): value is NonNullable<Profile['cvCustomPalette']> {
+  if (!value || typeof value !== 'object') return false;
+  const palette = value as Record<string, unknown>;
+  return ['primary', 'secondary', 'text', 'muted', 'paper'].every(
+    (key) => typeof palette[key] === 'string' && /^#[0-9a-f]{6}$/i.test(palette[key] as string),
   );
 }
 /** Persist profile metadata and reflection answers in browser local storage. */
@@ -63,14 +82,19 @@ export function saveProfiles(profiles: Profile[]): void {
   window.localStorage.setItem(PROFILES_STORAGE_KEY, JSON.stringify(profiles));
 }
 /** Create a profile with a trimmed name and empty reflection answers. */
-export function createProfile(name: string): Profile {
+export function createProfile(
+  name: string,
+  options: { role?: string; sourceProfileId?: string; targetDescription?: string } = {},
+): Profile {
   const now = new Date().toISOString();
   return {
     id: `profile-${Date.now()}`,
     name: name.trim() || 'Nuevo perfil',
-    role: 'Nuevo recorrido',
+    role: options.role?.trim() || 'Nuevo recorrido',
     color: '#315efb',
     answers: [],
+    sourceProfileId: options.sourceProfileId,
+    targetDescription: options.targetDescription?.trim() || undefined,
     createdAt: now,
     updatedAt: now,
   };

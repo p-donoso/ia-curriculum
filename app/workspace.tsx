@@ -32,6 +32,7 @@ import { loadProfiles, saveProfiles } from '../lib/profiles/storage';
 import { loadAiConfig } from '../lib/ai/config';
 import { getSystemPrompt } from '../lib/ai/prompts';
 import { streamChat } from '../lib/ai/client';
+import { CvTailor } from './components/cv-tailor';
 import { LocaleToggle, useI18n } from './i18n';
 const sectionLinks = [
   [SpaceDashboardRoundedIcon, 'dashboard', '/'],
@@ -76,9 +77,11 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
   const [loading, setLoading] = useState(false);
   const [aiConfigured, setAiConfigured] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [currentProfile, setCurrentProfile] = useState<ReturnType<typeof loadProfiles>[number] | null>(null);
   const abortRef = useRef<AbortController | undefined>(undefined);
   useEffect(() => {
     const profile = loadProfiles().find((item) => item.id === profileId);
+    setCurrentProfile(profile ?? null);
     setMessages(profile?.answers ?? []);
     const aiConfig = loadAiConfig(profileId);
     setAiConfigured(Boolean(aiConfig.token && aiConfig.endpoint));
@@ -287,6 +290,14 @@ export default function Workspace({ profileId = 'alex' }: { profileId?: string }
         </Drawer>
         <Box className="soft-grid" sx={{ minHeight: 'calc(100vh - 72px)', px: { xs: 2, md: 5 }, py: { xs: 3, md: 5 } }}>
           <Box sx={{ maxWidth: 1180, mx: 'auto' }}>
+            {currentProfile?.sourceProfileId && currentProfile.targetDescription && (
+              <CvTailor
+                profileId={profileId}
+                sourceProfileId={currentProfile.sourceProfileId}
+                focus={currentProfile.role}
+                targetDescription={currentProfile.targetDescription}
+              />
+            )}
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
               justifyContent="space-between"

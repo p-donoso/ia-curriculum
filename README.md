@@ -7,12 +7,14 @@ A local-first workspace for maintaining one shared career history and creating f
 ## What it does
 
 - Create multiple CVs with separate goals, headlines, and summaries.
+- Start a targeted CV from an existing profile and a project or role description; review AI-suggested headline and summary before saving.
 - Maintain education, experience, projects, and skills once as a shared source.
 - Switch between Spanish and English; the preference is saved in the browser.
 - Guide a short reflection flow and save answers on this device.
 - Organize education, experience, projects, and skills as editable records.
 - Review AI-assisted proposals before saving them as profile facts.
 - View a LinkedIn-oriented summary and print a CV to PDF.
+- Choose among three print-ready layouts and preset or custom color palettes, saved separately for each CV.
 - Export a profile and its records as JSON, or delete its local data.
 - Use the app without an AI provider; AI credentials are optional.
 
@@ -27,6 +29,18 @@ Explore the [full screenshot gallery](docs/showcase/README.md). Screens use the 
 **English CV preview**
 
 ![Printable CV preview with sample content](docs/showcase/screenshots/cv-preview.png)
+
+**CV layouts and preset colors**
+
+![CV template and palette selectors](docs/showcase/screenshots/cv-template-palette-picker.png)
+
+**Custom colors with the sidebar layout**
+
+![Custom palette applied to the sidebar CV layout](docs/showcase/screenshots/cv-custom-palette.png)
+
+**Editorial layout with violet palette**
+
+![Violet palette applied to the editorial CV layout](docs/showcase/screenshots/cv-editorial-palette.png)
 
 No installation is needed to [browse the screenshot gallery](docs/showcase/README.md).
 
@@ -109,3 +123,5 @@ For a suspected vulnerability, use GitHub's **Report a vulnerability** feature o
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+The CV interface bundles Canada 1500 (CC0-1.0) and Material Icons (Apache-2.0); see `public/fonts/` and the package license for their notices.

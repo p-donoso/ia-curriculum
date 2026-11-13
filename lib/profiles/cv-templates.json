@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "id": "red-banner",
+      "nameKey": "cvTemplateRed",
+      "descriptionKey": "cvTemplateRedDescription",
+      "layout": "single",
+      "header": "split-banner",
+      "heading": "dotted",
+      "colors": {
+        "primary": "#c33f49",
+        "secondary": "#f5d9dc",
+        "text": "#252525",
+        "muted": "#5b5b5b",
+        "paper": "#ffffff"
+      }
+    },
+    {
+      "id": "sidebar",
+      "nameKey": "cvTemplateSidebar",
+      "descriptionKey": "cvTemplateSidebarDescription",
+      "layout": "sidebar",
+      "header": "dark-band",
+      "heading": "thin",
+      "colors": {
+        "primary": "#343a46",
+        "secondary": "#f0f1f3",
+        "text": "#272a30",
+        "muted": "#62666e",
+        "paper": "#ffffff"
+      }
+    },
+    {
+      "id": "editorial",
+      "nameKey": "cvTemplateEditorial",
+      "descriptionKey": "cvTemplateEditorialDescription",
+      "layout": "single",
+      "header": "centered",
+      "heading": "rule",
+      "colors": {
+        "primary": "#111111",
+        "secondary": "#e8e8e8",
+        "text": "#202020",
+        "muted": "#5c5c5c",
+        "paper": "#ffffff"
+      }
+    }
+  ]
+}

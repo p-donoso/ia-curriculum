@@ -1,12 +1,14 @@
 # Privacy and bring-your-own-token
 
-IA Curriculum has no server-side user database or provider proxy. The app stores CVs and their tailored text, answers, and a shared career source in the current browser's `localStorage`. Education, experience, projects, and skills are shared by all CVs; basic information, headline, summary, and AI settings belong to each CV. Clearing browser site data removes that information. There is no sync or backup. Existing per-CV career records are copied into the shared source on first use; legacy copies remain in local storage until browser data is cleared.
+IA Curriculum has no server-side user database or provider proxy. The app stores CVs and their tailored text, answers, appearance preferences, and a shared career source in the current browser's `localStorage`. Education, experience, projects, and skills are shared by all CVs; basic information, headline, summary, AI settings, template, and palette belong to each CV. Clearing browser site data removes that information. There is no sync or backup. Existing per-CV career records are copied into the shared source on first use; legacy copies remain in local storage until browser data is cleared.
 
 ## AI requests
 
 AI is optional. Without a configured token and endpoint, the guided flow makes no network request. With AI configured, the browser sends submitted answers to the selected OpenAI-compatible provider. The provider can process and retain the data according to its own policies. A provider must allow browser access through CORS.
 
 The token is sent only in the HTTPS request's `Authorization` header (or to a local HTTP endpoint). It is held in the current tab's `sessionStorage`, which clears when the browser session ends. Same-origin scripts can access it while that session is open, so use a trusted device and keep the app and dependencies current. This storage choice reduces persistence; it does not defend against cross-site scripting or malicious browser extensions.
+
+When tailoring a CV, the app asks before sending its goal, project description, education, experience, projects, and skills to the provider configured on the selected source CV. Email, phone, location, and other contact fields are excluded from this request. The suggested headline and summary remain a draft until the user reviews and saves them.
 
 ## User controls
 

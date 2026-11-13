@@ -9,27 +9,48 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
 import { createProfile, loadProfiles, Profile, saveProfiles } from '../lib/profiles/storage';
+import { createRecord, loadRecords, saveRecord } from '../lib/profiles/records';
 import { LocaleToggle, useI18n } from './i18n';
+import { useRouter } from 'next/navigation';
 export default function Home() {
   const { t } = useI18n();
+  const router = useRouter();
   const [profiles, setProfiles] = useState<Profile[]>([]);
   const [open, setOpen] = useState(false);
   const [name, setName] = useState('');
   useEffect(() => setProfiles(loadProfiles()), []);
   const [role, setRole] = useState('');
+  const [sourceProfileId, setSourceProfileId] = useState('cto');
+  const [targetDescription, setTargetDescription] = useState('');
   const add = () => {
-    const next = [...profiles, { ...createProfile(name), role: role.trim() || 'Nuevo CV' }];
+    const profile = createProfile(name, { role, sourceProfileId, targetDescription });
+    const next = [...profiles, profile];
     saveProfiles(next);
     setProfiles(next);
+    if (sourceProfileId) {
+      for (const record of loadRecords(sourceProfileId, 'basic')) {
+        saveRecord(profile.id, createRecord('basic', { ...record.values }));
+      }
+    }
     setName('');
     setRole('');
+    setTargetDescription('');
     setOpen(false);
+    router.push(`/profiles/${profile.id}`);
+  };
+  const openCreate = () => {
+    setSourceProfileId(profiles.find((profile) => profile.id === 'cto')?.id ?? profiles[0]?.id ?? '');
+    setOpen(true);
   };
   return (
     <Box component="main" sx={{ minHeight: '100vh', bgcolor: '#f5f7fb', p: { xs: 3, md: 8 } }}>
@@ -82,7 +103,7 @@ export default function Home() {
           ))}
           <Paper
             component="button"
-            onClick={() => setOpen(true)}
+            onClick={openCreate}
             sx={{
               p: 3,
               width: { sm: 280 },
@@ -121,6 +142,36 @@ export default function Home() {
             value={role}
             onChange={(e) => setRole(e.target.value)}
             placeholder={t('cvFocusExample')}
+            sx={{ mt: 2 }}
+          />
+          <FormControl fullWidth sx={{ mt: 2 }}>
+            <InputLabel id="source-profile-label">{t('baseCv')}</InputLabel>
+            <Select
+              labelId="source-profile-label"
+              label={t('baseCv')}
+              value={sourceProfileId}
+              onChange={(event) => setSourceProfileId(event.target.value)}
+            >
+              <MenuItem value="">{t('startWithoutSource')}</MenuItem>
+              {profiles.map((profile) => (
+                <MenuItem value={profile.id} key={profile.id}>
+                  {profile.name}
+                </MenuItem>
+              ))}
+            </Select>
+            <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5 }}>
+              {t('baseCvHelp')}
+            </Typography>
+          </FormControl>
+          <TextField
+            fullWidth
+            multiline
+            minRows={4}
+            label={t('projectDescription')}
+            value={targetDescription}
+            onChange={(event) => setTargetDescription(event.target.value)}
+            helperText={t('projectDescriptionHelp')}
+            inputProps={{ maxLength: 20000 }}
             sx={{ mt: 2 }}
           />
         </DialogContent>

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "palettes": [
+    {
+      "id": "classic",
+      "nameKey": "cvPaletteClassic",
+      "colors": {
+        "primary": "#315e79",
+        "secondary": "#e7eff3",
+        "text": "#252a30",
+        "muted": "#5c6670",
+        "paper": "#ffffff"
+      }
+    },
+    {
+      "id": "coral",
+      "nameKey": "cvPaletteCoral",
+      "colors": {
+        "primary": "#c33f49",
+        "secondary": "#f5d9dc",
+        "text": "#252525",
+        "muted": "#5b5b5b",
+        "paper": "#ffffff"
+      }
+    },
+    {
+      "id": "forest",
+      "nameKey": "cvPaletteForest",
+      "colors": {
+        "primary": "#27634f",
+        "secondary": "#e1eee8",
+        "text": "#252b28",
+        "muted": "#5b6862",
+        "paper": "#ffffff"
+      }
+    },
+    {
+      "id": "violet",
+      "nameKey": "cvPaletteViolet",
+      "colors": {
+        "primary": "#62518a",
+        "secondary": "#ece8f4",
+        "text": "#292633",
+        "muted": "#635e70",
+        "paper": "#ffffff"
+      }
+    },
+    {
+      "id": "slate",
+      "nameKey": "cvPaletteSlate",
+      "colors": {
+        "primary": "#343a46",
+        "secondary": "#f0f1f3",
+        "text": "#272a30",
+        "muted": "#62666e",
+        "paper": "#ffffff"
+      }
+    }
+  ]
+}

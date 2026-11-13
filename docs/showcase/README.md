@@ -1,6 +1,6 @@
 # Screenshot gallery
 
-These screens use fictional sample data generated in a temporary browser session. They do not contain real profile information or provider credentials. The profile-selector and CV screenshots are legacy captures from before the shared-source workflow; follow the text below for the current behavior.
+These screens use fictional sample data generated in a temporary browser session. They do not contain real profile information or provider credentials. Older profile and CV screens are illustrative captures from before the shared-source workflow; follow the text below for the current behavior.
 
 All screenshots show the English interface for a consistent walkthrough.
 
@@ -59,6 +59,22 @@ Optional provider and local-data settings:
 Printable English CV:
 
 ![CV preview](screenshots/cv-preview.png)
+
+The current CV preview offers Franja coral, Panel lateral, and Editorial layouts, five preset palettes, and five editable custom colors. Layout and palette are saved per CV. The selector and applied examples below use fictional content.
+
+Template and palette selectors:
+
+![CV template and palette selectors](screenshots/cv-template-palette-picker.png)
+
+Custom palette applied to Panel lateral:
+
+![Custom palette applied to the sidebar CV layout](screenshots/cv-custom-palette.png)
+
+Violet palette applied to Editorial:
+
+![Violet palette applied to the editorial CV layout](screenshots/cv-editorial-palette.png)
+
+Definitions are in `lib/profiles/cv-templates.json` and `lib/profiles/cv-palettes.json`.
 
 Mobile navigation:
 
