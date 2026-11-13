@@ -1,29 +1,29 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 
 test.describe('navegación principal', () => {
   test('permite recorrer los destinos del workspace', async ({ page }) => {
-    await page.goto('/profiles/alex');
+    await page.goto('/profiles/test-profile');
     await expect(page.getByRole('heading', { name: 'Construyamos tu próximo paso.' })).toBeVisible();
     await page.getByRole('link', { name: 'Información básica' }).click();
-    await expect(page).toHaveURL(/\/profiles\/alex\/basic$/);
+    await expect(page).toHaveURL(/\/profiles\/test-profile\/basic$/);
     await expect(page.getByRole('heading', { name: 'Información básica' })).toBeVisible();
-    await page.goto('/profiles/alex');
+    await page.goto('/profiles/test-profile');
     await page.getByRole('link', { name: 'Educación' }).click();
-    await expect(page).toHaveURL(/\/profiles\/alex\/education$/);
-    await page.goto('/profiles/alex');
+    await expect(page).toHaveURL(/\/profiles\/test-profile\/education$/);
+    await page.goto('/profiles/test-profile');
     await page.getByRole('link', { name: 'Configuración' }).last().click();
-    await expect(page).toHaveURL(/\/profiles\/alex\/settings$/);
+    await expect(page).toHaveURL(/\/profiles\/test-profile\/settings$/);
   });
 
   test('abre la configuración BYOT y avanza la conversación', async ({ page }) => {
-    await page.goto('/profiles/alex');
-    await page.goto('/profiles/alex/settings');
-    await expect(page).toHaveURL(/\/profiles\/alex\/settings$/);
+    await page.goto('/profiles/test-profile');
+    await page.goto('/profiles/test-profile/settings');
+    await expect(page).toHaveURL(/\/profiles\/test-profile\/settings$/);
     await expect(page.getByRole('heading', { name: 'Configuración' })).toBeVisible();
   });
 
   test('edita, persiste y restaura las semillas de prompts por perfil', async ({ page }) => {
-    await page.goto('/profiles/alex/settings');
+    await page.goto('/profiles/test-profile/settings');
     const reflection = page.getByLabel('Reflexión guiada');
     await expect(reflection).toHaveValue(/Eres IA Curriculum/);
     await expect(reflection).not.toHaveAttribute('readonly');
@@ -39,7 +39,7 @@ test.describe('navegación principal', () => {
   });
 
   test('avanza la pregunta después de cada respuesta', async ({ page }) => {
-    await page.goto('/profiles/alex');
+    await page.goto('/profiles/test-profile');
     await expect(page.getByText('El trabajo que buscas', { exact: true }).first()).toBeVisible();
     await expect(page.getByText('0% completado')).toBeVisible();
     const question = page.getByRole('heading', {
@@ -59,7 +59,7 @@ test.describe('navegación principal', () => {
 
   test('finishes the reflection, restores it after reload, and resets only after confirmation', async ({ page }) => {
     page.on('dialog', (dialog) => dialog.accept());
-    await page.goto('/profiles/alex');
+    await page.goto('/profiles/test-profile');
     const question = page.getByRole('heading', {
       name: /¿Qué tipo de trabajo|¿Qué problema te gusta resolver|Cuéntame un momento|Ya tienes una base/,
     });
@@ -91,31 +91,31 @@ test.describe('navegación principal', () => {
 
   test('opens working mobile navigation and closes after route selection', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('/profiles/alex');
+    await page.goto('/profiles/test-profile');
     const menu = page.getByRole('button', { name: 'Abrir menú de navegación' });
     await menu.click();
     const drawer = page.locator('.MuiDrawer-root');
     await expect(drawer).toBeVisible();
     await drawer.getByRole('link', { name: 'Proyectos' }).click();
-    await expect(page).toHaveURL(/\/profiles\/alex\/projects$/);
+    await expect(page).toHaveURL(/\/profiles\/test-profile\/projects$/);
     await expect(page.locator('.MuiDrawer-root')).toHaveCount(0);
     await expect(page.getByRole('heading', { name: 'Proyectos' })).toBeVisible();
   });
 
   test('exports profile data and deletes all local data after confirmation', async ({ page }) => {
     page.on('dialog', (dialog) => dialog.accept());
-    await page.goto('/profiles/alex/settings');
+    await page.goto('/profiles/test-profile/settings');
     const downloadPromise = page.waitForEvent('download');
     await page.getByRole('button', { name: 'Exportar datos del perfil' }).click();
     const download = await downloadPromise;
-    expect(download.suggestedFilename()).toBe('ia-curriculum-alex.json');
+    expect(download.suggestedFilename()).toBe('ia-curriculum-test-profile.json');
     await page.getByRole('button', { name: 'Eliminar perfil y datos' }).click();
     await expect(page).toHaveURL('/');
-    await expect(page.getByText('Alex Morgan')).toHaveCount(0);
+    await expect(page.getByText('Sample Candidate')).toHaveCount(0);
   });
 
   test('permite crear, editar y eliminar un registro de experiencia', async ({ page }) => {
-    await page.goto('/profiles/alex/experience');
+    await page.goto('/profiles/test-profile/experience');
     await page.getByRole('button', { name: 'Agregar registro' }).click();
     await page.getByLabel('Cargo').fill('Coordinador');
     await page.getByRole('button', { name: 'Guardar cambios' }).click();

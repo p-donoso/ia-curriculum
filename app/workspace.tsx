@@ -44,7 +44,7 @@ const sectionLinks = [
   [DescriptionOutlinedIcon, 'linkedin', '/linkedin'],
   [DescriptionOutlinedIcon, 'curriculum', '/curriculum'],
 ] as const;
-export default function Workspace({ profileId = 'alex' }: { profileId?: string }) {
+export default function Workspace({ profileId }: { profileId: string }) {
   const { locale, t } = useI18n();
   const steps =
     locale === 'es'

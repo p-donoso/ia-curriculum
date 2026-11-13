@@ -1,13 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import AxeBuilder from '@axe-core/playwright';
 
 test('primary routes have no serious or critical accessibility violations', async ({ page }) => {
   for (const route of [
     '/',
-    '/profiles/alex',
-    '/profiles/alex/basic',
-    '/profiles/alex/settings',
-    '/profiles/alex/curriculum',
+    '/profiles/test-profile',
+    '/profiles/test-profile/basic',
+    '/profiles/test-profile/settings',
+    '/profiles/test-profile/curriculum',
   ]) {
     await page.goto(route);
     if (route.endsWith('/settings')) {
@@ -21,7 +21,7 @@ test('primary routes have no serious or critical accessibility violations', asyn
   }
 
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('/profiles/alex');
+  await page.goto('/profiles/test-profile');
   await page.getByRole('button', { name: 'Abrir menú de navegación' }).click();
   const mobileMenuResults = await new AxeBuilder({ page }).analyze();
   expect(

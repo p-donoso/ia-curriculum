@@ -1,6 +1,6 @@
 # Workspace y navegación
 
-1. La persona aterriza en `/` y selecciona un CV según su objetivo.
+1. La persona aterriza en `/`. En una instalación nueva no hay CVs ni información precargada; puede crear su primer CV vacío. Si ya existen CVs, selecciona uno según su objetivo.
 2. El perfil abre su dashboard en `/profiles/:id`.
 3. El workspace ofrece Información básica, Educación, Experiencia laboral, Proyectos, LinkedIn y Curriculum.
 4. Las secciones estructuradas navegan a `/profiles/:id/:section`.

@@ -30,7 +30,7 @@ export default function Home() {
   const [name, setName] = useState('');
   useEffect(() => setProfiles(loadProfiles()), []);
   const [role, setRole] = useState('');
-  const [sourceProfileId, setSourceProfileId] = useState('cto');
+  const [sourceProfileId, setSourceProfileId] = useState('');
   const [targetDescription, setTargetDescription] = useState('');
   const add = () => {
     const profile = createProfile(name, { role, sourceProfileId, targetDescription });
@@ -49,7 +49,7 @@ export default function Home() {
     router.push(`/profiles/${profile.id}`);
   };
   const openCreate = () => {
-    setSourceProfileId(profiles.find((profile) => profile.id === 'cto')?.id ?? profiles[0]?.id ?? '');
+    setSourceProfileId(profiles[0]?.id ?? '');
     setOpen(true);
   };
   return (
@@ -71,7 +71,7 @@ export default function Home() {
           {t('cvProfilesTitle')}
         </Typography>
         <Typography color="text.secondary" fontSize={18} sx={{ mt: 2, mb: 5 }}>
-          {t('cvProfilesDescription')}
+          {t(profiles.length === 0 ? 'cvProfilesEmptyDescription' : 'cvProfilesDescription')}
         </Typography>
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} flexWrap="wrap">
           {profiles.map((p) => (
@@ -117,10 +117,10 @@ export default function Home() {
               +
             </Typography>
             <Typography variant="h6" fontWeight={800}>
-              {t('newCv')}
+              {t(profiles.length === 0 ? 'createFirstCv' : 'newCv')}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {t('separateCv')}
+              {t(profiles.length === 0 ? 'createFirstCvDescription' : 'separateCv')}
             </Typography>
           </Paper>
         </Stack>

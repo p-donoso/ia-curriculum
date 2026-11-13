@@ -53,7 +53,7 @@ npm ci
 npm run dev
 ```
 
-Open <http://localhost:3000>. The app creates CTO and Consultant CVs in browser storage. Existing example data is migrated into a shared source on first use. No backend or database is required.
+Open <http://localhost:3000>. A new installation starts with no profiles or career data; add your own CVs and records. Existing browser profiles are preserved, and legacy career records are consolidated into the shared source on first read. No backend or database is required.
 
 ### Optional AI provider
 

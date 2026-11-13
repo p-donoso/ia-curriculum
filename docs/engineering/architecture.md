@@ -28,7 +28,7 @@ flowchart TD
 
 ## Data flow
 
-CV metadata, answers, CV-specific basic information (including headline and summary), appearance preferences (template, palette, section icons), and the shared career source remain in browser `localStorage`. Legacy per-CV education, experience, project, and skill records are consolidated into the shared source on first read; originals are retained in local storage. Provider tokens are kept in `sessionStorage` for the current tab session. When configured, the browser sends reflection answers directly to the selected provider; the application server does not proxy or store those requests. Public `NEXT_PUBLIC_AI_*` settings are build-time defaults and must never contain secrets.
+CV metadata, answers, CV-specific basic information (including headline and summary), appearance preferences (template, palette, section icons), and the shared career source remain in browser `localStorage`. A new installation starts with empty profile and career stores; existing profiles are read without renaming or replacement. Legacy per-CV education, experience, project, and skill records are consolidated into the shared source on first read; originals are retained in local storage. Provider tokens are kept in `sessionStorage` for the current tab session. When configured, the browser sends reflection answers directly to the selected provider; the application server does not proxy or store those requests. Public `NEXT_PUBLIC_AI_*` settings are build-time defaults and must never contain secrets.
 
 ## Boundaries
 
