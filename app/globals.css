@@ -735,7 +735,8 @@ body {
   font-size: 16px;
   line-height: 1;
 }
-.cv-document .cv-entry, .cv-document .cv-education {
+.cv-document .cv-entry,
+.cv-document .cv-education {
   margin-bottom: 16px;
   break-inside: avoid;
 }
@@ -759,12 +760,13 @@ body {
 }
 @media print {
   .cv-document .cv-section-title {
-  break-after: avoid;
-}
-  .cv-document p, .cv-document li {
-  orphans: 3;
-  widows: 3;
-}
+    break-after: avoid;
+  }
+  .cv-document p,
+  .cv-document li {
+    orphans: 3;
+    widows: 3;
+  }
 }
 .cv-document .cv-section-icon {
   transform: translateY(1px);

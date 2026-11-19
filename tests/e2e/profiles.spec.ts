@@ -8,6 +8,8 @@ emptyTest('starts empty and allows creating the first profile', async ({ page })
   await page.getByRole('button', { name: /Crear un CV/ }).click();
   await page.getByLabel('Nombre del perfil').fill('Mi perfil');
   await page.getByRole('button', { name: 'Crear perfil' }).click();
+  await expect(page).toHaveURL(/\/profiles\/profile-/);
+  await page.getByRole('link', { name: 'Cambiar de perfil' }).click();
   await expect(page.getByRole('link', { name: /Mi perfil/ })).toBeVisible();
 });
 
@@ -22,7 +24,7 @@ test('landing permite seleccionar un perfil y volver al switcher', async ({ page
 test('cambia el idioma de toda la app y conserva la preferencia', async ({ page }) => {
   await page.goto('/');
   await page.getByRole('button', { name: 'Switch language to English' }).click();
-  await expect(page.getByRole('heading', { name: 'Which profile would you like to work on?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'One resume for each goal.' })).toBeVisible();
   await expect(page.getByRole('link', { name: /Sample Candidate/ })).toBeVisible();
 
   await page.getByRole('link', { name: /Sample Candidate/ }).click();

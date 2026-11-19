@@ -13,7 +13,9 @@ const fixtureProfile = {
 export const test = base.extend({
   page: async ({ page }, use) => {
     await page.addInitScript((profile) => {
-      localStorage.setItem('ia-curriculum:profiles:v1', JSON.stringify([profile]));
+      if (!localStorage.getItem('ia-curriculum:profiles:v1')) {
+        localStorage.setItem('ia-curriculum:profiles:v1', JSON.stringify([profile]));
+      }
     }, fixtureProfile);
     await use(page);
   },
