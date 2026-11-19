@@ -78,7 +78,13 @@ export function CvTailor({
 
   return (
     <Paper sx={{ p: { xs: 2.5, md: 3 }, mb: 3, border: '1px solid #d8e2f0', bgcolor: '#fff' }}>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems={{ sm: 'center' }}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          alignItems: { sm: 'center' },
+        }}
+      >
         <AutoAwesomeRoundedIcon color="secondary" />
         <BoxCopy title={t('tailorTitle')} description={t('tailorDescription')} />
         <Button
@@ -130,10 +136,23 @@ export function CvTailor({
         <DialogTitle>{t('tailorConfirmTitle')}</DialogTitle>
         <DialogContent>
           <Typography>{t('tailorConfirmDescription')}</Typography>
-          <Typography variant="body2" sx={{ mt: 1, overflowWrap: 'anywhere' }} color="text.secondary">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              mt: 1,
+              overflowWrap: 'anywhere',
+            }}
+          >
             {config.endpoint}
           </Typography>
-          <Typography variant="body2" sx={{ mt: 2 }} color="text.secondary">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              mt: 2,
+            }}
+          >
             {t('tailorDataNotice')}
           </Typography>
         </DialogContent>
@@ -151,8 +170,19 @@ export function CvTailor({
 function BoxCopy({ title, description }: { title: string; description: string }) {
   return (
     <Stack sx={{ flex: 1 }}>
-      <Typography fontWeight={800}>{title}</Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography
+        sx={{
+          fontWeight: 800,
+        }}
+      >
+        {title}
+      </Typography>
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'text.secondary',
+        }}
+      >
         {description}
       </Typography>
     </Stack>

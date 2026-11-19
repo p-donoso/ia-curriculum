@@ -50,6 +50,11 @@ def link(match, page):
 
 for page in pages:
     content = re.sub(r'\]\(([^\s)]+)\)', lambda m: link(m, page), page.read_text())
+    def html_url(match):
+        prefix, target = match.group(1), match.group(2)
+        converted = re.sub(r'\]\(([^\s)]+)\)', lambda m: link(m, page), '](' + target + ')')
+        return prefix + converted[2:-1] + '"'
+    content = re.sub(r'((?:src|href)=")([^"]+)"', html_url, content)
     (out / (names[page.resolve()] + '.md')).write_text(content)
 for asset in source.rglob('*'):
     if asset.is_file() and asset.suffix != '.md':

@@ -1,4 +1,6 @@
-# Deliverable audit — IA Curriculum
+# Historical deliverable audit — IA Curriculum
+
+This is an earlier audit snapshot, not a current readiness certification. Test counts, coverage, and implementation details below describe that review. See [current architecture](architecture.md), [test coverage](test-coverage.md), and [roadmap](../product/roadmap.md) for maintained status.
 
 **Verdict:** ship-ready (**8/10**)
 **Baseline comparison:** better than the ~2/10 reference — working product flows, real unit and browser tests, and an OSS-ready repository structure.

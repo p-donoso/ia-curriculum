@@ -55,25 +55,58 @@ export default function Home() {
   return (
     <Box component="main" sx={{ minHeight: '100vh', bgcolor: '#f5f7fb', p: { xs: 3, md: 8 } }}>
       <Box sx={{ maxWidth: 1050, mx: 'auto' }}>
-        <Stack direction="row" alignItems="center" spacing={1.2} sx={{ mb: 8 }}>
+        <Stack
+          direction="row"
+          spacing={1.2}
+          sx={{
+            alignItems: 'center',
+            mb: 8,
+          }}
+        >
           <Avatar sx={{ bgcolor: '#1740c4', fontWeight: 800 }}>I</Avatar>
-          <Typography fontSize={22} fontWeight={800} color="primary.main">
+          <Typography
+            sx={{
+              fontSize: 22,
+              fontWeight: 800,
+              color: 'primary.main',
+            }}
+          >
             IA Curriculum
           </Typography>
           <Box sx={{ ml: 'auto' }}>
             <LocaleToggle />
           </Box>
         </Stack>
-        <Typography variant="overline" color="primary.main" fontWeight={800} letterSpacing=".14em">
+        <Typography
+          variant="overline"
+          sx={{
+            color: 'primary.main',
+            fontWeight: 800,
+            letterSpacing: '.14em',
+          }}
+        >
           {t('cvProfilesKicker')}
         </Typography>
         <Typography variant="h1" sx={{ fontSize: { xs: 40, md: 58 }, maxWidth: 680, mt: 1 }}>
           {t('cvProfilesTitle')}
         </Typography>
-        <Typography color="text.secondary" fontSize={18} sx={{ mt: 2, mb: 5 }}>
+        <Typography
+          sx={{
+            color: 'text.secondary',
+            fontSize: 18,
+            mt: 2,
+            mb: 5,
+          }}
+        >
           {t(profiles.length === 0 ? 'cvProfilesEmptyDescription' : 'cvProfilesDescription')}
         </Typography>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} flexWrap="wrap">
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={2}
+          sx={{
+            flexWrap: 'wrap',
+          }}
+        >
           {profiles.map((p) => (
             <Paper
               key={p.id}
@@ -90,13 +123,30 @@ export default function Home() {
               }}
             >
               <Avatar sx={{ bgcolor: p.color, mb: 3 }}>{p.name[0]}</Avatar>
-              <Typography variant="h6" fontWeight={800}>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 800,
+                }}
+              >
                 {p.name}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {p.role}
               </Typography>
-              <Typography variant="body2" color="primary.main" fontWeight={700} sx={{ mt: 3 }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'primary.main',
+                  fontWeight: 700,
+                  mt: 3,
+                }}
+              >
                 {t('openProfile')}
               </Typography>
             </Paper>
@@ -113,13 +163,28 @@ export default function Home() {
               cursor: 'pointer',
             }}
           >
-            <Typography variant="h3" color="primary.main">
+            <Typography
+              variant="h3"
+              sx={{
+                color: 'primary.main',
+              }}
+            >
               +
             </Typography>
-            <Typography variant="h6" fontWeight={800}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: 800,
+              }}
+            >
               {t(profiles.length === 0 ? 'createFirstCv' : 'newCv')}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {t(profiles.length === 0 ? 'createFirstCvDescription' : 'separateCv')}
             </Typography>
           </Paper>
@@ -159,7 +224,13 @@ export default function Home() {
                 </MenuItem>
               ))}
             </Select>
-            <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5 }}>
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+                mt: 0.5,
+              }}
+            >
               {t('baseCvHelp')}
             </Typography>
           </FormControl>
@@ -171,7 +242,7 @@ export default function Home() {
             value={targetDescription}
             onChange={(event) => setTargetDescription(event.target.value)}
             helperText={t('projectDescriptionHelp')}
-            inputProps={{ maxLength: 20000 }}
+            slotProps={{ htmlInput: { maxLength: 20000 } }}
             sx={{ mt: 2 }}
           />
         </DialogContent>
