@@ -5,7 +5,7 @@
 ## Configuración inicial
 
 1. En GitHub, abre Wiki y crea la primera página. Esto inicializa el repositorio `ia-curriculum.wiki.git`.
-2. Crea un token con acceso de escritura a la wiki. Un PAT clásico necesita el alcance `public_repo` para este repositorio público; para repositorios privados, `repo`. Usa una cuenta con permiso de escritura y autoriza SSO si corresponde. No guardes el token en archivos.
+2. Crea un token con acceso de escritura a la wiki. Limita un token fine-grained a este repositorio con Contents: Read and write (Metadata: Read se incluye automáticamente). Usa una cuenta con permiso de escritura y autoriza SSO si corresponde. No guardes el token en archivos.
 3. Añádelo como secreto de Actions llamado `WIKI_TOKEN` en Settings → Secrets and variables → Actions. El workflow no depende de que `GITHUB_TOKEN` pueda escribir en el repositorio separado de la wiki.
 4. Integra el workflow en `main` y ejecútalo desde Actions. Confirma que Home, navegación e imágenes abren correctamente.
 
