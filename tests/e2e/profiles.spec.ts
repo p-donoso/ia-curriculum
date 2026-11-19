@@ -23,7 +23,7 @@ test('landing permite seleccionar un perfil y volver al switcher', async ({ page
 });
 test('cambia el idioma de toda la app y conserva la preferencia', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Switch language to English' }).click();
+  await page.getByRole('button', { name: 'ES — Switch language to English' }).click();
   await expect(page.getByRole('heading', { name: 'One resume for each goal.' })).toBeVisible();
   await expect(page.getByRole('link', { name: /Sample Candidate/ })).toBeVisible();
 

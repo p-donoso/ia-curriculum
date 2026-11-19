@@ -17,3 +17,7 @@ The dependency update resolved the earlier Next.js/minimatch advisories; audit r
 ## Extending coverage
 
 Review `coverage/index.html`, prioritize deterministic behavior and real failure cases, then add browser checks for user-visible flows. Run `npm run check` and `npm run test:e2e` before release. Do not lower thresholds to hide regressions. PDF appearance still requires visual review across browsers and paper sizes.
+
+## Accessible language switch
+
+axe 4.14 detects label/content mismatches. The language button includes its visible ES or EN text in its accessible name, followed by the action in the destination language. Browser tests use the complete accessible name; the accessibility rule remains enabled.

@@ -470,7 +470,7 @@ export function LocaleToggle() {
       size="small"
       variant="outlined"
       onClick={toggle}
-      aria-label={locale === 'es' ? 'Switch language to English' : 'Cambiar idioma a español'}
+      aria-label={locale === 'es' ? 'ES — Switch language to English' : 'EN — Cambiar idioma a español'}
     >
       {locale.toUpperCase()}
     </Button>
