@@ -1,6 +1,6 @@
 # Screenshot gallery
 
-These screens use fictional sample data generated in a temporary browser session. They do not contain real profile information or provider credentials. Older profile and CV screens are illustrative captures from before the shared-source workflow; follow the text below for the current behavior.
+These screens use fictional sample data generated in a temporary browser session. They do not contain real profile information or provider credentials. All images were refreshed against the MUI 9 application on November 19, 2026.
 
 All screenshots show the English interface for a consistent walkthrough.
 
@@ -60,13 +60,13 @@ Printable English CV:
 
 ![CV preview](screenshots/cv-preview.png)
 
-The current CV preview offers Franja coral, Panel lateral, and Editorial layouts, five preset palettes, and five editable custom colors. Layout and palette are saved per CV. The selector and applied examples below use fictional content.
+The current CV preview offers Coral banner, Sidebar, and Editorial layouts, five preset palettes, and five editable custom colors. Layout and palette are saved per CV. The selector and applied examples below use fictional content.
 
 Template and palette selectors:
 
 ![CV template and palette selectors](screenshots/cv-template-palette-picker.png)
 
-Custom palette applied to Panel lateral:
+Custom palette applied to Sidebar:
 
 ![Custom palette applied to the sidebar CV layout](screenshots/cv-custom-palette.png)
 
@@ -80,6 +80,21 @@ Mobile navigation:
 
 ![Mobile navigation](screenshots/mobile-navigation.png)
 
-## CV layout update
+## Print styling
 
-The existing CV screenshots are illustrative and predate the spacing, icon alignment, vertical sidebar skills, and dark sidebar changes. They do not verify the current print layout. See [workspace behavior](../product/workspace.md).
+This capture uses Chromium print media for the Editorial layout. It checks the visible print styles, not pagination across every paper size or browser.
+
+![Resume with print media styles](screenshots/cv-print.png)
+
+## Refreshing screenshots
+
+Build and start the application, then run the isolated synthetic-data capture script:
+
+```bash
+npm run build
+npm run start -- -p 3012
+# In another terminal:
+node scripts/capture-showcase.mjs
+```
+
+Set `SHOWCASE_URL` to use another local server. The script creates a fresh browser context, seeds fictional records, walks through reflection and section views, and captures all gallery images in English. It does not read an existing browser profile or use provider credentials. Review the generated images before committing them.

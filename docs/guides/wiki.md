@@ -1,22 +1,22 @@
-# Publicación de la wiki
+# Publishing the GitHub Wiki
 
-`docs/` es la fuente oficial. El workflow `Publish documentation wiki` publica sus Markdown, imágenes y navegación cuando cambian en `main`, o al ejecutarlo manualmente. La sincronización reemplaza el contenido de la wiki: los cambios deben hacerse mediante PR en este repositorio.
+`docs/` is the source of truth. The `Publish documentation wiki` workflow publishes Markdown, assets, and navigation when documentation changes reach `main`, or when manually dispatched. It replaces wiki contents; edit documentation through repository pull requests.
 
-## Configuración inicial
+## Initial setup
 
-1. En GitHub, abre Wiki y crea la primera página. Esto inicializa el repositorio `ia-curriculum.wiki.git`.
-2. Crea un token con acceso de escritura a la wiki. Limita un token fine-grained a este repositorio con Contents: Read and write (Metadata: Read se incluye automáticamente). Usa una cuenta con permiso de escritura y autoriza SSO si corresponde. No guardes el token en archivos.
-3. Añádelo como secreto de Actions llamado `WIKI_TOKEN` en Settings → Secrets and variables → Actions. El workflow no depende de que `GITHUB_TOKEN` pueda escribir en el repositorio separado de la wiki.
-4. Integra el workflow en `main` y ejecútalo desde Actions. Confirma que Home, navegación e imágenes abren correctamente.
+1. Create the first page in GitHub Wiki to initialize `ia-curriculum.wiki.git`.
+2. Create a fine-grained token limited to this repository with Contents: Read and write and automatic Metadata: Read. Use an account with write access and authorize SSO if required. Never store the token in files.
+3. Save it as the Actions secret `WIKI_TOKEN`. The workflow does not assume `GITHUB_TOKEN` can write to the separate wiki repository.
+4. Merge the workflow into `main` and run it from Actions. Check Home, navigation, images, and the publication log. Token access must be verified by a successful push; a configured secret alone does not prove access.
 
-## Generación local
+## Local generation
 
-Desde la raíz del repositorio:
+From the repository root:
 
 ```bash
 python3 scripts/build-wiki.py --output /tmp/ia-curriculum-wiki-preview --repository p-donoso/ia-curriculum
 ```
 
-El destino debe estar vacío y fuera del repositorio. `docs/README.md` se convierte en Home; las demás páginas usan su ruta separada por `--`. Los enlaces Markdown locales se adaptan a páginas de wiki, recursos o archivos de `main`. Los enlaces externos y anclas locales se conservan. No se interpretan enlaces HTML ni referencias Markdown de estilo `[nombre][id]`; usa enlaces Markdown directos para contenido publicado.
+The destination must be empty and outside the repository. `docs/README.md` becomes Home; other page paths use `--` separators. Direct Markdown links are rewritten to wiki pages, assets, or source files on `main`. External links and local anchors are preserved. HTML links and reference-style Markdown links are not rewritten; use direct Markdown links in published content.
 
-La generación local no publica. El workflow usa un clon temporal, conserva `.git`, elimina páginas obsoletas y omite commits sin cambios. Nunca imprime el token ni lo incorpora a la URL remota.
+Local generation does not publish. The workflow uses a temporary clone, preserves `.git`, removes obsolete files, and skips unchanged commits. It never prints the token or embeds it in the remote URL.
