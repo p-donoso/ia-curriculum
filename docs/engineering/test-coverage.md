@@ -22,4 +22,6 @@ La suite E2E tiene 19 pruebas para selección y creación de perfiles, navegaci�
 
 Pasaron 41 pruebas unitarias y 19 E2E. El fixture de navegador siembra el perfil solo cuando no existe, para comprobar persistencia real tras recargas. Las pruebas de creación e idioma siguen la navegación y el encabezado actuales. Se eliminó una variable sin usar de la prueba de registros compartidos.
 
-El build de producción y TypeScript pasaron. Next.js emitió un aviso de vulnerabilidad en la versión instalada; el primer build se detuvo y el segundo completó con el aviso. La actualización de dependencias queda pendiente. `next-env.d.ts` volvió a sus rutas de producción al ejecutar el build.
+El build de producción y TypeScript pasaron. Next.js emitió un aviso de vulnerabilidad en la versión instalada; el primer build se detuvo y el segundo completó con el aviso. El aviso se resolvió posteriormente actualizando las dependencias del lockfile. `next-env.d.ts` volvió a sus rutas de producción al ejecutar el build.
+
+La corrección de CI actualiza el lockfile a Next.js 16.4.6, ESLint 10.15.0, typescript-eslint 8.73.0 y minimatch 11.0.9. `npm audit fix` reportó cero vulnerabilidades y `npm run check` pasó sin desactivar controles.
