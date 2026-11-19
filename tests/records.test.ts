@@ -48,7 +48,6 @@ describe('records', () => {
     vi.stubGlobal('localStorage', storage);
     const original = createRecord('experience', { Role: 'Analyst' });
     saveRecord('alex', original);
-    const sharedRecord = createRecord('experience', { Role: 'Designer' });
     const separateConfig = createRecord('basic', { Name: 'Consultant-specific' });
     saveRecord('profile-b', separateConfig);
 

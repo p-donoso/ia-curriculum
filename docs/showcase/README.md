@@ -79,3 +79,7 @@ Definitions are in `lib/profiles/cv-templates.json` and `lib/profiles/cv-palette
 Mobile navigation:
 
 ![Mobile navigation](screenshots/mobile-navigation.png)
+
+## CV layout update
+
+The existing CV screenshots are illustrative and predate the spacing, icon alignment, vertical sidebar skills, and dark sidebar changes. They do not verify the current print layout. See [workspace behavior](../product/workspace.md).

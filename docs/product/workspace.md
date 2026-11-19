@@ -19,3 +19,5 @@ La vista permite activar iconos Material en los títulos de sección; la prefere
 La navegación usa enlaces con rutas reales. En pantallas pequeñas, el botón de menú abre un drawer y se cierra al elegir una sección.
 
 Los ajustes del CV permiten exportar sus respuestas, contenido y registros como JSON o eliminarlo. Eliminar un CV no borra la fuente profesional compartida.
+
+El CV usa un espaciado común para títulos, entradas y listas. Los iconos reservan un ancho fijo y se alinean ópticamente con los encabezados. Panel lateral muestra las habilidades en vertical y usa el color principal como fondo del panel, con texto de contraste. Al imprimir, los títulos se mantienen junto al contenido siguiente, las entradas evitan dividirse y los párrafos y listas conservan al menos tres líneas cuando el navegador admite estas reglas. La paginación depende del contenido y del navegador; no se garantiza una sola página.
