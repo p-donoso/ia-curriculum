@@ -1,23 +1,13 @@
-# Workspace y navegación
+# Workspace and navigation
 
-1. La persona aterriza en `/`. En una instalación nueva no hay CVs ni información precargada; puede crear su primer CV vacío. Si ya existen CVs, selecciona uno según su objetivo.
-2. El perfil abre su dashboard en `/profiles/:id`.
-3. El workspace ofrece Información básica, Educación, Experiencia laboral, Proyectos, LinkedIn y Curriculum.
-4. Las secciones estructuradas navegan a `/profiles/:id/:section`.
-5. Educación, experiencia, proyectos y habilidades forman una fuente compartida entre todos los CV. Información básica (incluidos titular y resumen) permanece asociada al CV seleccionado.
-6. Cada sección de datos permite crear, editar, colapsar y eliminar registros.
-7. LinkedIn muestra proyectos y habilidades; Curriculum presenta una vista imprimible para guardar como PDF.
-8. El switcher de la barra lateral vuelve al selector de CVs.
-9. La configuración y el objetivo permanecen asociados al CV seleccionado.
+A new installation opens `/` with no CVs or career data. Create a resume from scratch, or select an existing one. Each resume opens at `/profiles/:id`; structured sections use `/profiles/:id/:section`.
 
-Al crear un CV se puede elegir otro como base y pegar la descripción de un proyecto o cargo. El sistema copia los datos básicos editables, guarda el objetivo y reutiliza la trayectoria compartida. En el dashboard, la persona puede pedir un borrador de titular y resumen con el proveedor de IA configurado en el CV base. Antes de enviarlo, la app muestra el proveedor y las categorías de datos que compartirá; el resultado requiere revisión y confirmación.
+The workspace includes Basic information, Education, Work experience, Projects, Skills, LinkedIn, Resume, and Settings. Each data section supports creating, editing, collapsing, and deleting records. Education, experience, projects, and skills form one shared career source. Basic information, headline, summary, reflection answers, goal, AI settings, and appearance belong to the selected CV.
 
-La vista de Currículum permite elegir entre las plantillas Franja coral, Panel lateral y Editorial; seleccionar cinco paletas prediseñadas; y crear una paleta ajustando los colores principal, secundario, texto, texto suave y fondo. Plantillas y paletas tienen catálogos JSON separados (`cv-templates.json` y `cv-palettes.json`). La plantilla, paleta personalizada o predefinida y preferencia de iconos se guardan por CV y forman parte de sus metadatos exportables.
+When creating a targeted CV, users can select an existing CV as a source and paste a project or role description. The app copies editable basic information and reuses shared career records. Users can request a headline and summary draft using the source CV's configured provider. Before sending, the app identifies the provider and data categories; the draft requires review and confirmation.
 
-La vista permite activar iconos Material en los títulos de sección; la preferencia se guarda por CV y los controles no aparecen al imprimir. Canada 1500 (CC0-1.0) y Material Icons (Apache-2.0) se sirven localmente. Sus licencias están en `public/fonts/`.
+The Resume view offers Coral banner, Sidebar, and Editorial templates, five preset palettes, and five custom colors. Template and palette catalogs are separate JSON files in `lib/profiles/`. Appearance and optional Material section icons are saved per CV and included in exported metadata. Interface labels support English and Spanish; user content is not automatically translated.
 
-La navegación usa enlaces con rutas reales. En pantallas pequeñas, el botón de menú abre un drawer y se cierra al elegir una sección.
+Canada 1500 and Material Icons are served locally; license notices are in `public/fonts/`. Templates use consistent spacing, fixed icon widths, and vertical sidebar skills. Sidebar uses the primary color as its panel background with contrasting text. Print rules discourage split entries, stranded headings, and short paragraph fragments where supported by the browser. Pagination depends on content, browser, and paper size; a single page is not guaranteed.
 
-Los ajustes del CV permiten exportar sus respuestas, contenido y registros como JSON o eliminarlo. Eliminar un CV no borra la fuente profesional compartida.
-
-El CV usa un espaciado común para títulos, entradas y listas. Los iconos reservan un ancho fijo y se alinean ópticamente con los encabezados. Panel lateral muestra las habilidades en vertical y usa el color principal como fondo del panel, con texto de contraste. Al imprimir, los títulos se mantienen junto al contenido siguiente, las entradas evitan dividirse y los párrafos y listas conservan al menos tres líneas cuando el navegador admite estas reglas. La paginación depende del contenido y del navegador; no se garantiza una sola página.
+LinkedIn shows a summary, projects, and skills. Resume uses the browser print dialog to save a PDF. Settings exports JSON or deletes the selected CV without deleting shared career records. Navigation uses real route links; the mobile drawer closes after a section is selected.

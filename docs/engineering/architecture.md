@@ -37,3 +37,9 @@ CV metadata, answers, CV-specific basic information (including headline and summ
 - Provider privacy, availability, compatibility, and CORS behavior are outside this repository's control.
 - AI output is an untrusted proposal, not a verified career fact.
 - The CV uses browser print/save-to-PDF with Spanish and English labels.
+
+## Material UI 9
+
+The interface uses `@mui/material`, `@mui/icons-material`, and `@mui/material-nextjs` 9.5.0 together. The cache provider uses the Next.js 16 adapter (`v16-appRouter`). Component styles use `sx`; native TextField attributes use `slotProps.htmlInput`, preserving input length limits. Explicit white navigation text preserves contrast on dark backgrounds. Follow the [MUI v9 migration guide](https://mui.com/material-ui/migration/upgrade-to-v9/). Storage records and keys are unchanged.
+
+Migration checks passed formatting, lint, 41 unit tests, build, TypeScript, and dependency audit. Browser checks passed 18/19, including accessibility and the printable CV route; the existing intermittent JSON-download timeout passed when rerun individually. Route checks do not establish that every exported PDF layout is correct.

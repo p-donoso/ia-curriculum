@@ -10,7 +10,7 @@
 - [x] Optional BYOT streaming for OpenAI-compatible chat-completions APIs.
 - [x] Reviewable, schema-limited AI proposals.
 - [x] Profile JSON export and local profile-data deletion.
-- [x] Responsive profile navigation and printable English CV view.
+- [x] Responsive profile navigation and printable English and Spanish CV views.
 - [x] Three CV layouts, per-CV palette selection, and editable custom colors.
 - [x] Spanish and English CV interface labels and optional section icons.
 
@@ -20,7 +20,7 @@
 - [ ] Make LinkedIn output a complete editable draft.
 - [ ] Validate print layout and contrast across common browsers and paper sizes.
 - [ ] Add robust import with validation and conflict handling.
-- [ ] Add automated coverage for key user-facing flows and browser storage failure cases.
+- [ ] Expand automated coverage for storage failures, provider edge cases, and print pagination.
 
 ## Principles
 

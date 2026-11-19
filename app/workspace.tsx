@@ -146,9 +146,17 @@ export default function Workspace({ profileId }: { profileId: string }) {
         className="sidebar"
         sx={{ p: 2.5, display: { xs: 'none', md: 'flex' }, flexDirection: 'column' }}
       >
-        <Stack direction="row" spacing={1.2} alignItems="center" sx={{ px: 1, mb: 5 }}>
+        <Stack
+          direction="row"
+          spacing={1.2}
+          sx={{
+            alignItems: 'center',
+            px: 1,
+            mb: 5,
+          }}
+        >
           <Avatar sx={{ bgcolor: '#6f8cff', width: 34, height: 34, fontWeight: 800 }}>B</Avatar>
-          <Typography fontWeight={800} fontSize={21} letterSpacing="-.04em" color="white">
+          <Typography sx={{ color: '#fff', fontWeight: 800, fontSize: 21, letterSpacing: '-.04em' }}>
             IA Curriculum
           </Typography>
         </Stack>
@@ -164,8 +172,10 @@ export default function Workspace({ profileId }: { profileId: string }) {
             className="sidebar-link"
             direction="row"
             spacing={1.5}
-            alignItems="center"
-            sx={{ p: 1.2 }}
+            sx={{
+              alignItems: 'center',
+              p: 1.2,
+            }}
           >
             <SettingsOutlinedIcon fontSize="small" />
             <Typography variant="body2">{t('settings')}</Typography>
@@ -175,14 +185,19 @@ export default function Workspace({ profileId }: { profileId: string }) {
             href="/"
             direction="row"
             spacing={1.2}
-            alignItems="center"
-            sx={{ mt: 2, px: 1, textDecoration: 'none', color: 'inherit' }}
+            sx={{
+              alignItems: 'center',
+              mt: 2,
+              px: 1,
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
           >
             <Avatar sx={{ width: 30, height: 30, bgcolor: '#dbe4ff', color: '#1740c4', fontSize: 11 }}>
               {locale === 'es' ? 'TÚ' : 'YOU'}
             </Avatar>
             <Box>
-              <Typography variant="body2" color="white" fontWeight={700}>
+              <Typography variant="body2" sx={{ color: '#fff', fontWeight: 700 }}>
                 {t('changeProfile')}
               </Typography>
               <Typography variant="caption" sx={{ color: '#9ba9c2' }}>
@@ -195,9 +210,14 @@ export default function Workspace({ profileId }: { profileId: string }) {
       <Box className="main-shell">
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ height: 72, px: { xs: 2, md: 5 }, borderBottom: '1px solid #e5eaf2', bgcolor: '#fff' }}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: 72,
+            px: { xs: 2, md: 5 },
+            borderBottom: '1px solid #e5eaf2',
+            bgcolor: '#fff',
+          }}
         >
           <IconButton
             aria-label={t('openNav')}
@@ -207,14 +227,26 @@ export default function Workspace({ profileId }: { profileId: string }) {
           >
             <MenuRoundedIcon />
           </IconButton>
-          <Typography variant="body2" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              display: { xs: 'none', sm: 'block' },
+            }}
+          >
             {t('route')}{' '}
             <Box component="span" sx={{ mx: 1, color: '#c6cfdf' }}>
               /
             </Box>{' '}
             {t('careerDirection')}
           </Typography>
-          <Stack direction="row" spacing={1} alignItems="center">
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             <LocaleToggle />
             <Button
               component={Link}
@@ -239,8 +271,19 @@ export default function Workspace({ profileId }: { profileId: string }) {
             aria-label={t('navLabel')}
             sx={{ width: 290, minHeight: '100%', p: 2.5, bgcolor: '#101b32' }}
           >
-            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 4 }}>
-              <Typography id="mobile-navigation-title" component="span" fontWeight={800} fontSize={20} color="white">
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                mb: 4,
+              }}
+            >
+              <Typography
+                id="mobile-navigation-title"
+                component="span"
+                sx={{ color: '#fff', fontWeight: 800, fontSize: 20 }}
+              >
                 IA Curriculum
               </Typography>
               <IconButton aria-label={t('closeNav')} onClick={() => setMobileNavOpen(false)} sx={{ color: 'white' }}>
@@ -259,8 +302,11 @@ export default function Workspace({ profileId }: { profileId: string }) {
               className="sidebar-link"
               direction="row"
               spacing={1.5}
-              alignItems="center"
-              sx={{ p: 1.2, textDecoration: 'none' }}
+              sx={{
+                alignItems: 'center',
+                p: 1.2,
+                textDecoration: 'none',
+              }}
             >
               <SettingsOutlinedIcon fontSize="small" />
               <Typography variant="body2">{t('settings')}</Typography>
@@ -271,14 +317,19 @@ export default function Workspace({ profileId }: { profileId: string }) {
               onClick={() => setMobileNavOpen(false)}
               direction="row"
               spacing={1.2}
-              alignItems="center"
-              sx={{ mt: 2, px: 1, textDecoration: 'none', color: 'inherit' }}
+              sx={{
+                alignItems: 'center',
+                mt: 2,
+                px: 1,
+                textDecoration: 'none',
+                color: 'inherit',
+              }}
             >
               <Avatar sx={{ width: 30, height: 30, bgcolor: '#dbe4ff', color: '#1740c4', fontSize: 11 }}>
                 {locale === 'es' ? 'TÚ' : 'YOU'}
               </Avatar>
               <Box>
-                <Typography variant="body2" color="white" fontWeight={700}>
+                <Typography variant="body2" sx={{ color: '#fff', fontWeight: 700 }}>
                   {t('changeProfile')}
                 </Typography>
                 <Typography variant="caption" sx={{ color: '#9ba9c2' }}>
@@ -300,12 +351,21 @@ export default function Workspace({ profileId }: { profileId: string }) {
             )}
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
-              justifyContent="space-between"
-              alignItems={{ sm: 'center' }}
-              sx={{ mb: 4 }}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: { sm: 'center' },
+                mb: 4,
+              }}
             >
               <Box>
-                <Typography variant="overline" color="primary.main" fontWeight={800} letterSpacing=".12em">
+                <Typography
+                  variant="overline"
+                  sx={{
+                    color: 'primary.main',
+                    fontWeight: 800,
+                    letterSpacing: '.12em',
+                  }}
+                >
                   {t('workspaceKicker')}
                 </Typography>
                 <Typography variant="h1" sx={{ fontSize: { xs: 34, md: 44 }, mt: 0.5 }}>
@@ -353,13 +413,29 @@ export default function Workspace({ profileId }: { profileId: string }) {
                 ],
               ].map((x, i) => (
                 <Paper key={x[0]} sx={{ p: 2.5, flex: 1, border: '1px solid #e5eaf2' }}>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {x[0]}
                   </Typography>
-                  <Typography variant="h5" fontWeight={800} sx={{ mt: 1 }}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 800,
+                      mt: 1,
+                    }}
+                  >
                     {x[1]}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {x[2]}
                   </Typography>
                   {i === 0 && (
@@ -375,12 +451,25 @@ export default function Workspace({ profileId }: { profileId: string }) {
             </Stack>
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '250px 1fr' }, gap: 3 }}>
               <Paper sx={{ p: 2.5, border: '1px solid #e5eaf2', height: 'fit-content' }}>
-                <Typography variant="caption" color="text.secondary" fontWeight={800}>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: 'text.secondary',
+                    fontWeight: 800,
+                  }}
+                >
                   {t('journey')}
                 </Typography>
                 <Stack spacing={1.5} sx={{ mt: 2 }}>
                   {steps.map((s, i) => (
-                    <Stack key={s.title} direction="row" spacing={1.3} alignItems="center">
+                    <Stack
+                      key={s.title}
+                      direction="row"
+                      spacing={1.3}
+                      sx={{
+                        alignItems: 'center',
+                      }}
+                    >
                       <Avatar
                         sx={{
                           width: 28,
@@ -393,10 +482,20 @@ export default function Workspace({ profileId }: { profileId: string }) {
                         {i + 1}
                       </Avatar>
                       <Box>
-                        <Typography variant="body2" fontWeight={700}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            fontWeight: 700,
+                          }}
+                        >
                           {s.title}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: 'text.secondary',
+                          }}
+                        >
                           {s.note}
                         </Typography>
                       </Box>
@@ -405,13 +504,31 @@ export default function Workspace({ profileId }: { profileId: string }) {
                 </Stack>
               </Paper>
               <Paper sx={{ p: { xs: 2.5, md: 4 }, border: '1px solid #e5eaf2' }}>
-                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 3 }}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    alignItems: 'center',
+                    mb: 3,
+                  }}
+                >
                   <Avatar sx={{ bgcolor: '#eef0ff', color: '#5b3db8', width: 36, height: 36 }}>
                     <AutoAwesomeRoundedIcon fontSize="small" />
                   </Avatar>
                   <Box>
-                    <Typography fontWeight={800}>{t('discovery')}</Typography>
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography
+                      sx={{
+                        fontWeight: 800,
+                      }}
+                    >
+                      {t('discovery')}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'text.secondary',
+                      }}
+                    >
                       {t('assistantReady')}
                     </Typography>
                   </Box>
@@ -426,19 +543,42 @@ export default function Workspace({ profileId }: { profileId: string }) {
                 </Stack>
                 {(prompts[messages.length] ?? null) ? (
                   <>
-                    <Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontWeight: 800,
+                        mb: 1,
+                      }}
+                    >
                       {prompts[messages.length] ?? null}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: 'text.secondary',
+                        mb: 2,
+                      }}
+                    >
                       {t('promptLead')}
                     </Typography>
                   </>
                 ) : (
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="h5" fontWeight={800} sx={{ mb: 1 }}>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontWeight: 800,
+                        mb: 1,
+                      }}
+                    >
                       {t('baseProfile')}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: 'text.secondary',
+                      }}
+                    >
                       {t('reviewAnswers')}
                     </Typography>
                     <Button component={Link} href={`/profiles/${profileId}/basic`} sx={{ mt: 1 }}>
@@ -465,13 +605,25 @@ export default function Workspace({ profileId }: { profileId: string }) {
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value)}
                     placeholder={t('placeholder')}
-                    inputProps={{ maxLength: maxAnswerLength }}
+                    slotProps={{ htmlInput: { maxLength: maxAnswerLength } }}
                     sx={{ '& .MuiOutlinedInput-root': { bgcolor: '#fbfcfe' } }}
                   />
                 )}
                 {(prompts[messages.length] ?? null) && (
-                  <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mt: 2 }}>
-                    <Typography variant="caption" color="text.secondary">
+                  <Stack
+                    direction="row"
+                    sx={{
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      mt: 2,
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'text.secondary',
+                      }}
+                    >
                       {answer.length}/{maxAnswerLength} {t('chars')} · {t('savedOnContinue')}{' '}
                       {aiConfigured ? t('sendToProvider') : t('configureAi')}
                     </Typography>
@@ -510,11 +662,19 @@ function renderSectionLinks(profileId: string, pathname: string, t: (key: string
             className={`sidebar-link ${active ? 'active' : ''}`}
             direction="row"
             spacing={1.5}
-            alignItems="center"
-            sx={{ p: 1.2, textDecoration: 'none' }}
+            sx={{
+              alignItems: 'center',
+              p: 1.2,
+              textDecoration: 'none',
+            }}
           >
             <Icon fontSize="small" />
-            <Typography variant="body2" fontWeight={active ? 700 : 400}>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: active ? 700 : 400,
+              }}
+            >
               {t(key)}
             </Typography>
           </Stack>

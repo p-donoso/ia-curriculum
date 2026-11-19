@@ -1,11 +1,7 @@
-# Sesión guiada y edición contextual
+# Guided reflection and contextual editing
 
-1. El chat aparece arriba de cada sección estructurada y conoce el contexto actual.
-2. La persona puede escribir libremente y proponer un registro para confirmar.
-3. La persona puede pedir preguntas de seguimiento orientadas a resultados, acciones y aprendizajes.
-4. Las respuestas de reflexión se guardan con el CV activo. Educación, experiencia, proyectos y habilidades se guardan en la fuente compartida; la información básica y sus textos enfocados pertenecen al CV.
-5. La siguiente pregunta se deriva del número de respuestas mediante `nextPrompt`; al finalizar, se ofrece revisar el perfil.
-6. Las respuestas se guardan en el perfil al continuar. Una sesión nueva limpia esas respuestas solo después de confirmación.
-7. Si hay un token y endpoint configurados, continuar envía la conversación al proveedor; la interfaz lo informa junto al campo de respuesta.
+The dashboard guides three reflection questions about direction, contribution, and evidence. Answers are saved with the active CV when users continue. `nextPrompt` derives the next question from the saved answer count. Completion offers a profile review; starting a new session clears answers only after confirmation.
 
-El asistente debe reflejar, preguntar y pedir evidencia; no debe inventar logros ni completar información no confirmada. Sus respuestas son temporales y no se guardan como hechos.
+Structured sections include a contextual assistant. Users can write freely, request follow-up questions about outcomes and learning, and prepare a record proposal. Proposals require review and confirmation. Education, experience, projects, and skills are shared career records; basic information belongs to the selected CV.
+
+With a configured token and endpoint, continuing sends the conversation to the chosen provider. The interface explains this beside the answer field. Without AI configuration, answers remain local and the flow continues. Assistant replies are temporary suggestions, never verified facts; the assistant must ask for evidence rather than invent achievements.

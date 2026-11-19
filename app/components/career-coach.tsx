@@ -59,11 +59,29 @@ export function CareerCoach({
   }
   return (
     <Paper sx={{ p: 2.5, mb: 3, border: '1px solid #dbe3f0', background: 'linear-gradient(135deg,#f3f5ff,#fff)' }}>
-      <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+          mb: 1.5,
+        }}
+      >
         <AutoAwesomeRoundedIcon color="secondary" />
         <Box>
-          <Typography fontWeight={800}>{t('assistant')}</Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography
+            sx={{
+              fontWeight: 800,
+            }}
+          >
+            {t('assistant')}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {t('tellAbout')} {title.toLowerCase()}.
           </Typography>
         </Box>
@@ -85,22 +103,48 @@ export function CareerCoach({
         </Button>
       </Stack>
       {error && (
-        <Typography role="status" color="warning.dark" sx={{ mt: 1 }}>
+        <Typography
+          role="status"
+          sx={{
+            color: 'warning.dark',
+            mt: 1,
+          }}
+        >
           {error}
         </Typography>
       )}
       {questions && (
         <Box sx={{ mt: 2, p: 2, bgcolor: '#fff', borderRadius: 2 }}>
-          <Typography variant="body2" fontWeight={700}>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 700,
+            }}
+          >
             {t('toComplement')}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             • {t('resultQuestion')}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             • {t('personalQuestion')}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             • {t('learnedQuestion')}
           </Typography>
         </Box>

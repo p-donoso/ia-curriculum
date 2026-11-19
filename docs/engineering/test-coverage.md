@@ -1,31 +1,19 @@
-# Cobertura de pruebas
+# Test coverage
 
-El proyecto usa dos métricas complementarias:
+`npm run test:coverage` uses Vitest and V8 for library unit and integration coverage. Reports are generated under `coverage/` as text, HTML, and LCOV. `npm run test:e2e` uses Chromium and a production build for user flows; it does not measure React line coverage.
 
-- `npm run test:coverage` calcula cobertura de código de las unidades puras y de integración bajo `lib/` con Vitest y V8. Genera `coverage/` en formatos texto, HTML y LCOV.
-- `npm run test:e2e` valida recorridos completos en un navegador real con Playwright. Playwright no mide cobertura de líneas de React por defecto; su cobertura se reporta como cobertura de flujos.
+The latest library run passed 41 tests across eight files: 85% lines, 80.24% statements, 73.01% functions, and 73.78% branches. Thresholds are configured in `vitest.config.mts`. These figures do not imply complete AI, storage, or template coverage.
 
-La última ejecución cubrió `lib/` con 85% de líneas, 80.24% de statements, 73.01% de funciones y 73.78% de branches. Los umbrales de protección son 40%, 30%, 25% y 15% respectivamente; revisa `vitest.config.mts` para el detalle.
+The 19 browser tests cover CV creation and selection, desktop/mobile navigation, reflection persistence/reset, provider settings, accessibility, JSON export/deletion, experience records, and profile/resume views. The fixture initializes missing storage without overwriting answers on reload. Tests follow the current creation redirect and English selector heading.
 
-## Flujos cubiertos
+## Known intermittent failure
 
-La suite E2E tiene 19 pruebas para selección y creación de perfiles, navegación móvil y escritorio, conversación guiada, persistencia/reinicio, configuración BYOT, accesibilidad (axe/WCAG 2 AA), exportación y eliminación local, CRUD de experiencia y vistas de perfil/CV.
+The JSON-download test has occasionally timed out in the full parallel suite and passed individually. The MUI migration run passed 18/19, including accessibility; its failed download test passed on a focused rerun. Keep this visible rather than treating retries as proof of reliability.
 
-## Cómo aumentar el número
+## Dependency checks
 
-1. Ejecutar `npm run test:coverage` y revisar `coverage/index.html` para localizar líneas sin cubrir.
-2. Agregar primero pruebas unitarias para lógica determinista (`lib/`) y luego una prueba E2E para el recorrido visible.
-3. Ejecutar `npm run test:e2e` antes de subir cambios para detectar regresiones de navegación.
-4. No bajar los umbrales para ocultar una regresión; si una capacidad aumenta el alcance, agregar sus casos límite.
+The dependency update resolved the earlier Next.js/minimatch advisories; audit reported zero vulnerabilities at that run. Re-run audit before release. TypeScript is constrained to `~6.0.3`, within typescript-eslint 8.73.0's supported range (`>=4.8.4 <6.1.0`). TypeScript 7 remains tracked in issue #12. The Node type major is unchanged. No forced peer-dependency overrides are used.
 
-## Revisión del 19 de noviembre de 2026
+## Extending coverage
 
-Pasaron 41 pruebas unitarias y 19 E2E. El fixture de navegador siembra el perfil solo cuando no existe, para comprobar persistencia real tras recargas. Las pruebas de creación e idioma siguen la navegación y el encabezado actuales. Se eliminó una variable sin usar de la prueba de registros compartidos.
-
-El build de producción y TypeScript pasaron. Next.js emitió un aviso de vulnerabilidad en la versión instalada; el primer build se detuvo y el segundo completó con el aviso. El aviso se resolvió posteriormente actualizando las dependencias del lockfile. `next-env.d.ts` volvió a sus rutas de producción al ejecutar el build.
-
-La corrección de CI actualiza el lockfile a Next.js 16.4.6, ESLint 10.15.0, typescript-eslint 8.73.0 y minimatch 11.0.9. `npm audit fix` reportó cero vulnerabilidades y `npm run check` pasó sin desactivar controles.
-
-## Actualización de TypeScript
-
-TypeScript se actualiza a `~6.0.3`, compatible con `typescript-eslint@8.73.0` (`>=4.8.4 <6.1.0`). Se conserva la versión mayor de `@types/node`. TypeScript 7 sigue pendiente en el issue #12 hasta contar con soporte oficial del tooling; no se usan `--force` ni `--legacy-peer-deps`. El rango `~6.0.3` permite parches 6.0 sin saltar automáticamente a 6.1.
+Review `coverage/index.html`, prioritize deterministic behavior and real failure cases, then add browser checks for user-visible flows. Run `npm run check` and `npm run test:e2e` before release. Do not lower thresholds to hide regressions. PDF appearance still requires visual review across browsers and paper sizes.

@@ -10,7 +10,7 @@ IA Curriculum is an actively developed personal project, not a production servic
 - Browser storage and client-side token storage are not a security boundary against same-origin script execution.
 - AI proposals remain temporary until reviewed and saved by the user.
 - CV labels follow the selected interface language; user-provided profile text is not translated automatically.
-- Server-side PDF export and design templates are future work.
+- Three browser-print templates are available. Server-side PDF export remains future work.
 
 ## Release checks
 
