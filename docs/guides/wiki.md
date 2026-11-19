@@ -17,6 +17,6 @@ From the repository root:
 python3 scripts/build-wiki.py --output /tmp/ia-curriculum-wiki-preview --repository p-donoso/ia-curriculum
 ```
 
-The destination must be empty and outside the repository. `docs/README.md` becomes Home; other page paths use `--` separators. Direct Markdown links are rewritten to wiki pages, assets, or source files on `main`. External links and local anchors are preserved. HTML links and reference-style Markdown links are not rewritten; use direct Markdown links in published content.
+The destination must be empty and outside the repository. `docs/README.md` becomes Home; other page paths use `--` separators. Direct Markdown links are rewritten to wiki pages, assets, or source files on `main`. External links and local anchors are preserved. HTML image `src` and anchor `href` URLs are also rewritten so compact screenshots work in the wiki. Reference-style Markdown links are not rewritten; use direct links in published content.
 
 Local generation does not publish. The workflow uses a temporary clone, preserves `.git`, removes obsolete files, and skips unchanged commits. It never prints the token or embeds it in the remote URL.

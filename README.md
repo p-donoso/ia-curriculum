@@ -18,31 +18,13 @@ A local-first workspace for maintaining one shared career history and creating f
 - Export a profile and its records as JSON, or delete its local data.
 - Use the app without an AI provider; AI credentials are optional.
 
-## Screenshots
+## User journey
 
-Explore the [full screenshot gallery](docs/showcase/README.md). Screens use the English interface and fictional profile data; they contain no real user information.
+Create a focused CV, reflect on your goal, add evidence to your shared career history, then review and export. The [visual walkthrough](docs/showcase/README.md) shows each step using fictional data in the current English interface. Click an image for full size.
 
-**Guided reflection**
+[<img src="docs/showcase/screenshots/journey-create.png" alt="Create a resume with a goal and role description" width="360">](docs/showcase/screenshots/journey-create.png)
 
-![IA Curriculum guided reflection](docs/showcase/screenshots/reflection-start.png)
-
-**English CV preview**
-
-![Printable CV preview with sample content](docs/showcase/screenshots/cv-preview.png)
-
-**CV layouts and preset colors**
-
-![CV template and palette selectors](docs/showcase/screenshots/cv-template-palette-picker.png)
-
-**Custom colors with the sidebar layout**
-
-![Custom palette applied to the sidebar CV layout](docs/showcase/screenshots/cv-custom-palette.png)
-
-**Editorial layout with violet palette**
-
-![Violet palette applied to the editorial CV layout](docs/showcase/screenshots/cv-editorial-palette.png)
-
-No installation is needed to [browse the screenshot gallery](docs/showcase/README.md).
+[<img src="docs/showcase/screenshots/cv-custom-palette.png" alt="Review the resume with a sidebar layout" width="480">](docs/showcase/screenshots/cv-custom-palette.png)
 
 ## Quick start
 

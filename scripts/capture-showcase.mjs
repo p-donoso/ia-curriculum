@@ -21,6 +21,23 @@ const profile = {
 };
 const record = (id, section, values) => ({ id, section, values, createdAt: now, updatedAt: now });
 await page.goto(base);
+await page.evaluate(() => {
+  localStorage.clear();
+  localStorage.setItem('ia-curriculum:locale:v1', 'en');
+});
+await page.reload();
+await page.getByRole('button', { name: /Create a resume/ }).waitFor();
+await page.screenshot({ path: output + 'journey-start.png', fullPage: true, animations: 'disabled' });
+await page.getByRole('button', { name: /Create a resume/ }).click();
+await page.getByLabel('Profile name', { exact: true }).fill('Jordan Taylor');
+await page.getByLabel('Goal or focus', { exact: true }).fill('Platform engineering');
+await page
+  .getByLabel('Project or role description', { exact: true })
+  .fill('Build reliable cloud platforms and improve automated delivery for product teams.');
+await page.getByRole('dialog').screenshot({ path: output + 'journey-create.png', animations: 'disabled' });
+await page.getByRole('button', { name: 'Create profile', exact: true }).click();
+await page.getByRole('heading', { name: 'Let’s shape your next step.' }).waitFor();
+
 await page.evaluate(
   ({ profile }) => {
     localStorage.clear();
