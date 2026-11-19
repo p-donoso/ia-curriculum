@@ -25,3 +25,7 @@ Pasaron 41 pruebas unitarias y 19 E2E. El fixture de navegador siembra el perfil
 El build de producción y TypeScript pasaron. Next.js emitió un aviso de vulnerabilidad en la versión instalada; el primer build se detuvo y el segundo completó con el aviso. El aviso se resolvió posteriormente actualizando las dependencias del lockfile. `next-env.d.ts` volvió a sus rutas de producción al ejecutar el build.
 
 La corrección de CI actualiza el lockfile a Next.js 16.4.6, ESLint 10.15.0, typescript-eslint 8.73.0 y minimatch 11.0.9. `npm audit fix` reportó cero vulnerabilidades y `npm run check` pasó sin desactivar controles.
+
+## Actualización de TypeScript
+
+TypeScript se actualiza a `~6.0.3`, compatible con `typescript-eslint@8.73.0` (`>=4.8.4 <6.1.0`). Se conserva la versión mayor de `@types/node`. TypeScript 7 sigue pendiente en el issue #12 hasta contar con soporte oficial del tooling; no se usan `--force` ni `--legacy-peer-deps`. El rango `~6.0.3` permite parches 6.0 sin saltar automáticamente a 6.1.
