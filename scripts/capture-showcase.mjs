@@ -1,3 +1,4 @@
+/* global process, URL, localStorage, document, HTMLElement, console */
 /** Refresh documentation images using synthetic data in an isolated browser. */
 import { chromium } from '@playwright/test';
 import { mkdir } from 'node:fs/promises';
@@ -21,7 +22,7 @@ const profile = {
 const record = (id, section, values) => ({ id, section, values, createdAt: now, updatedAt: now });
 await page.goto(base);
 await page.evaluate(
-  ({ profile, now }) => {
+  ({ profile }) => {
     localStorage.clear();
     localStorage.setItem('ia-curriculum:locale:v1', 'en');
     localStorage.setItem(
