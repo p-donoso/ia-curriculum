@@ -24,3 +24,5 @@ Guides are grouped by purpose. Start with the [visual walkthrough](showcase/READ
 
 - [Release checklist](guides/release.md)
 - [Open-source readiness](guides/open-source-readiness.md)
+
+- [Publicación automática de la wiki](guides/wiki.md)
