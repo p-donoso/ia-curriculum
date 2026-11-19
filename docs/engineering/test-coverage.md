@@ -29,3 +29,7 @@ La corrección de CI actualiza el lockfile a Next.js 16.4.6, ESLint 10.15.0, typ
 ## Actualización de TypeScript
 
 TypeScript se actualiza a `~6.0.3`, compatible con `typescript-eslint@8.73.0` (`>=4.8.4 <6.1.0`). Se conserva la versión mayor de `@types/node`. TypeScript 7 sigue pendiente en el issue #12 hasta contar con soporte oficial del tooling; no se usan `--force` ni `--legacy-peer-deps`. El rango `~6.0.3` permite parches 6.0 sin saltar automáticamente a 6.1.
+
+## Accessible language switch
+
+axe 4.14 detects label/content mismatches. The language button includes its visible ES or EN text in its accessible name, followed by the action in the destination language. Browser tests use the complete accessible name; the accessibility rule remains enabled.

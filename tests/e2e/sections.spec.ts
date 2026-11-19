@@ -43,7 +43,7 @@ test.describe('secciones profesionales', () => {
     await page.goto('/profiles/test-profile/curriculum');
     await expect(page.getByRole('button', { name: 'Imprimir / Guardar PDF' })).toBeVisible();
     await expect(page.getByText('BORRADOR DE CV')).toBeVisible();
-    await page.getByRole('button', { name: 'Switch language to English' }).click();
+    await page.getByRole('button', { name: 'ES — Switch language to English' }).click();
     await page.goto('/profiles/test-profile/curriculum');
     await expect(page.getByRole('button', { name: 'Print / Save PDF' })).toBeVisible();
     await expect(page.getByText('ENGLISH RESUME · REVIEW DRAFT')).toBeVisible();
