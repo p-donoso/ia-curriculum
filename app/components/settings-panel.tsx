@@ -44,7 +44,12 @@ export function SettingsPanel({
 
   return (
     <Paper sx={{ p: 3 }}>
-      <Typography fontWeight={800} sx={{ mb: 2 }}>
+      <Typography
+        sx={{
+          fontWeight: 800,
+          mb: 2,
+        }}
+      >
         {t('providerAi')}
       </Typography>
       <TextField
@@ -89,10 +94,21 @@ export function SettingsPanel({
       </Button>
       {saved && <Chip label={t('configSaved')} color="success" sx={{ ml: 2 }} />}
       <Divider sx={{ my: 3 }} />
-      <Typography variant="h6" fontWeight={800}>
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: 800,
+        }}
+      >
         {t('systemPrompts')}
       </Typography>
-      <Typography color="text.secondary" sx={{ mt: 0.5, mb: 2 }}>
+      <Typography
+        sx={{
+          color: 'text.secondary',
+          mt: 0.5,
+          mb: 2,
+        }}
+      >
         {t('systemPromptsHelp')}
       </Typography>
       <TextField
@@ -124,10 +140,20 @@ export function SettingsPanel({
         {saved && <Chip label={t('configSaved')} color="success" />}
       </Stack>
       <Divider sx={{ my: 3 }} />
-      <Typography variant="h6" fontWeight={800}>
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: 800,
+        }}
+      >
         {t('yourData')}
       </Typography>
-      <Typography color="text.secondary" sx={{ mt: 0.5 }}>
+      <Typography
+        sx={{
+          color: 'text.secondary',
+          mt: 0.5,
+        }}
+      >
         {t('dataHelp')}
       </Typography>
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ mt: 2 }}>

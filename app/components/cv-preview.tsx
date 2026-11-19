@@ -82,8 +82,22 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
 
   return (
     <Box className="cv-workspace">
-      <Stack className="cv-toolbar" direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
-        <Stack direction="row" spacing={1} alignItems="center">
+      <Stack
+        className="cv-toolbar"
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          mb: 2,
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <Button
             component={Link}
             href={profileId ? `/profiles/${profileId}` : '/'}
@@ -91,7 +105,12 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
           >
             {t('cvBack')}
           </Button>
-          <Typography variant="caption" color="text.secondary">
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {t('cvDraft')}
           </Typography>
         </Stack>
@@ -122,7 +141,12 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
               <Box />
               <Box />
             </Box>
-            <Typography component="span" fontWeight={700}>
+            <Typography
+              component="span"
+              sx={{
+                fontWeight: 700,
+              }}
+            >
               {t(option.nameKey)}
             </Typography>
             <Typography component="span" variant="caption">
@@ -197,7 +221,14 @@ export function CvPreview({ profileId, records }: { profileId?: string; records:
             <CvSection title={t('experience')} icon="work" showIcon={showIcons}>
               {experiences.map((record) => (
                 <Box className="cv-entry" key={record.id}>
-                  <Stack className="cv-entry-heading" direction="row" justifyContent="space-between" gap={2}>
+                  <Stack
+                    className="cv-entry-heading"
+                    direction="row"
+                    sx={{
+                      justifyContent: 'space-between',
+                      gap: 2,
+                    }}
+                  >
                     <Box>
                       <Typography className="cv-role">{record.values.Cargo}</Typography>
                       <Typography className="cv-organization">{record.values.Organización}</Typography>
@@ -301,7 +332,14 @@ function Project({ project }: { project: RecordItem }) {
 
 function Education({ record }: { record: RecordItem }) {
   return (
-    <Stack className="cv-education" direction="row" justifyContent="space-between" gap={2}>
+    <Stack
+      className="cv-education"
+      direction="row"
+      sx={{
+        justifyContent: 'space-between',
+        gap: 2,
+      }}
+    >
       <Box>
         <Typography className="cv-degree">{record.values['Título o programa']}</Typography>
         <Typography className="cv-organization">{record.values.Institución}</Typography>

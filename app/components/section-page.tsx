@@ -144,17 +144,41 @@ export default function SectionPage({ section, profileId }: { section: string; p
             >
               {t('backDashboard')}
             </Button>
-            <Stack direction="row" justifyContent="space-between" alignItems="flex-start" sx={{ mb: 3 }}>
+            <Stack
+              direction="row"
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'flex-start',
+                mb: 3,
+              }}
+            >
               <Box>
-                <Typography variant="overline" color="primary.main" fontWeight={800}>
+                <Typography
+                  variant="overline"
+                  sx={{
+                    color: 'primary.main',
+                    fontWeight: 800,
+                  }}
+                >
                   {t('profile')}
                 </Typography>
                 <Typography variant="h2">{info.title}</Typography>
-                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    mt: 1,
+                  }}
+                >
                   {info.description}
                 </Typography>
                 {usesSharedSource && (
-                  <Typography color="primary.main" variant="body2" sx={{ mt: 1 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'primary.main',
+                      mt: 1,
+                    }}
+                  >
                     {t('sharedSourceNotice')}
                   </Typography>
                 )}
@@ -180,14 +204,24 @@ export default function SectionPage({ section, profileId }: { section: string; p
           <Stack spacing={2}>
             {section === 'linkedin' && (
               <Paper sx={{ p: 3 }}>
-                <Typography variant="overline" color="text.secondary">
+                <Typography
+                  variant="overline"
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {t('linkedinPreview')}
                 </Typography>
                 <Typography variant="h4" sx={{ mt: 1 }}>
                   {portfolioRecords.find((item) => item.section === 'basic')?.values['Professional Headline'] ||
                     t('professionalHeadline')}
                 </Typography>
-                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    mt: 1,
+                  }}
+                >
                   {portfolioRecords.find((item) => item.section === 'basic')?.values['Professional Summary'] ||
                     t('addSummary')}
                 </Typography>
@@ -197,13 +231,23 @@ export default function SectionPage({ section, profileId }: { section: string; p
               </Paper>
             )}
             <Paper sx={{ p: 3 }}>
-              <Typography variant="overline" color="text.secondary">
+              <Typography
+                variant="overline"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {t('draftReview')}
               </Typography>
               <Typography variant="h4" sx={{ mt: 1 }}>
                 {section === 'linkedin' ? t('featuredProjects') : t('selectedProjects')}
               </Typography>
-              <Typography color="text.secondary" sx={{ mt: 1 }}>
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                  mt: 1,
+                }}
+              >
                 {section === 'linkedin' ? t('reviewProjects') : t('reviewOwnership')}
               </Typography>
               <Stack spacing={1.5} sx={{ mt: 2 }}>
@@ -212,19 +256,36 @@ export default function SectionPage({ section, profileId }: { section: string; p
                   .map((project) => (
                     <Paper variant="outlined" key={project.id} sx={{ p: 2 }}>
                       <Typography variant="h6">{project.values['Nombre del proyecto']}</Typography>
-                      <Typography variant="subtitle2" color="primary.main">
+                      <Typography
+                        variant="subtitle2"
+                        sx={{
+                          color: 'primary.main',
+                        }}
+                      >
                         {project.values.Rol}
                       </Typography>
                       <Typography sx={{ mt: 1 }}>{project.values.Descripción}</Typography>
                       {project.values['Resultado o enlace'] && (
-                        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{
+                            color: 'text.secondary',
+                            mt: 1,
+                          }}
+                        >
                           {project.values['Resultado o enlace']}
                         </Typography>
                       )}
                     </Paper>
                   ))}
                 {!portfolioRecords.some((item) => item.section === 'projects') && (
-                  <Typography color="text.secondary">{t('noProjects')}</Typography>
+                  <Typography
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
+                    {t('noProjects')}
+                  </Typography>
                 )}
               </Stack>
               <Button component={Link} href={`/profiles/${profileId}/projects`} sx={{ mt: 1 }}>
@@ -233,14 +294,29 @@ export default function SectionPage({ section, profileId }: { section: string; p
             </Paper>
             <Paper sx={{ p: 3 }}>
               <Typography variant="h4">{t('skills')}</Typography>
-              <Stack direction="row" useFlexGap flexWrap="wrap" gap={1} sx={{ mt: 2 }}>
+              <Stack
+                direction="row"
+                useFlexGap
+                sx={{
+                  flexWrap: 'wrap',
+                  gap: 1,
+                  mt: 2,
+                }}
+              >
                 {portfolioRecords
                   .filter((item) => item.section === 'skills')
                   .map((item) => (
                     <Box key={item.id}>
                       <Chip label={item.values.Skill} variant="outlined" />
                       {item.values.Evidence && (
-                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+                        <Typography
+                          variant="caption"
+                          sx={{
+                            color: 'text.secondary',
+                            display: 'block',
+                            mt: 0.5,
+                          }}
+                        >
                           {item.values.Evidence}
                         </Typography>
                       )}
@@ -248,7 +324,12 @@ export default function SectionPage({ section, profileId }: { section: string; p
                   ))}
               </Stack>
               {!portfolioRecords.some((item) => item.section === 'skills') && (
-                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    mt: 1,
+                  }}
+                >
                   {t('noSkills')}
                 </Typography>
               )}
@@ -269,7 +350,12 @@ export default function SectionPage({ section, profileId }: { section: string; p
             />
             {proposal && (
               <Paper sx={{ p: 2, mb: 2, border: '1px solid #b7c8ff' }}>
-                <Typography variant="body2" fontWeight={700}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 700,
+                  }}
+                >
                   {t('pendingProposal')} ({proposal.confidence})
                 </Typography>
                 <Stack spacing={1.5} sx={{ mt: 1.5 }}>
@@ -286,7 +372,14 @@ export default function SectionPage({ section, profileId }: { section: string; p
                     />
                   ))}
                 </Stack>
-                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: 'text.secondary',
+                    display: 'block',
+                    mt: 1,
+                  }}
+                >
                   {t('source')}: {proposal.source}
                 </Typography>
                 <Stack direction="row" spacing={1} sx={{ mt: 1.5 }}>
@@ -310,7 +403,11 @@ export default function SectionPage({ section, profileId }: { section: string; p
                   sx={{ border: '1px solid #e1e7f0', '&:before': { display: 'none' } }}
                 >
                   <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
-                    <Typography fontWeight={800}>
+                    <Typography
+                      sx={{
+                        fontWeight: 800,
+                      }}
+                    >
                       {record.values['Nombre completo'] ||
                         record.values['Nombre del proyecto'] ||
                         record.values['Título o programa'] ||
